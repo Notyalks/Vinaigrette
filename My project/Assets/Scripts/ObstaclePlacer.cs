@@ -22,14 +22,16 @@ public class ObstaclePlacer : MonoBehaviour
     private bool isValidPlacement = false;
 
     [Header("Áreas de Colocação")]
-    public Collider2D placementAreaPlayer1; // Caminho do Player 1
-    public Collider2D placementAreaPlayer2; // Caminho do Player 2
-    private Collider2D activePlacementArea; // Área ativa no turno atual
+    public Collider2D placementAreaPlayer1;
+    public Collider2D placementAreaPlayer2;
+    private Collider2D activePlacementArea;
+
+    [Header("Detecção de Sobreposição")]
+    public LayerMask obstacleLayer; // Defina uma Layer para seus obstáculos
 
     void Start()
     {
         inventoryPanel.SetActive(false);
-        // Desativa áreas inicialmente
         placementAreaPlayer1.enabled = false;
         placementAreaPlayer2.enabled = false;
     }
@@ -42,8 +44,25 @@ public class ObstaclePlacer : MonoBehaviour
             mousePos.z = 0;
             ghostObstacle.transform.position = mousePos;
 
-            // Checa se está dentro da área ativa
-            isValidPlacement = activePlacementArea != null && activePlacementArea.OverlapPoint(mousePos);
+            // Rotação 90° por tecla R
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                RotateGhost(90f);
+            }
+
+            // Rotação 90° por scroll do mouse (opcional)
+            float scroll = Input.mouseScrollDelta.y;
+            if (scroll > 0f)
+            {
+                RotateGhost(90f);
+            }
+            else if (scroll < 0f)
+            {
+                RotateGhost(-90f);
+            }
+
+            // Checa se posição é válida
+            isValidPlacement = IsPlacementValid(mousePos);
 
             // Atualiza cor do ghost
             UpdateGhostColor();
@@ -58,18 +77,15 @@ public class ObstaclePlacer : MonoBehaviour
 
     public void StartPlayerTurn()
     {
-        // Define área ativa com base em qual jogador está jogando
         int currentPlayer = turnManager.GetCurrentPlayer();
         if (currentPlayer == 1)
         {
-            // Jogador 1 coloca obstáculos no caminho do jogador 2
             activePlacementArea = placementAreaPlayer2;
             placementAreaPlayer2.enabled = true;
             placementAreaPlayer1.enabled = false;
         }
         else
         {
-            // Jogador 2 coloca obstáculos no caminho do jogador 1
             activePlacementArea = placementAreaPlayer1;
             placementAreaPlayer1.enabled = true;
             placementAreaPlayer2.enabled = false;
@@ -94,8 +110,6 @@ public class ObstaclePlacer : MonoBehaviour
     {
         inventoryPanel.SetActive(false);
         ClearPlacement();
-
-        // Desativa áreas de colocação quando não é turno
         placementAreaPlayer1.enabled = false;
         placementAreaPlayer2.enabled = false;
         activePlacementArea = null;
@@ -108,18 +122,50 @@ public class ObstaclePlacer : MonoBehaviour
             selectedObstacle = currentOptions[index];
             inventoryPanel.SetActive(false);
 
-            // Cria ghost do obstáculo
+            // Cria ghost
             ghostObstacle = Instantiate(selectedObstacle.prefab);
-            ghostObstacle.GetComponent<Collider2D>().enabled = false;
+            Collider2D col = ghostObstacle.GetComponent<Collider2D>();
+            if (col != null) col.enabled = false;
 
             ghostRenderer = ghostObstacle.GetComponent<SpriteRenderer>();
             ghostOriginalColor = ghostRenderer.color;
 
-            // Adiciona apenas transparência
+            // Semi-transparente
             ghostRenderer.color = new Color(ghostOriginalColor.r, ghostOriginalColor.g, ghostOriginalColor.b, 0.5f);
 
             isPlacing = true;
         }
+    }
+
+    private bool IsPlacementValid(Vector3 position)
+    {
+        // 1. Checa se está dentro da área ativa
+        if (activePlacementArea == null || !activePlacementArea.OverlapPoint(position))
+            return false;
+
+        // 2. Checa sobreposição com outros obstáculos
+        if (ghostObstacle.TryGetComponent(out BoxCollider2D ghostCollider))
+        {
+            Vector2 size = ghostCollider.size;
+            Vector2 scale = ghostObstacle.transform.lossyScale;
+            Vector2 scaledSize = new Vector2(size.x * scale.x, size.y * scale.y);
+
+            Collider2D hit = Physics2D.OverlapBox(
+                position,       // posição do ghost
+                scaledSize,     // tamanho ajustado pela escala
+                ghostObstacle.transform.eulerAngles.z, // rotação em Z
+                obstacleLayer
+            );
+
+            if (hit != null) return false;
+        }
+
+        return true;
+    }
+
+    private void RotateGhost(float angle)
+    {
+        ghostObstacle.transform.Rotate(0f, 0f, angle);
     }
 
     private void UpdateGhostColor()
@@ -128,12 +174,10 @@ public class ObstaclePlacer : MonoBehaviour
         {
             if (isValidPlacement)
             {
-                // Cor original + transparência
                 ghostRenderer.color = new Color(ghostOriginalColor.r, ghostOriginalColor.g, ghostOriginalColor.b, 0.5f);
             }
             else
             {
-                // Vermelho + transparência
                 ghostRenderer.color = new Color(1f, 0f, 0f, 0.5f);
             }
         }
@@ -155,5 +199,23 @@ public class ObstaclePlacer : MonoBehaviour
         if (ghostObstacle != null) Destroy(ghostObstacle);
         selectedObstacle.prefab = null;
         isPlacing = false;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (ghostObstacle != null && ghostObstacle.TryGetComponent(out BoxCollider2D ghostCollider))
+        {
+            Vector2 size = ghostCollider.size;
+            Vector2 scale = ghostObstacle.transform.lossyScale;
+            Vector2 scaledSize = new Vector2(size.x * scale.x, size.y * scale.y);
+
+            Gizmos.color = isValidPlacement ? Color.green : Color.red;
+            Gizmos.matrix = Matrix4x4.TRS(
+                ghostObstacle.transform.position,
+                Quaternion.Euler(0, 0, ghostObstacle.transform.eulerAngles.z),
+                Vector3.one
+            );
+            Gizmos.DrawWireCube(Vector3.zero, scaledSize);
+        }
     }
 }
