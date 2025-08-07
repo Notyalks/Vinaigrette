@@ -29,6 +29,8 @@ public class ObstaclePlacer : MonoBehaviour
     [Header("Detecção de Sobreposição")]
     public LayerMask obstacleLayer; // Defina uma Layer para seus obstáculos
 
+    public float gridSize = 1f;
+
     void Start()
     {
         inventoryPanel.SetActive(false);
@@ -42,6 +44,11 @@ public class ObstaclePlacer : MonoBehaviour
         {
             Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0;
+
+            // Snap para o grid
+            mousePos.x = Mathf.Round(mousePos.x / gridSize) * gridSize;
+            mousePos.y = Mathf.Round(mousePos.y / gridSize) * gridSize;
+
             ghostObstacle.transform.position = mousePos;
 
             // Rotação 90° por tecla R

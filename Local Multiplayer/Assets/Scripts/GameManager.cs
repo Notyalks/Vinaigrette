@@ -24,7 +24,8 @@ public class GameManager : MonoBehaviour
     public PlayerController player1;
     public PlayerController player2;
 
-
+    [Header("Elementos Visuais")]
+    public GameObject constructionGrid;
 
     public GameObject winScreen;
     public Text winText;
@@ -43,8 +44,8 @@ public class GameManager : MonoBehaviour
     {
         currentState = GameState.Build;
         currentBuildTurn = 0;
-        turnManager.gameObject.SetActive(true);
-        turnManager.StartTurn(1); // começa com jogador 1
+        constructionGrid.SetActive(true);
+        turnManager.StartTurn(1);
     }
 
     public void OnTurnEnded(int previousPlayer)
@@ -75,6 +76,9 @@ public class GameManager : MonoBehaviour
     {
         currentState = GameState.Play;
         preparePanel.SetActive(false);
+
+        constructionGrid.SetActive(false);
+
         turnManager.gameObject.SetActive(false);
         player1.EnableControl(true);
         player2.EnableControl(true);
@@ -87,7 +91,7 @@ public class GameManager : MonoBehaviour
         player1.EnableControl(false);
         player2.EnableControl(false);
 
-        Debug.Log("Jogador " + winner + " venceu!");
+        constructionGrid.SetActive(false);
 
         // Ativa tela de vitória
         if (winScreen != null)
