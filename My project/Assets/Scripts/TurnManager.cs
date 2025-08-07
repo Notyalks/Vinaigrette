@@ -11,6 +11,12 @@ public class TurnManager : MonoBehaviour
     public GameObject inventoryPlayer1;
     public GameObject inventoryPlayer2;
 
+    [Header("Painéis de Transição")]
+    public GameObject turnTransitionPanel;
+    public Text turnTransitionText;
+
+    private bool waitingForInput = false;
+
     [Header("Timer UI")]
     public Text timerPlayer1;
     public Text timerPlayer2;
@@ -23,6 +29,7 @@ public class TurnManager : MonoBehaviour
     private bool turnActive = false;
 
     private int currentPlayer = 1;
+    private int pendingNextPlayer = -1;
 
     void Start()
     {
@@ -31,6 +38,17 @@ public class TurnManager : MonoBehaviour
 
     void Update()
     {
+        if (waitingForInput)
+        {
+            if (Input.anyKeyDown)
+            {
+                waitingForInput = false;
+                turnTransitionPanel.SetActive(false);
+                StartTurn(pendingNextPlayer);
+            }
+            return;
+        }
+
         if (!turnActive) return;
 
         currentTimer -= Time.deltaTime;
@@ -41,6 +59,7 @@ public class TurnManager : MonoBehaviour
             EndTurn();
         }
     }
+
 
     public void StartTurn(int player)
     {
@@ -60,24 +79,25 @@ public class TurnManager : MonoBehaviour
     {
         turnActive = false;
 
-        // Desativa inventário e timer
         placer.EndPlayerTurn();
         UpdateHUDVisibility();
 
-        // Desativa painel do jogador que acabou de jogar
-        if (currentPlayer == 1)
-            panelPlayer1.SetActive(false);
-        else
-            panelPlayer2.SetActive(false);
+        if (currentPlayer == 1) panelPlayer1.SetActive(false);
+        else panelPlayer2.SetActive(false);
 
-        GameManager.Instance.OnTurnEnded();
-
-        if (GameManager.Instance.currentState == GameState.Build)
-        {
-            StartTurn(currentPlayer == 1 ? 2 : 1);
-        }
+        // Agora só notificamos o GameManager
+        GameManager.Instance.OnTurnEnded(currentPlayer);
     }
 
+    public void ShowTurnTransition(int nextPlayer)
+    {
+        waitingForInput = true;
+        turnTransitionText.text = "Vez do Jogador " + nextPlayer;
+        turnTransitionPanel.SetActive(true);
+
+        // Armazena jogador que vai começar após input
+        pendingNextPlayer = nextPlayer;
+    }
 
     void UpdatePanels()
     {

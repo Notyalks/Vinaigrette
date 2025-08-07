@@ -12,6 +12,10 @@ public class GameManager : MonoBehaviour
     public int buildRounds = 1; // quantos turnos cada jogador tem antes de começar gameplay
     private int currentBuildTurn = 0;
 
+    [Header("Transição para gameplay")]
+    public GameObject preparePanel;
+    public float prepareDuration = 3f;
+
     [Header("Referências")]
     public TurnManager turnManager;
     public PlayerController player1;
@@ -38,24 +42,34 @@ public class GameManager : MonoBehaviour
         turnManager.StartTurn(1); // começa com jogador 1
     }
 
-    public void OnTurnEnded()
+    public void OnTurnEnded(int previousPlayer)
     {
-        // Conta cada vez que qualquer jogador termina um turno
         currentBuildTurn++;
 
-        // Cada "round" de construção = 2 turnos (P1 + P2)
         int maxTurns = buildRounds * 2;
 
         if (currentBuildTurn >= maxTurns)
         {
-            StartPlayPhase();
+            ShowPreparePanel();
         }
+        else
+        {
+            int nextPlayer = previousPlayer == 1 ? 2 : 1;
+            turnManager.ShowTurnTransition(nextPlayer);
+        }
+    }
+
+    void ShowPreparePanel()
+    {
+        preparePanel.SetActive(true);
+        Invoke(nameof(StartPlayPhase), prepareDuration);
     }
 
     public void StartPlayPhase()
     {
         currentState = GameState.Play;
-        turnManager.gameObject.SetActive(false); // desativa sistema de turnos
+        preparePanel.SetActive(false);
+        turnManager.gameObject.SetActive(false);
         player1.EnableControl(true);
         player2.EnableControl(true);
     }
@@ -75,5 +89,10 @@ public class GameManager : MonoBehaviour
             winScreen.SetActive(true);
             winText.text = "Jogador " + winner + " venceu!";
         }
+    }
+    public bool IsLastBuildTurn()
+    {
+        int maxTurns = buildRounds * 2;
+        return currentBuildTurn + 1 >= maxTurns;
     }
 }
