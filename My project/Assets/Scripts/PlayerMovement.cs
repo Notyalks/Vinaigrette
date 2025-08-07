@@ -1,36 +1,99 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public float speed = 5f;
     public float jumpForce = 7f;
+    public int maxLives = 3;
+    public int lives = 3;
+
     private Rigidbody2D rb;
     private bool isGrounded;
+    private bool canControl = false;
+
+    [Header("UI")]
+    public Text livesText; // Use TMP_Text se estiver usando TextMeshPro
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        UpdateLivesUI();
     }
 
     void Update()
     {
-        float move = Input.GetAxisRaw("Horizontal");
-        rb.linearVelocity = new Vector2(move * speed, rb.linearVelocity.y);
+        if (!canControl) return;
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        float move = 0f;
+
+        if (gameObject.name == "Player1")
         {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            if (Input.GetKey(KeyCode.A)) move = -1;
+            if (Input.GetKey(KeyCode.D)) move = 1;
+
+            if (Input.GetKeyDown(KeyCode.W) && isGrounded)
+                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
+        else
+        {
+            if (Input.GetKey(KeyCode.LeftArrow)) move = -1;
+            if (Input.GetKey(KeyCode.RightArrow)) move = 1;
+
+            if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
+                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
+
+        rb.linearVelocity = new Vector2(move * speed, rb.linearVelocity.y);
+    }
+
+    public void EnableControl(bool enable)
+    {
+        canControl = enable;
+        rb.linearVelocity = Vector2.zero;
     }
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.contacts[0].normal.y > 0.5f) // Ponto de contato vindo de baixo
+        if (col.contacts[0].normal.y > 0.5f)
             isGrounded = true;
+
+        if (col.collider.CompareTag("Hazard"))
+        {
+            LoseLife();
+        }
     }
 
     void OnCollisionExit2D(Collision2D col)
     {
-        isGrounded = false;
+        if (col.contacts[0].normal.y > 0.5f)
+            isGrounded = false;
+    }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Goal"))
+        {
+            GameManager.Instance.EndGame(gameObject.name == "Player1" ? 1 : 2);
+        }
+    }
+    void LoseLife()
+    {
+        lives--;
+        UpdateLivesUI();
+
+        if (lives <= 0)
+        {
+            GameManager.Instance.EndGame(gameObject.name == "Player1" ? 2 : 1);
+        }
+        else
+        {
+            transform.position = Vector3.zero; // Reinicia posição
+        }
+    }
+
+    void UpdateLivesUI()
+    {
+        if (livesText != null)
+            livesText.text = "Vidas: " + lives;
     }
 }

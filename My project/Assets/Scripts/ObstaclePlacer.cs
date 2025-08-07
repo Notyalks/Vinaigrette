@@ -75,9 +75,11 @@ public class ObstaclePlacer : MonoBehaviour
         }
     }
 
-    public void StartPlayerTurn()
+    public void StartPlayerTurn(int player, GameObject inventoryUI)
     {
-        int currentPlayer = turnManager.GetCurrentPlayer();
+        int currentPlayer = player;
+
+        // Define área de colocação
         if (currentPlayer == 1)
         {
             activePlacementArea = placementAreaPlayer2;
@@ -91,6 +93,9 @@ public class ObstaclePlacer : MonoBehaviour
             placementAreaPlayer2.enabled = false;
         }
 
+        // Pega botões do inventário atual
+        inventoryButtons = inventoryUI.GetComponentsInChildren<Button>();
+
         // Gera obstáculos aleatórios
         currentOptions.Clear();
         for (int i = 0; i < inventoryButtons.Length; i++)
@@ -101,14 +106,16 @@ public class ObstaclePlacer : MonoBehaviour
             Image btnImg = inventoryButtons[i].GetComponent<Image>();
             btnImg.sprite = allObstacles[rand].icon;
             btnImg.color = Color.white;
-        }
 
-        inventoryPanel.SetActive(true);
+            int index = i; // evita bug de closure
+            inventoryButtons[i].onClick.RemoveAllListeners();
+            inventoryButtons[i].onClick.AddListener(() => SelectObstacle(index));
+        }
     }
+
 
     public void EndPlayerTurn()
     {
-        inventoryPanel.SetActive(false);
         ClearPlacement();
         placementAreaPlayer1.enabled = false;
         placementAreaPlayer2.enabled = false;
@@ -120,18 +127,21 @@ public class ObstaclePlacer : MonoBehaviour
         if (index >= 0 && index < currentOptions.Count)
         {
             selectedObstacle = currentOptions[index];
-            inventoryPanel.SetActive(false);
 
-            // Cria ghost
+            // Fecha inventário do jogador da vez
+            inventoryButtons[0].transform.parent.gameObject.SetActive(false);
+
+            // Cria ghost do obstáculo fora da tela
             ghostObstacle = Instantiate(selectedObstacle.prefab);
             Collider2D col = ghostObstacle.GetComponent<Collider2D>();
             if (col != null) col.enabled = false;
 
             ghostRenderer = ghostObstacle.GetComponent<SpriteRenderer>();
             ghostOriginalColor = ghostRenderer.color;
-
-            // Semi-transparente
             ghostRenderer.color = new Color(ghostOriginalColor.r, ghostOriginalColor.g, ghostOriginalColor.b, 0.5f);
+
+            // Começa fora da tela para não aparecer atrás do botão
+            ghostObstacle.transform.position = new Vector3(9999, 9999, 0);
 
             isPlacing = true;
         }
@@ -187,11 +197,12 @@ public class ObstaclePlacer : MonoBehaviour
     {
         if (selectedObstacle.prefab == null) return;
 
-        Instantiate(selectedObstacle.prefab, ghostObstacle.transform.position, Quaternion.identity);
+        Instantiate(selectedObstacle.prefab, ghostObstacle.transform.position, ghostObstacle.transform.rotation);
 
         ClearPlacement();
 
-        turnManager.NextTurn();
+        // Fim do turno
+        turnManager.EndTurn();
     }
 
     private void ClearPlacement()

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8419578527454091768}
   m_Layer: 7
   m_Name: Triangle 1
-  m_TagString: Untagged
+  m_TagString: Hazard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
