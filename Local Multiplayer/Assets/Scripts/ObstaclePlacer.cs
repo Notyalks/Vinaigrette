@@ -140,6 +140,9 @@ public class ObstaclePlacer : MonoBehaviour
             ghostOriginalColor = ghostRenderer.color;
             ghostRenderer.color = new Color(ghostOriginalColor.r, ghostOriginalColor.g, ghostOriginalColor.b, 0.5f);
 
+            ghostRenderer.sortingLayerName = "UI";
+            ghostRenderer.sortingOrder = 10;
+
             // Começa fora da tela para não aparecer atrás do botão
             ghostObstacle.transform.position = new Vector3(9999, 9999, 0);
 

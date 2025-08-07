@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public enum GameState { Build, Play, End }
 
@@ -14,12 +15,16 @@ public class GameManager : MonoBehaviour
 
     [Header("Transição para gameplay")]
     public GameObject preparePanel;
+    public CanvasGroup prepareCanvasGroup;
     public float prepareDuration = 3f;
+    public float fadeDuration = 1f;
 
     [Header("Referências")]
     public TurnManager turnManager;
     public PlayerController player1;
     public PlayerController player2;
+
+
 
     public GameObject winScreen;
     public Text winText;
@@ -62,7 +67,8 @@ public class GameManager : MonoBehaviour
     void ShowPreparePanel()
     {
         preparePanel.SetActive(true);
-        Invoke(nameof(StartPlayPhase), prepareDuration);
+        prepareCanvasGroup.alpha = 1f;
+        StartCoroutine(FadeOutPrepareAndStartGameplay());
     }
 
     public void StartPlayPhase()
@@ -94,5 +100,20 @@ public class GameManager : MonoBehaviour
     {
         int maxTurns = buildRounds * 2;
         return currentBuildTurn + 1 >= maxTurns;
+    }
+    IEnumerator FadeOutPrepareAndStartGameplay()
+    {
+        yield return new WaitForSeconds(prepareDuration);
+
+        float t = 0f;
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            prepareCanvasGroup.alpha = Mathf.Lerp(1f, 0f, t / fadeDuration);
+            yield return null;
+        }
+
+        preparePanel.SetActive(false);
+        StartPlayPhase();
     }
 }
