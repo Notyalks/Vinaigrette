@@ -67,10 +67,13 @@ public class GameManager : MonoBehaviour
 
     void ShowPreparePanel()
     {
+        constructionGrid.SetActive(false);
+
         preparePanel.SetActive(true);
         prepareCanvasGroup.alpha = 1f;
         StartCoroutine(FadeOutPrepareAndStartGameplay());
     }
+
 
     public void StartPlayPhase()
     {
