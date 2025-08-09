@@ -140,13 +140,6 @@ public class GameManager : MonoBehaviour
         preparePanel.SetActive(false);
         StartPlayPhase();
     }
-    public void CheckRoundEnd()
-    {
-        if (!player1.isActive && !player2.isActive)
-        {
-            EndRound();
-        }
-    }
 
     public void EndRound()
     {
@@ -165,7 +158,6 @@ public class GameManager : MonoBehaviour
         currentState = GameState.Build;
         currentBuildTurn = 0;
 
-        // Resetar jogadores
         player1.transform.position = player1StartPosition;
         player2.transform.position = player2StartPosition;
         player1.lives = player1.maxLives;
@@ -173,11 +165,8 @@ public class GameManager : MonoBehaviour
         player1.UpdateLivesUI();
         player2.UpdateLivesUI();
 
-        player1.ReactivatePlayer();
-        player2.ReactivatePlayer();
+        ScoreManager.Instance.ResetRoundState();
 
-
-        // Ativar grid e turnos novamente
         constructionGrid.SetActive(true);
         turnManager.gameObject.SetActive(true);
         turnManager.StartTurn(1);
@@ -191,4 +180,15 @@ public class GameManager : MonoBehaviour
         float y = Random.Range(bounds.min.y, bounds.max.y);
         return new Vector3(x, y, 0f);
     }
+
+    public void PlayerReachedGoal(int playerId, int livesRemaining)
+    {
+        ScoreManager.Instance.PlayerReachedGoal(playerId, livesRemaining);
+    }
+
+    public void PlayerDied(int playerId)
+    {
+        ScoreManager.Instance.PlayerDied(playerId);
+    }
+
 }

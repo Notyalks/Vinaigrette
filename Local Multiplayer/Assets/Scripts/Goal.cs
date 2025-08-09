@@ -7,8 +7,7 @@ public class Goal : MonoBehaviour
         PlayerController player = collision.GetComponent<PlayerController>();
         if (player != null && player.isActive)
         {
-            GameManager.Instance.EndRound();
+            ScoreManager.Instance.PlayerReachedGoal(player.playerId, player.lives);
         }
     }
-
 }

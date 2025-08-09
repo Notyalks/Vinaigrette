@@ -89,18 +89,18 @@ public class PlayerController : MonoBehaviour
         {
             // Jogador fica inativo, sem acabar o jogo
             isActive = false;
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             rb.simulated = false; // Desativa física
             GetComponent<Collider2D>().enabled = false; // Evita colisões
 
-            GameManager.Instance.CheckRoundEnd();
+            ScoreManager.Instance.CheckRoundEnd();
         }
         else
         {
             // Respawn normal
             Vector3 respawnPos = GameManager.Instance.GetRandomStartPosition(playerId);
             transform.position = respawnPos;
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
         }
     }
     public void ReactivatePlayer()
