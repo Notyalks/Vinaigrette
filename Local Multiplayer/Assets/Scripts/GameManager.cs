@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum GameState { Build, Play, End }
 
@@ -23,12 +24,18 @@ public class GameManager : MonoBehaviour
     public TurnManager turnManager;
     public PlayerController player1;
     public PlayerController player2;
+    public Collider2D startAreaP1;
+    public Collider2D startAreaP2;
 
     [Header("Elementos Visuais")]
     public GameObject constructionGrid;
 
     public GameObject winScreen;
     public Text winText;
+
+    private bool waitingToRestart = false;
+    private Vector3 player1StartPosition;
+    private Vector3 player2StartPosition;
 
     void Awake()
     {
@@ -37,7 +44,19 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        player1StartPosition = player1.transform.position;
+        player2StartPosition = player2.transform.position;
         StartBuildPhase();
+    }
+
+    void Update()
+    {
+        if (waitingToRestart && Input.anyKeyDown)
+        {
+            waitingToRestart = false;
+            winScreen.SetActive(false);
+            RestartRound();
+        }
     }
 
     public void StartBuildPhase()
@@ -74,7 +93,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(FadeOutPrepareAndStartGameplay());
     }
 
-
     public void StartPlayPhase()
     {
         currentState = GameState.Play;
@@ -91,23 +109,22 @@ public class GameManager : MonoBehaviour
     {
         currentState = GameState.End;
 
+        constructionGrid.SetActive(false);
         player1.EnableControl(false);
         player2.EnableControl(false);
 
-        constructionGrid.SetActive(false);
+        winScreen.SetActive(true);
+        winText.text = "Jogador " + winner + " venceu!";
 
-        // Ativa tela de vitória
-        if (winScreen != null)
-        {
-            winScreen.SetActive(true);
-            winText.text = "Jogador " + winner + " venceu!";
-        }
+        waitingToRestart = true;
     }
+
     public bool IsLastBuildTurn()
     {
         int maxTurns = buildRounds * 2;
         return currentBuildTurn + 1 >= maxTurns;
     }
+
     IEnumerator FadeOutPrepareAndStartGameplay()
     {
         yield return new WaitForSeconds(prepareDuration);
@@ -122,5 +139,56 @@ public class GameManager : MonoBehaviour
 
         preparePanel.SetActive(false);
         StartPlayPhase();
+    }
+    public void CheckRoundEnd()
+    {
+        if (!player1.isActive && !player2.isActive)
+        {
+            EndRound();
+        }
+    }
+
+    public void EndRound()
+    {
+        Debug.Log("Rodada terminou!");
+        StartCoroutine(RestartRoundAfterDelay());
+    }
+
+    private IEnumerator RestartRoundAfterDelay()
+    {
+        yield return new WaitForSeconds(2f); // tempo antes de reiniciar
+        RestartRound();
+    }
+
+    public void RestartRound()
+    {
+        currentState = GameState.Build;
+        currentBuildTurn = 0;
+
+        // Resetar jogadores
+        player1.transform.position = player1StartPosition;
+        player2.transform.position = player2StartPosition;
+        player1.lives = player1.maxLives;
+        player2.lives = player2.maxLives;
+        player1.UpdateLivesUI();
+        player2.UpdateLivesUI();
+
+        player1.ReactivatePlayer();
+        player2.ReactivatePlayer();
+
+
+        // Ativar grid e turnos novamente
+        constructionGrid.SetActive(true);
+        turnManager.gameObject.SetActive(true);
+        turnManager.StartTurn(1);
+    }
+
+    public Vector3 GetRandomStartPosition(int playerId)
+    {
+        Collider2D area = (playerId == 1) ? startAreaP1 : startAreaP2;
+        Bounds bounds = area.bounds;
+        float x = Random.Range(bounds.min.x, bounds.max.x);
+        float y = Random.Range(bounds.min.y, bounds.max.y);
+        return new Vector3(x, y, 0f);
     }
 }

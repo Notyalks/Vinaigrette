@@ -15,6 +15,10 @@ public class PlayerController : MonoBehaviour
     [Header("UI")]
     public Text livesText; // Use TMP_Text se estiver usando TextMeshPro
 
+    public int playerId;
+
+    [HideInInspector] public bool isActive = true;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -69,29 +73,44 @@ public class PlayerController : MonoBehaviour
         if (col.contacts[0].normal.y > 0.5f)
             isGrounded = false;
     }
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Goal"))
-        {
-            GameManager.Instance.EndGame(gameObject.name == "Player1" ? 1 : 2);
-        }
-    }
-    void LoseLife()
+    ///void OnTriggerEnter2D(Collider2D other)
+    // {
+    //    if (other.CompareTag("Goal"))
+    //    {
+    //        GameManager.Instance.EndGame(gameObject.name == "Player1" ? 1 : 2);
+    //    }
+    // }
+    public void LoseLife()
     {
         lives--;
         UpdateLivesUI();
 
         if (lives <= 0)
         {
-            GameManager.Instance.EndGame(gameObject.name == "Player1" ? 2 : 1);
+            // Jogador fica inativo, sem acabar o jogo
+            isActive = false;
+            rb.velocity = Vector2.zero;
+            rb.simulated = false; // Desativa física
+            GetComponent<Collider2D>().enabled = false; // Evita colisões
+
+            GameManager.Instance.CheckRoundEnd();
         }
         else
         {
-            transform.position = Vector3.zero; // Reinicia posição
+            // Respawn normal
+            Vector3 respawnPos = GameManager.Instance.GetRandomStartPosition(playerId);
+            transform.position = respawnPos;
+            rb.velocity = Vector2.zero;
         }
     }
+    public void ReactivatePlayer()
+    {
+        isActive = true;
+        rb.simulated = true;
+        GetComponent<Collider2D>().enabled = true;
+    }
 
-    void UpdateLivesUI()
+    public void UpdateLivesUI()
     {
         if (livesText != null)
             livesText.text = "Vidas: " + lives;
