@@ -7,10 +7,9 @@ public class Goal : MonoBehaviour
         PlayerController player = collision.GetComponent<PlayerController>();
         if (player != null && player.isActive)
         {
-            // Marca o jogador como tendo terminado
-            player.ReachGoal();
+            Vector2 goalCenter = GetComponent<Collider2D>().bounds.center;
 
-            // Atualiza pontuação
+            player.BeginGoalEntry(goalCenter);
             ScoreManager.Instance.PlayerReachedGoal(player.playerId, player.lives);
         }
     }

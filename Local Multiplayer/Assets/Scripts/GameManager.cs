@@ -192,8 +192,18 @@ public class GameManager : MonoBehaviour
     {
         Collider2D area = (playerId == 1) ? startAreaP1 : startAreaP2;
         Bounds bounds = area.bounds;
+
+        // Altura do jogador (metade do collider)
+        float playerHeight = (playerId == 1 ? player1 : player2)
+            .GetComponent<Collider2D>().bounds.extents.y;
+
+        // X aleatório
         float x = Random.Range(bounds.min.x, bounds.max.x);
-        float y = Random.Range(bounds.min.y, bounds.max.y);
+
+        // Y fixo no chão com um pequeno offset para evitar colisões
+        float offsetY = 0.05f; // 5cm acima do chão
+        float y = bounds.min.y + playerHeight + offsetY;
+
         return new Vector3(x, y, 0f);
     }
 

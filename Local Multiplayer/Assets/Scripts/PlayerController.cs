@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,9 +20,14 @@ public class PlayerController : MonoBehaviour
     public bool hasFinished = false;
     public bool isActive = true; // Jogador está "vivo"
 
+    public float respawnInvincibleTime = 2f; // Tempo de invencibilidade
+    private bool invincible = false;
+    private SpriteRenderer spriteRenderer;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         UpdateLivesUI();
     }
 
@@ -57,13 +63,12 @@ public class PlayerController : MonoBehaviour
 
         rb.linearVelocity = new Vector2(move * speed, rb.linearVelocity.y);
     }
-
     void OnCollisionEnter2D(Collision2D col)
     {
         if (col.contacts[0].normal.y > 0.5f)
             isGrounded = true;
 
-        if (col.collider.CompareTag("Hazard"))
+        if (col.collider.CompareTag("Hazard") && !invincible)
         {
             LoseLife();
         }
@@ -82,15 +87,17 @@ public class PlayerController : MonoBehaviour
 
         if (lives <= 0)
         {
-            isActive = false; // sem controle
+            isActive = false;
             ScoreManager.Instance.CheckRoundEnd();
         }
         else
         {
-            // Respawn
+            // Respawn normal
             Vector3 respawnPos = GameManager.Instance.GetRandomStartPosition(playerId);
             transform.position = respawnPos;
             rb.linearVelocity = Vector2.zero;
+
+            StartCoroutine(RespawnInvincibility());
         }
     }
 
@@ -108,10 +115,56 @@ public class PlayerController : MonoBehaviour
             livesText.text = "Vidas: " + lives;
     }
 
-    public void ReachGoal()
+    public void BeginGoalEntry(Vector2 goalCenter)
     {
+        isActive = false; // desliga controles
         hasFinished = true;
+
+        StartCoroutine(GoalEntryMovement(goalCenter));
+    }
+
+    private IEnumerator GoalEntryMovement(Vector2 goalCenter)
+    {
+        float entryDuration = 0.5f; // tempo puxando para o centro
+        float timer = 0f;
+
+        while (timer < entryDuration)
+        {
+            // Só ajusta no X, mantém Y original
+            float targetX = goalCenter.x;
+            float dirX = targetX - transform.position.x;
+
+            rb.AddForce(new Vector2(dirX * 30f, 0f), ForceMode2D.Force);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        // Para o movimento final
+        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+    }
+
+    private IEnumerator RespawnInvincibility()
+    {
         isActive = false;
-        rb.linearVelocity = Vector2.zero; // Para imediatamente
+        invincible = true;
+
+        float elapsed = 0f;
+        bool visible = true;
+
+        while (elapsed < respawnInvincibleTime)
+        {
+            // Alterna visibilidade (efeito de piscar)
+            visible = !visible;
+            spriteRenderer.enabled = visible;
+
+            elapsed += 0.1f;
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        // Garante que o sprite fique visível no final
+        spriteRenderer.enabled = true;
+        invincible = false;
+        isActive = true;
     }
 }
