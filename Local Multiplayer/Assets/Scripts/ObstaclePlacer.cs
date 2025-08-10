@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 
 public class ObstaclePlacer : MonoBehaviour
 {
@@ -26,8 +27,26 @@ public class ObstaclePlacer : MonoBehaviour
     public Collider2D placementAreaPlayer2;
     private Collider2D activePlacementArea;
 
+    [Header("Áreas de Início / Goal")]
+    public Collider2D startAreaPlayer1;
+    public Collider2D goalAreaPlayer1;
+    public Collider2D startAreaPlayer2;
+    public Collider2D goalAreaPlayer2;
+
+    [Header("Indicadores Visuais")]
+    public GameObject startIndicatorP1;
+    public GameObject goalIndicatorP1;
+    public GameObject startIndicatorP2;
+    public GameObject goalIndicatorP2;
+
+    [Header("Textos de Indicador")]
+    public TMP_Text startTextP1;
+    public TMP_Text goalTextP1;
+    public TMP_Text startTextP2;
+    public TMP_Text goalTextP2;
+
     [Header("Detecção de Sobreposição")]
-    public LayerMask obstacleLayer; // Defina uma Layer para seus obstáculos
+    public LayerMask obstacleLayer;
 
     public float gridSize = 1f;
 
@@ -45,19 +64,16 @@ public class ObstaclePlacer : MonoBehaviour
             Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0;
 
-            // Snap para o grid
             mousePos.x = Mathf.Round(mousePos.x / gridSize) * gridSize;
             mousePos.y = Mathf.Round(mousePos.y / gridSize) * gridSize;
 
             ghostObstacle.transform.position = mousePos;
 
-            // Rotação 90° por tecla R
             if (Input.GetKeyDown(KeyCode.R))
             {
                 RotateGhost(90f);
             }
 
-            // Rotação 90° por scroll do mouse (opcional)
             float scroll = Input.mouseScrollDelta.y;
             if (scroll > 0f)
             {
@@ -68,13 +84,10 @@ public class ObstaclePlacer : MonoBehaviour
                 RotateGhost(-90f);
             }
 
-            // Checa se posição é válida
             isValidPlacement = IsPlacementValid(mousePos);
 
-            // Atualiza cor do ghost
             UpdateGhostColor();
 
-            // Clique para confirmar
             if (Input.GetMouseButtonDown(0) && isValidPlacement)
             {
                 PlaceObstacle();
@@ -86,7 +99,6 @@ public class ObstaclePlacer : MonoBehaviour
     {
         int currentPlayer = player;
 
-        // Define área de colocação
         if (currentPlayer == 1)
         {
             activePlacementArea = placementAreaPlayer2;
@@ -100,10 +112,33 @@ public class ObstaclePlacer : MonoBehaviour
             placementAreaPlayer2.enabled = false;
         }
 
-        // Pega botões do inventário atual
+        if (player == 1)
+        {
+            startIndicatorP2.SetActive(true);
+            goalIndicatorP2.SetActive(true);
+            startTextP2.gameObject.SetActive(true);
+            goalTextP2.gameObject.SetActive(true);
+
+            startIndicatorP1.SetActive(false);
+            goalIndicatorP1.SetActive(false);
+            startTextP1.gameObject.SetActive(false);
+            goalTextP1.gameObject.SetActive(false);
+        }
+        else
+        {
+            startIndicatorP1.SetActive(true);
+            goalIndicatorP1.SetActive(true);
+            startTextP1.gameObject.SetActive(true);
+            goalTextP1.gameObject.SetActive(true);
+
+            startIndicatorP2.SetActive(false);
+            goalIndicatorP2.SetActive(false);
+            startTextP2.gameObject.SetActive(false);
+            goalTextP2.gameObject.SetActive(false);
+        }
+
         inventoryButtons = inventoryUI.GetComponentsInChildren<Button>();
 
-        // Gera obstáculos aleatórios
         currentOptions.Clear();
         for (int i = 0; i < inventoryButtons.Length; i++)
         {
@@ -114,12 +149,11 @@ public class ObstaclePlacer : MonoBehaviour
             btnImg.sprite = allObstacles[rand].icon;
             btnImg.color = Color.white;
 
-            int index = i; // evita bug de closure
+            int index = i;
             inventoryButtons[i].onClick.RemoveAllListeners();
             inventoryButtons[i].onClick.AddListener(() => SelectObstacle(index));
         }
     }
-
 
     public void EndPlayerTurn()
     {
@@ -127,6 +161,16 @@ public class ObstaclePlacer : MonoBehaviour
         placementAreaPlayer1.enabled = false;
         placementAreaPlayer2.enabled = false;
         activePlacementArea = null;
+
+        startIndicatorP1.SetActive(false);
+        goalIndicatorP1.SetActive(false);
+        startIndicatorP2.SetActive(false);
+        goalIndicatorP2.SetActive(false);
+
+        startTextP1.gameObject.SetActive(false);
+        goalTextP1.gameObject.SetActive(false);
+        startTextP2.gameObject.SetActive(false);
+        goalTextP2.gameObject.SetActive(false);
     }
 
     public void SelectObstacle(int index)
@@ -135,10 +179,8 @@ public class ObstaclePlacer : MonoBehaviour
         {
             selectedObstacle = currentOptions[index];
 
-            // Fecha inventário do jogador da vez
             inventoryButtons[0].transform.parent.gameObject.SetActive(false);
 
-            // Cria ghost do obstáculo fora da tela
             ghostObstacle = Instantiate(selectedObstacle.prefab);
             Collider2D col = ghostObstacle.GetComponent<Collider2D>();
             if (col != null) col.enabled = false;
@@ -150,7 +192,6 @@ public class ObstaclePlacer : MonoBehaviour
             ghostRenderer.sortingLayerName = "UI";
             ghostRenderer.sortingOrder = 10;
 
-            // Começa fora da tela para não aparecer atrás do botão
             ghostObstacle.transform.position = new Vector3(9999, 9999, 0);
 
             isPlacing = true;
@@ -159,11 +200,23 @@ public class ObstaclePlacer : MonoBehaviour
 
     private bool IsPlacementValid(Vector3 position)
     {
-        // 1. Checa se está dentro da área ativa
         if (activePlacementArea == null || !activePlacementArea.OverlapPoint(position))
             return false;
 
-        // 2. Checa sobreposição com outros obstáculos
+        bool insideStartOrGoal = false;
+        if (activePlacementArea == placementAreaPlayer1)
+        {
+            if (startAreaPlayer1.OverlapPoint(position)) insideStartOrGoal = true;
+            if (goalAreaPlayer1.OverlapPoint(position)) insideStartOrGoal = true;
+        }
+        else if (activePlacementArea == placementAreaPlayer2)
+        {
+            if (startAreaPlayer2.OverlapPoint(position)) insideStartOrGoal = true;
+            if (goalAreaPlayer2.OverlapPoint(position)) insideStartOrGoal = true;
+        }
+
+        if (insideStartOrGoal) return false;
+
         if (ghostObstacle.TryGetComponent(out BoxCollider2D ghostCollider))
         {
             Vector2 size = ghostCollider.size;
@@ -171,9 +224,9 @@ public class ObstaclePlacer : MonoBehaviour
             Vector2 scaledSize = new Vector2(size.x * scale.x, size.y * scale.y);
 
             Collider2D hit = Physics2D.OverlapBox(
-                position,       // posição do ghost
-                scaledSize,     // tamanho ajustado pela escala
-                ghostObstacle.transform.eulerAngles.z, // rotação em Z
+                position,
+                scaledSize,
+                ghostObstacle.transform.eulerAngles.z,
                 obstacleLayer
             );
 

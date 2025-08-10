@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using System.Collections.Generic;
 
 public enum GameState { Build, Play, End }
 
@@ -11,7 +10,7 @@ public class GameManager : MonoBehaviour
     public GameState currentState = GameState.Build;
 
     [Header("Turnos de Construção")]
-    public int buildRounds = 1; // quantos turnos cada jogador tem antes de começar gameplay
+    public int buildRounds = 1;
     private int currentBuildTurn = 0;
 
     [Header("Transição para gameplay")]
@@ -65,6 +64,12 @@ public class GameManager : MonoBehaviour
         currentBuildTurn = 0;
         constructionGrid.SetActive(true);
         turnManager.StartTurn(1);
+
+        //  Esconde jogadores no modo construção
+        player1.gameObject.SetActive(false);
+        player2.gameObject.SetActive(false);
+        player1.isActive = false;
+        player2.isActive = false;
     }
 
     public void OnTurnEnded(int previousPlayer)
@@ -99,10 +104,15 @@ public class GameManager : MonoBehaviour
         preparePanel.SetActive(false);
 
         constructionGrid.SetActive(false);
-
         turnManager.gameObject.SetActive(false);
-        player1.EnableControl(true);
-        player2.EnableControl(true);
+
+        //  Mostra jogadores e reseta status
+        player1.gameObject.SetActive(true);
+        player2.gameObject.SetActive(true);
+        player1.hasFinished = false;
+        player2.hasFinished = false;
+        player1.isActive = player1.lives > 0;
+        player2.isActive = player2.lives > 0;
     }
 
     public void EndGame(int winner)
@@ -110,8 +120,8 @@ public class GameManager : MonoBehaviour
         currentState = GameState.End;
 
         constructionGrid.SetActive(false);
-        player1.EnableControl(false);
-        player2.EnableControl(false);
+        player1.isActive = false;
+        player2.isActive = false;
 
         winScreen.SetActive(true);
         winText.text = "Jogador " + winner + " venceu!";
@@ -149,7 +159,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RestartRoundAfterDelay()
     {
-        yield return new WaitForSeconds(2f); // tempo antes de reiniciar
+        yield return new WaitForSeconds(2f);
         RestartRound();
     }
 
@@ -166,6 +176,12 @@ public class GameManager : MonoBehaviour
         player2.UpdateLivesUI();
 
         ScoreManager.Instance.ResetRoundState();
+
+        // Garante que eles fiquem invisíveis no modo construção
+        player1.gameObject.SetActive(false);
+        player2.gameObject.SetActive(false);
+        player1.isActive = false;
+        player2.isActive = false;
 
         constructionGrid.SetActive(true);
         turnManager.gameObject.SetActive(true);
@@ -190,5 +206,4 @@ public class GameManager : MonoBehaviour
     {
         ScoreManager.Instance.PlayerDied(playerId);
     }
-
 }

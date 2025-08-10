@@ -63,6 +63,7 @@ public class ScoreManager : MonoBehaviour
             Debug.Log($"P2 chegou com {livesRemaining} vidas -> +{pontosPorVida}");
         }
 
+        // Ambos chegaram
         if (player1Finished && player2Finished)
         {
             scorePlayer1 += 50;
@@ -76,14 +77,18 @@ public class ScoreManager : MonoBehaviour
             player1ScoreFinalized = true;
             player2ScoreFinalized = true;
 
+            CheckForWinner();
             GameManager.Instance.EndRound();
             return;
         }
 
+        // Um chegou, outro morreu
         if (playerId == 1 && !GameManager.Instance.player2.isActive)
         {
             scorePlayer1 += 100;
             player1ScoreFinalized = true;
+
+            CheckForWinner();
             GameManager.Instance.EndRound();
             return;
         }
@@ -91,6 +96,8 @@ public class ScoreManager : MonoBehaviour
         {
             scorePlayer2 += 100;
             player2ScoreFinalized = true;
+
+            CheckForWinner();
             GameManager.Instance.EndRound();
             return;
         }
@@ -105,6 +112,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (!GameManager.Instance.player1.isActive && !GameManager.Instance.player2.isActive)
         {
+            CheckForWinner();
             GameManager.Instance.EndRound();
             return;
         }
@@ -113,6 +121,8 @@ public class ScoreManager : MonoBehaviour
         {
             scorePlayer1 += 100;
             player1ScoreFinalized = true;
+
+            CheckForWinner();
             GameManager.Instance.EndRound();
             return;
         }
@@ -121,23 +131,22 @@ public class ScoreManager : MonoBehaviour
         {
             scorePlayer2 += 100;
             player2ScoreFinalized = true;
+
+            CheckForWinner();
             GameManager.Instance.EndRound();
             return;
         }
     }
 
-    public bool HasWinner()
+    private void CheckForWinner()
     {
         if (scorePlayer1 >= winningScore)
         {
-            Debug.Log(" Jogador 1 venceu!");
-            return true;
+            GameManager.Instance.EndGame(1);
         }
-        if (scorePlayer2 >= winningScore)
+        else if (scorePlayer2 >= winningScore)
         {
-            Debug.Log(" Jogador 2 venceu!");
-            return true;
+            GameManager.Instance.EndGame(2);
         }
-        return false;
     }
 }

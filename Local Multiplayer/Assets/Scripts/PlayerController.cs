@@ -10,14 +10,14 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private bool isGrounded;
-    private bool canControl = false;
 
     [Header("UI")]
-    public Text livesText; // Use TMP_Text se estiver usando TextMeshPro
+    public Text livesText;
 
     public int playerId;
 
-    [HideInInspector] public bool isActive = true;
+    public bool hasFinished = false;
+    public bool isActive = true; // Jogador está "vivo"
 
     void Start()
     {
@@ -27,10 +27,16 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (!canControl) return;
+        // 🔹 Impede qualquer movimento fora do jogo ou se já terminou
+        if (!isActive || hasFinished || GameManager.Instance.currentState != GameState.Play)
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            return;
+        }
 
         float move = 0f;
 
+        // Movimento do Player 1
         if (gameObject.name == "Player1")
         {
             if (Input.GetKey(KeyCode.A)) move = -1;
@@ -39,6 +45,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.W) && isGrounded)
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
+        // Movimento do Player 2
         else
         {
             if (Input.GetKey(KeyCode.LeftArrow)) move = -1;
@@ -49,12 +56,6 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.linearVelocity = new Vector2(move * speed, rb.linearVelocity.y);
-    }
-
-    public void EnableControl(bool enable)
-    {
-        canControl = enable;
-        rb.linearVelocity = Vector2.zero;
     }
 
     void OnCollisionEnter2D(Collision2D col)
@@ -73,13 +74,7 @@ public class PlayerController : MonoBehaviour
         if (col.contacts[0].normal.y > 0.5f)
             isGrounded = false;
     }
-    ///void OnTriggerEnter2D(Collider2D other)
-    // {
-    //    if (other.CompareTag("Goal"))
-    //    {
-    //        GameManager.Instance.EndGame(gameObject.name == "Player1" ? 1 : 2);
-    //    }
-    // }
+
     public void LoseLife()
     {
         lives--;
@@ -87,25 +82,22 @@ public class PlayerController : MonoBehaviour
 
         if (lives <= 0)
         {
-            // Jogador fica inativo, sem acabar o jogo
-            isActive = false;
-            rb.linearVelocity = Vector2.zero;
-            rb.simulated = false; // Desativa física
-            GetComponent<Collider2D>().enabled = false; // Evita colisões
-
+            isActive = false; // sem controle
             ScoreManager.Instance.CheckRoundEnd();
         }
         else
         {
-            // Respawn normal
+            // Respawn
             Vector3 respawnPos = GameManager.Instance.GetRandomStartPosition(playerId);
             transform.position = respawnPos;
             rb.linearVelocity = Vector2.zero;
         }
     }
+
     public void ReactivatePlayer()
     {
         isActive = true;
+        hasFinished = false; // Volta a poder jogar
         rb.simulated = true;
         GetComponent<Collider2D>().enabled = true;
     }
@@ -114,5 +106,12 @@ public class PlayerController : MonoBehaviour
     {
         if (livesText != null)
             livesText.text = "Vidas: " + lives;
+    }
+
+    public void ReachGoal()
+    {
+        hasFinished = true;
+        isActive = false;
+        rb.linearVelocity = Vector2.zero; // Para imediatamente
     }
 }
