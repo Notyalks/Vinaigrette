@@ -24,6 +24,10 @@ public class PlayerController : MonoBehaviour
     private bool invincible = false;
     private SpriteRenderer spriteRenderer;
 
+    public bool isInvincible = false;
+    public float invincibleTime = 2f;
+    public bool IsInvincible() => isInvincible;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -98,6 +102,7 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
 
             StartCoroutine(RespawnInvincibility());
+            StartCoroutine(SetInvincible(invincibleTime));
         }
     }
 
@@ -116,7 +121,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public void BeginGoalEntry(Vector2 goalCenter)
-    {
+    {       
         isActive = false; // desliga controles
         hasFinished = true;
 
@@ -166,5 +171,12 @@ public class PlayerController : MonoBehaviour
         spriteRenderer.enabled = true;
         invincible = false;
         isActive = true;
+    }
+    public IEnumerator SetInvincible(float time)
+    {
+        isInvincible = true;
+        // Aqui pode ativar animação de piscar
+        yield return new WaitForSeconds(time);
+        isInvincible = false;
     }
 }
