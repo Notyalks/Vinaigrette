@@ -55,6 +55,6 @@ public class RuntimeGrid : MonoBehaviour
         lr.startColor = lineColor;
         lr.endColor = lineColor;
         lr.sortingLayerName = "Foreground"; // ou "Default" se preferir
-        lr.sortingOrder = -1; // atrás dos obstáculos
+        lr.sortingOrder = 1; // atrás dos obstáculos
     }
 }

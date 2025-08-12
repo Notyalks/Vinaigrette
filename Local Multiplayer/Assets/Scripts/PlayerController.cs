@@ -28,6 +28,9 @@ public class PlayerController : MonoBehaviour
     public float invincibleTime = 2f;
     public bool IsInvincible() => isInvincible;
 
+    [HideInInspector] public string originalSortingLayer;
+    [HideInInspector] public int originalSortingOrder;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -101,6 +104,7 @@ public class PlayerController : MonoBehaviour
             transform.position = respawnPos;
             rb.linearVelocity = Vector2.zero;
 
+            ReactivatePlayer();
             StartCoroutine(RespawnInvincibility());
             StartCoroutine(SetInvincible(invincibleTime));
         }
@@ -109,11 +113,20 @@ public class PlayerController : MonoBehaviour
     public void ReactivatePlayer()
     {
         isActive = true;
-        hasFinished = false; // Volta a poder jogar
+        hasFinished = false;
         rb.simulated = true;
         GetComponent<Collider2D>().enabled = true;
-    }
 
+        if (playerId == 1) // Player 1 restaura layer no respawn
+        {
+            SpriteRenderer sr = GetComponent<SpriteRenderer>();
+            if (sr != null && !string.IsNullOrEmpty(originalSortingLayer))
+            {
+                sr.sortingLayerName = originalSortingLayer;
+                sr.sortingOrder = originalSortingOrder;
+            }
+        }
+    }
     public void UpdateLivesUI()
     {
         if (livesText != null)
