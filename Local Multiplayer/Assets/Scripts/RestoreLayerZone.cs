@@ -15,6 +15,9 @@ public class RestoreLayerZone : MonoBehaviour
                 sr.sortingLayerName = player.originalSortingLayer;
                 sr.sortingOrder = player.originalSortingOrder;
             }
+
+            player.RestoreOriginalSorting();
+            player.SetBehindPlayer1(false);
         }
     }
 }
