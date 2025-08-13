@@ -31,10 +31,13 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public string originalSortingLayer;
     [HideInInspector] public int originalSortingOrder;
 
+    public bool IsBehindPlayer1 { get; private set; } = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        originalSortingOrder = spriteRenderer.sortingOrder;
         UpdateLivesUI();
     }
 
@@ -117,15 +120,11 @@ public class PlayerController : MonoBehaviour
         rb.simulated = true;
         GetComponent<Collider2D>().enabled = true;
 
-        if (playerId == 1) // Player 1 restaura layer no respawn
-        {
-            SpriteRenderer sr = GetComponent<SpriteRenderer>();
-            if (sr != null && !string.IsNullOrEmpty(originalSortingLayer))
-            {
-                sr.sortingLayerName = originalSortingLayer;
-                sr.sortingOrder = originalSortingOrder;
-            }
-        }
+        if (playerId == 1)
+            RestoreOriginalSorting();
+
+        // Ao respawn, ninguém fica “atrás” do outro por padrão
+        SetBehindPlayer1(false);
     }
     public void UpdateLivesUI()
     {
@@ -134,7 +133,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public void BeginGoalEntry(Vector2 goalCenter)
-    {       
+    {
         isActive = false; // desliga controles
         hasFinished = true;
 
@@ -191,5 +190,20 @@ public class PlayerController : MonoBehaviour
         // Aqui pode ativar animação de piscar
         yield return new WaitForSeconds(time);
         isInvincible = false;
+    }
+    public void RestoreOriginalSorting()
+    {
+        var sr = GetComponent<SpriteRenderer>();
+        if (sr != null && !string.IsNullOrEmpty(originalSortingLayer))
+        {
+            sr.sortingLayerName = originalSortingLayer;
+            sr.sortingOrder = originalSortingOrder;
+        }
+    }
+    public void SetBehindPlayer1(bool state)
+    {
+        IsBehindPlayer1 = state;
+        // Debug opcional
+        // Debug.Log($"P{playerId} IsBehindPlayer1 = {state}");
     }
 }

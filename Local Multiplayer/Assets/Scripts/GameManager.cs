@@ -113,6 +113,12 @@ public class GameManager : MonoBehaviour
         player2.hasFinished = false;
         player1.isActive = player1.lives > 0;
         player2.isActive = player2.lives > 0;
+
+        player1.SetBehindPlayer1(false);
+        player2.SetBehindPlayer1(false);
+
+        player1.RestoreOriginalSorting();
+        player2.RestoreOriginalSorting();
     }
 
     public void EndGame(int winner)
@@ -186,6 +192,11 @@ public class GameManager : MonoBehaviour
         constructionGrid.SetActive(true);
         turnManager.gameObject.SetActive(true);
         turnManager.StartTurn(1);
+
+        player1.SetBehindPlayer1(false);
+        player2.SetBehindPlayer1(false);
+        player1.RestoreOriginalSorting();
+        player2.RestoreOriginalSorting();
     }
 
     public Vector3 GetRandomStartPosition(int playerId)

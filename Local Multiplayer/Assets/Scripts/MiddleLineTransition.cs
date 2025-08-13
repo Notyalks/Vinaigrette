@@ -2,18 +2,19 @@ using UnityEngine;
 
 public class MiddleLineTransition : MonoBehaviour
 {
+    [Header("Sorting layers para ficar atrás do outro caminho")]
     public string layerForPlayer1 = "BehindPath2";
     public string layerForPlayer2 = "BehindPath1";
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayerController player = collision.GetComponent<PlayerController>();
+        var player = collision.GetComponent<PlayerController>();
         if (player == null) return;
 
-        SpriteRenderer sr = player.GetComponent<SpriteRenderer>();
+        var sr = player.GetComponent<SpriteRenderer>();
         if (sr == null) return;
 
-        // Armazena original se ainda não tiver salvo
+        // Salva layer original apenas uma vez
         if (string.IsNullOrEmpty(player.originalSortingLayer))
         {
             player.originalSortingLayer = sr.sortingLayerName;
@@ -22,13 +23,24 @@ public class MiddleLineTransition : MonoBehaviour
 
         if (player.playerId == 1)
         {
+            // Player 1 vai para trás do caminho do Player 2
             sr.sortingLayerName = layerForPlayer1;
-            sr.sortingOrder = 0; // Ordem para ficar atrás do cenário do Player 2
+            sr.sortingOrder = 0;
+            // Indicador do P2 não precisa aqui; P1 não usa essa flag
+            player.SetBehindPlayer1(false);
         }
-        else
+        else // playerId == 2
         {
+            // Player 2 vai para trás do caminho do Player 1
             sr.sortingLayerName = layerForPlayer2;
-            sr.sortingOrder = 0; // Ordem para ficar atrás do cenário do Player 1
+            sr.sortingOrder = 0;
+
+            // Liga a flag para o indicador do P2 aparecer
+            player.SetBehindPlayer1(true);
         }
     }
+
+    // NÃO restauramos nada no Exit para evitar "piscar" se o player
+    // ficar flertando com a linha. A restauração do P2 pode ser por
+    // um trigger de retorno (RestoreLayerZone) ou no respawn/rodada.
 }
