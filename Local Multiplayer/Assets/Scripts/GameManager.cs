@@ -29,6 +29,10 @@ public class GameManager : MonoBehaviour
     [Header("Elementos Visuais")]
     public GameObject constructionGrid;
 
+    [Header("UI de Vidas")]
+    public GameObject heartsP1;
+    public GameObject heartsP2;
+
     public GameObject winScreen;
     public Text winText;
 
@@ -65,11 +69,15 @@ public class GameManager : MonoBehaviour
         constructionGrid.SetActive(true);
         turnManager.StartTurn(1);
 
-        //  Esconde jogadores no modo construção
+        // Esconde jogadores no modo construção
         player1.gameObject.SetActive(false);
         player2.gameObject.SetActive(false);
         player1.isActive = false;
         player2.isActive = false;
+
+        // Esconde as vidas
+        if (heartsP1) heartsP1.SetActive(false);
+        if (heartsP2) heartsP2.SetActive(false);
     }
 
     public void OnTurnEnded(int previousPlayer)
@@ -106,7 +114,7 @@ public class GameManager : MonoBehaviour
         constructionGrid.SetActive(false);
         turnManager.gameObject.SetActive(false);
 
-        //  Mostra jogadores e reseta status
+        // Mostra jogadores e reseta status
         player1.gameObject.SetActive(true);
         player2.gameObject.SetActive(true);
         player1.hasFinished = false;
@@ -119,6 +127,10 @@ public class GameManager : MonoBehaviour
 
         player1.RestoreOriginalSorting();
         player2.RestoreOriginalSorting();
+
+        // Mostra as vidas
+        if (heartsP1) heartsP1.SetActive(true);
+        if (heartsP2) heartsP2.SetActive(true);
     }
 
     public void EndGame(int winner)
@@ -183,11 +195,13 @@ public class GameManager : MonoBehaviour
 
         ScoreManager.Instance.ResetRoundState();
 
-        // Garante que eles fiquem invisíveis no modo construção
         player1.gameObject.SetActive(false);
         player2.gameObject.SetActive(false);
         player1.isActive = false;
         player2.isActive = false;
+
+        if (heartsP1) heartsP1.SetActive(false);
+        if (heartsP2) heartsP2.SetActive(false);
 
         constructionGrid.SetActive(true);
         turnManager.gameObject.SetActive(true);

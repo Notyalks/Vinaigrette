@@ -7,14 +7,13 @@ public class RestoreLayerZone : MonoBehaviour
         PlayerController player = collision.GetComponent<PlayerController>();
         if (player == null) return;
 
-        if (player.playerId == 2) // Só restaura para o Player 2
+        // Restaura a layer original
+        player.RestoreOriginalSorting();
+
+        // Se for o Player 2, desliga o indicador
+        if (player.playerId == 2)
         {
-            SpriteRenderer sr = player.GetComponent<SpriteRenderer>();
-            if (sr != null && !string.IsNullOrEmpty(player.originalSortingLayer))
-            {
-                sr.sortingLayerName = player.originalSortingLayer;
-                sr.sortingOrder = player.originalSortingOrder;
-            }
+            player.SetBehindPlayer1(false);
         }
     }
 }

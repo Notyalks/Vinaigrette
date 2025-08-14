@@ -5,17 +5,17 @@ using UnityEngine.UI;
 public class PlayerOffscreenIndicator : MonoBehaviour
 {
     [Header("Referências")]
-    public Transform target;                 // Player transform
-    public PlayerController targetController;// PlayerController do target
-    public Camera cam;                       // Main Camera
-    public Canvas rootCanvas;                // Canvas raiz
-    public RectTransform indicatorRect;      // Este próprio RectTransform
-    public RectTransform canvasRect;         // RectTransform do Canvas
+    public Transform target;
+    public PlayerController targetController;
+    public Camera cam;
+    public Canvas rootCanvas;
+    public RectTransform indicatorRect;
+    public RectTransform canvasRect;
 
     [Header("Config")]
-    public bool isPlayer2 = false;           // Se for o indicador do Player 2
-    public bool stickToTopEdgeForP2 = true;  // P2 no topo, P1 embaixo
-    public float edgePadding = 24f;          // Margem das bordas
+    public bool isPlayer1 = false;         // Se é o indicador do Player 1
+    public float edgePadding = 24f;        // Margem para não colar na borda
+    public float customYPosition = 200f;   // Para Player 2: posição Y livre
 
     void Reset()
     {
@@ -29,6 +29,7 @@ public class PlayerOffscreenIndicator : MonoBehaviour
         if (canvasRect == null) canvasRect = rootCanvas.GetComponent<RectTransform>();
         if (indicatorRect == null) indicatorRect = GetComponent<RectTransform>();
         if (targetController == null && target != null) targetController = target.GetComponent<PlayerController>();
+
         indicatorRect.gameObject.SetActive(false);
     }
 
@@ -37,33 +38,42 @@ public class PlayerOffscreenIndicator : MonoBehaviour
         if (target == null || cam == null || rootCanvas == null) return;
 
         bool show;
-        if (isPlayer2)
+        if (isPlayer1)
         {
-            // Para o P2, aparece quando ele está "atrás do caminho do P1"
-            show = (targetController != null && targetController.IsBehindPlayer1);
+            // Player 1: aparece se sair da visão vertical
+            var vp = cam.WorldToViewportPoint(target.position);
+            show = vp.y < 0f || vp.y > 1f;
         }
         else
         {
-            // Para o P1, aparece se sair da tela verticalmente
-            var vp = cam.WorldToViewportPoint(target.position);
-            show = vp.y < 0f || vp.y > 1f;
+            // Player 2: aparece quando está atrás do Player 1
+            show = (targetController != null && targetController.IsBehindPlayer1);
         }
 
         indicatorRect.gameObject.SetActive(show);
         if (!show) return;
 
-        // Pega X do mundo e converte para tela
+        // Converte posição do jogador para tela
         Vector3 screen = cam.WorldToScreenPoint(target.position);
 
-        // Clampa X dentro da tela
+        // Mantém X clamped
         float x = Mathf.Clamp(screen.x, edgePadding, Screen.width - edgePadding);
 
-        // Y na borda: P2 no topo (ou embaixo se quiser), P1 embaixo
-        float y = isPlayer2 && stickToTopEdgeForP2 ? Screen.height - edgePadding : edgePadding;
+        float y;
+        if (isPlayer1)
+        {
+            // Player 1 no topo
+            y = Screen.height - edgePadding;
+        }
+        else
+        {
+            // Player 2 com Y ajustável
+            y = customYPosition;
+        }
 
         Vector2 screenClamped = new Vector2(x, y);
 
-        // Converte Screen UI (funciona para Overlay e para Screen Space - Camera)
+        // Converte para coordenadas de UI
         Vector2 anchored;
         if (rootCanvas.renderMode == RenderMode.ScreenSpaceOverlay)
         {
