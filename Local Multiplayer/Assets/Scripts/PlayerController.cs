@@ -13,8 +13,11 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
 
     [Header("UI")]
-    public GameObject livesUI; // Container com os corações (Imagens)
+    public GameObject livesUI; // Container com os corações
     private Image[] heartImages;
+
+    [Header("Indicador Fora da Tela")]
+    public GameObject offscreenIndicator; // arrastar no Inspector
 
     public bool IsBehindPlayer1 { get; private set; }
 
@@ -39,17 +42,14 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalSortingOrder = spriteRenderer.sortingOrder;
 
-        // Pega todas as imagens dos corações
         if (livesUI != null)
             heartImages = livesUI.GetComponentsInChildren<Image>();
 
         UpdateLivesUI();
- 
     }
 
     void Update()
     {
-        // Impede qualquer movimento fora do jogo ou se já terminou
         if (!isActive || hasFinished || GameManager.Instance.currentState != GameState.Play)
         {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
@@ -98,6 +98,12 @@ public class PlayerController : MonoBehaviour
         lives--;
         UpdateLivesUI();
 
+        if (playerId == 2)
+        {
+            SetBehindPlayer1(false);
+            RestoreOriginalSorting();
+        }
+
         if (lives <= 0)
         {
             isActive = false;
@@ -123,8 +129,16 @@ public class PlayerController : MonoBehaviour
         GetComponent<Collider2D>().enabled = true;
 
         if (playerId == 1)
+        {
             RestoreOriginalSorting();
+        }
+        else if (playerId == 2)
+        {
+            SetBehindPlayer1(false);
+            RestoreOriginalSorting();
+        }
     }
+
 
     public void UpdateLivesUI()
     {
@@ -199,8 +213,17 @@ public class PlayerController : MonoBehaviour
             sr.sortingOrder = originalSortingOrder;
         }
     }
+
     public void SetBehindPlayer1(bool state)
     {
         IsBehindPlayer1 = state;
     }
+
+    public void SetOffscreenIndicatorActive(bool active)
+    {
+        if (!isActive && active) return;
+        if (offscreenIndicator != null)
+            offscreenIndicator.SetActive(active);
+    }
 }
+

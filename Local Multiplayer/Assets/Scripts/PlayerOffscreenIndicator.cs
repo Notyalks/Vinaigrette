@@ -35,7 +35,14 @@ public class PlayerOffscreenIndicator : MonoBehaviour
 
     void LateUpdate()
     {
-        if (target == null || cam == null || rootCanvas == null) return;
+        if (target == null || cam == null || rootCanvas == null || targetController == null) return;
+
+        if (!targetController.isActive || targetController.lives <= 0)
+        {
+            if (indicatorRect.gameObject.activeSelf)
+                indicatorRect.gameObject.SetActive(false);
+            return;
+        }
 
         bool show;
         if (isPlayer1)
@@ -47,7 +54,7 @@ public class PlayerOffscreenIndicator : MonoBehaviour
         else
         {
             // Player 2: aparece quando está atrás do Player 1
-            show = (targetController != null && targetController.IsBehindPlayer1);
+            show = targetController.IsBehindPlayer1;
         }
 
         indicatorRect.gameObject.SetActive(show);

@@ -39,8 +39,4 @@ public class MiddleLineTransition : MonoBehaviour
             player.SetBehindPlayer1(true);
         }
     }
-
-    // NÃO restauramos nada no Exit para evitar "piscar" se o player
-    // ficar flertando com a linha. A restauração do P2 pode ser por
-    // um trigger de retorno (RestoreLayerZone) ou no respawn/rodada.
 }
