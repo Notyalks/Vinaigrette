@@ -15432,6 +15432,8 @@ MonoBehaviour:
     icon: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   - prefab: {fileID: 91534958328037619, guid: 720e616858a359b47b6d9b1cb10b1a0c, type: 3}
     icon: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  - prefab: {fileID: 380774823418479577, guid: c8632de341c272f43907c0754a0d1726, type: 3}
+    icon: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   placementAreaPlayer1: {fileID: 1906177007}
   placementAreaPlayer2: {fileID: 426747167}
   startAreaPlayer1: {fileID: 1114602101}
