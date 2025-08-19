@@ -1350,7 +1350,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 2, y: 2}
-  m_EdgeRadius: 0.05
+  m_EdgeRadius: 0
 --- !u!114 &194313777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1592,7 +1592,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 2, y: 2}
-  m_EdgeRadius: 0.05
+  m_EdgeRadius: 0
 --- !u!114 &254502848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13548,7 +13548,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 2, y: 2}
-  m_EdgeRadius: 0.05
+  m_EdgeRadius: 0
 --- !u!1 &1133634681
 GameObject:
   m_ObjectHideFlags: 0
@@ -15386,6 +15386,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   gridSize: 0.5
+  spritesUseBottomLeftPivot: 1
 --- !u!1 &1900127645
 GameObject:
   m_ObjectHideFlags: 0
@@ -16246,7 +16247,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 2, y: 2}
-  m_EdgeRadius: 0.05
+  m_EdgeRadius: 0
 --- !u!4 &2057783914
 Transform:
   m_ObjectHideFlags: 0
