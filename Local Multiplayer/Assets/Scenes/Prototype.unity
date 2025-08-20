@@ -169,7 +169,7 @@ MonoBehaviour:
   width: 40
   height: 24
   lineColor: {r: 1, g: 1, b: 1, a: 0.3529412}
-  origin: {x: -10.5, y: -6.5}
+  origin: {x: -10, y: -6.5}
   lineMaterial: {fileID: 2100000, guid: 7aeeb0a771e294c458e6cd6a02c189b4, type: 2}
 --- !u!120 &35557418
 LineRenderer:
@@ -289,7 +289,7 @@ GameObject:
   - component: {fileID: 122982111}
   - component: {fileID: 122982110}
   - component: {fileID: 122982109}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: Caminho
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1350,7 +1350,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 2, y: 2}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.05
 --- !u!114 &194313777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1592,7 +1592,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 2, y: 2}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.05
 --- !u!114 &254502848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11616,7 +11616,7 @@ GameObject:
   - component: {fileID: 782472902}
   - component: {fileID: 782472901}
   - component: {fileID: 782472903}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: Caminho
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13548,7 +13548,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 2, y: 2}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.05
 --- !u!1 &1133634681
 GameObject:
   m_ObjectHideFlags: 0
@@ -15360,8 +15360,6 @@ MonoBehaviour:
   - {fileID: 385777669}
   - {fileID: 2067214590}
   allObstacles:
-  - prefab: {fileID: 7793177922924259640, guid: 900ac5add58b76b42bfd208df8070d9f, type: 3}
-    icon: {fileID: 21300000, guid: f8b6150815af1b446b00052f49193d80, type: 3}
   - prefab: {fileID: 2771088618442085018, guid: bdfb921430d1b4c45bb9354dcf4387fc, type: 3}
     icon: {fileID: 21300000, guid: c058be467da218a49a55946f1ce552c4, type: 3}
   - prefab: {fileID: 380774823418479577, guid: 9d175d5b5eb916249b4ef959dd03cf2e, type: 3}
@@ -15385,8 +15383,10 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 128
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 4096
   gridSize: 0.5
-  spritesUseBottomLeftPivot: 1
 --- !u!1 &1900127645
 GameObject:
   m_ObjectHideFlags: 0
@@ -16247,7 +16247,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 2, y: 2}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.05
 --- !u!4 &2057783914
 Transform:
   m_ObjectHideFlags: 0

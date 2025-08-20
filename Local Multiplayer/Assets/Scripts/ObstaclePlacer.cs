@@ -45,15 +45,11 @@ public class ObstaclePlacer : MonoBehaviour
     public TMP_Text startTextP2;
     public TMP_Text goalTextP2;
 
-
     [Header("Detecção de Sobreposição")]
     public LayerMask obstacleLayer;
+    public LayerMask terrainLayer;
 
-    [Header("Grid & Sprites")]
     public float gridSize = 1f;
-
-    [Tooltip("Marque se seus sprites usam pivot no canto inferior esquerdo.")]
-    public bool spritesUseBottomLeftPivot = true;
 
     void Start()
     {
@@ -187,12 +183,8 @@ public class ObstaclePlacer : MonoBehaviour
             inventoryButtons[0].transform.parent.gameObject.SetActive(false);
 
             ghostObstacle = Instantiate(selectedObstacle.prefab);
-            var col = ghostObstacle.GetComponent<BoxCollider2D>();
-            if (col != null)
-            {
-                col.enabled = false;                  // ghost não colide
-                FixGhostColliderPivot(col);           // corrige offset para pivot bottom-left
-            }
+            Collider2D col = ghostObstacle.GetComponent<Collider2D>();
+            if (col != null) col.enabled = false;
 
             ghostRenderer = ghostObstacle.GetComponent<SpriteRenderer>();
             ghostOriginalColor = ghostRenderer.color;
@@ -207,60 +199,49 @@ public class ObstaclePlacer : MonoBehaviour
         }
     }
 
-    private void FixGhostColliderPivot(BoxCollider2D col)
-    {
-        if (!spritesUseBottomLeftPivot || col == null) return;
-        // Com pivot bottom-left, o centro do collider é a metade do tamanho
-        col.offset = col.size * 0.5f;
-    }
-
     private bool IsPlacementValid(Vector3 position)
     {
-        if (ghostObstacle == null || activePlacementArea == null)
+        if (activePlacementArea == null || !activePlacementArea.OverlapPoint(position))
             return false;
 
-        // Pega o collider do ghost
-        if (!ghostObstacle.TryGetComponent(out BoxCollider2D ghostCollider))
-            return false;
-
-        // Calcula tamanho/mundo
-        Vector2 size = ghostCollider.size;
-        Vector2 scale = ghostObstacle.transform.lossyScale;
-        Vector2 worldSize = new Vector2(size.x * scale.x, size.y * scale.y);
-        Vector2 worldCenter = (Vector2)position + ghostCollider.offset * scale;
-        float angle = ghostObstacle.transform.eulerAngles.z;
-
-        // 1) O obstáculo precisa estar dentro da área de colocação
-        if (!activePlacementArea.bounds.Contains(worldCenter))
-            return false;
-
-        // Se os bounds do ghost NÃO intersectam a placement area, inválido
-        if (!activePlacementArea.bounds.Intersects(new Bounds(worldCenter, worldSize)))
-            return false;
-
-        // 2) Não pode encostar nas áreas de start/goal
-        Collider2D[] forbiddenAreas = null;
-
+        bool insideStartOrGoal = false;
         if (activePlacementArea == placementAreaPlayer1)
-            forbiddenAreas = new Collider2D[] { startAreaPlayer1, goalAreaPlayer1 };
-        else if (activePlacementArea == placementAreaPlayer2)
-            forbiddenAreas = new Collider2D[] { startAreaPlayer2, goalAreaPlayer2 };
-
-        foreach (var area in forbiddenAreas)
         {
-            if (area != null && area.bounds.Intersects(new Bounds(worldCenter, worldSize)))
-                return false;
+            if (startAreaPlayer1.OverlapPoint(position)) insideStartOrGoal = true;
+            if (goalAreaPlayer1.OverlapPoint(position)) insideStartOrGoal = true;
+        }
+        else if (activePlacementArea == placementAreaPlayer2)
+        {
+            if (startAreaPlayer2.OverlapPoint(position)) insideStartOrGoal = true;
+            if (goalAreaPlayer2.OverlapPoint(position)) insideStartOrGoal = true;
         }
 
-        // 3) Não pode colidir com outros obstáculos já colocados
-        Collider2D hit = Physics2D.OverlapBox(
-            worldCenter,
-            worldSize,
-            angle,
-            obstacleLayer
-        );
+        if (insideStartOrGoal) return false;
 
-        if (hit != null) return false;
+        if (ghostObstacle.TryGetComponent(out BoxCollider2D ghostCollider))
+        {
+            Vector2 size = ghostCollider.size;
+            Vector2 scale = ghostObstacle.transform.lossyScale;
+            Vector2 scaledSize = new Vector2(size.x * scale.x, size.y * scale.y);
+
+            // Checa se bate em outro obstáculo
+            Collider2D hitObstacle = Physics2D.OverlapBox(
+                position,
+                scaledSize,
+                ghostObstacle.transform.eulerAngles.z,
+                obstacleLayer
+            );
+            if (hitObstacle != null) return false;
+
+            // Checa se bate no terreno
+            Collider2D hitTerrain = Physics2D.OverlapBox(
+                position,
+                scaledSize,
+                ghostObstacle.transform.eulerAngles.z,
+                terrainLayer
+            );
+            if (hitTerrain != null) return false;
+        }
 
         return true;
     }
@@ -306,15 +287,19 @@ public class ObstaclePlacer : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        if (ghostObstacle != null && ghostObstacle.TryGetComponent(out BoxCollider2D col))
+        if (ghostObstacle != null && ghostObstacle.TryGetComponent(out BoxCollider2D ghostCollider))
         {
-            Vector2 worldCenter = ghostObstacle.transform.TransformPoint(col.offset);
-            Vector2 worldSize = Vector2.Scale(col.size, ghostObstacle.transform.lossyScale);
-            float angle = ghostObstacle.transform.eulerAngles.z;
+            Vector2 size = ghostCollider.size;
+            Vector2 scale = ghostObstacle.transform.lossyScale;
+            Vector2 scaledSize = new Vector2(size.x * scale.x, size.y * scale.y);
 
             Gizmos.color = isValidPlacement ? Color.green : Color.red;
-            Gizmos.matrix = Matrix4x4.TRS(worldCenter, Quaternion.Euler(0, 0, angle), Vector3.one);
-            Gizmos.DrawWireCube(Vector3.zero, new Vector3(worldSize.x, worldSize.y, 0.01f));
+            Gizmos.matrix = Matrix4x4.TRS(
+                ghostObstacle.transform.position,
+                Quaternion.Euler(0, 0, ghostObstacle.transform.eulerAngles.z),
+                Vector3.one
+            );
+            Gizmos.DrawWireCube(Vector3.zero, scaledSize);
         }
     }
 }
