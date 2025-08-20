@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4619981171317329375}
   - component: {fileID: 6705851842096505733}
   - component: {fileID: -6166797198709667946}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Torradeira
   m_TagString: Untagged
   m_Icon: {fileID: 0}
