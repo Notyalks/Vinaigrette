@@ -224,7 +224,7 @@ public class ObstaclePlacer : MonoBehaviour
             Vector2 scale = ghostObstacle.transform.lossyScale;
             Vector2 scaledSize = new Vector2(size.x * scale.x, size.y * scale.y);
 
-            // Checa se bate em outro obstáculo
+            //  Checa se bate em outro obstáculo
             Collider2D hitObstacle = Physics2D.OverlapBox(
                 position,
                 scaledSize,
@@ -233,14 +233,17 @@ public class ObstaclePlacer : MonoBehaviour
             );
             if (hitObstacle != null) return false;
 
-            // Checa se bate no terreno
-            Collider2D hitTerrain = Physics2D.OverlapBox(
+            //  Checa se bate no terreno (via Tag)
+            Collider2D[] hits = Physics2D.OverlapBoxAll(
                 position,
                 scaledSize,
-                ghostObstacle.transform.eulerAngles.z,
-                terrainLayer
+                ghostObstacle.transform.eulerAngles.z
             );
-            if (hitTerrain != null) return false;
+            foreach (var hit in hits)
+            {
+                if (hit.CompareTag("Terrain")) // Tag configurada no Inspector
+                    return false;
+            }
         }
 
         return true;
