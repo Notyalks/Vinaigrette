@@ -1839,9 +1839,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1839022567}
         m_TargetAssemblyTypeName: ObstaclePlacer, Assembly-CSharp
-        m_MethodName: SelectObstacle
+        m_MethodName: 
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12938,11 +12938,12 @@ MonoBehaviour:
   panelPlayer2: {fileID: 236166332}
   inventoryPlayer1: {fileID: 437781466}
   inventoryPlayer2: {fileID: 557789067}
+  placer: {fileID: 1839022569}
+  inventoryManager: {fileID: 1839022570}
   turnTransitionPanel: {fileID: 969890461}
   turnTransitionText: {fileID: 1015393659}
   timerPlayer1: {fileID: 556942527}
   timerPlayer2: {fileID: 741653190}
-  placer: {fileID: 1839022569}
   turnDuration: 60
 --- !u!1001 &941927523
 PrefabInstance:
@@ -15256,6 +15257,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1839022568}
   - component: {fileID: 1839022569}
+  - component: {fileID: 1839022570}
+  - component: {fileID: 1839022571}
   m_Layer: 0
   m_Name: ObstaclePlacer
   m_TagString: Untagged
@@ -15292,41 +15295,53 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 519420031}
   turnManager: {fileID: 927756542}
-  inventoryPanel: {fileID: 437781466}
-  inventoryButtons:
-  - {fileID: 2035077981}
-  - {fileID: 385777669}
-  - {fileID: 2067214590}
-  allObstacles:
-  - prefab: {fileID: 2771088618442085018, guid: bdfb921430d1b4c45bb9354dcf4387fc, type: 3}
-    icon: {fileID: 21300000, guid: c058be467da218a49a55946f1ce552c4, type: 3}
-  - prefab: {fileID: 380774823418479577, guid: 9d175d5b5eb916249b4ef959dd03cf2e, type: 3}
-    icon: {fileID: 21300000, guid: f8b6150815af1b446b00052f49193d80, type: 3}
-  - prefab: {fileID: 380774823418479577, guid: c8632de341c272f43907c0754a0d1726, type: 3}
-    icon: {fileID: 21300000, guid: 6e5526efb9c5e5947b0ae64a11eaeb35, type: 3}
-  - prefab: {fileID: 380774823418479577, guid: 9bbd871770aa024489f7c722c96a1d30, type: 3}
-    icon: {fileID: 21300000, guid: a70c17930af09cc4e9cef649182545ed, type: 3}
+  gridSize: 0.5
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 128
   placementAreaPlayer1: {fileID: 1906177007}
   placementAreaPlayer2: {fileID: 426747167}
   startAreaPlayer1: {fileID: 1114602101}
   goalAreaPlayer1: {fileID: 254502847}
   startAreaPlayer2: {fileID: 2057783913}
   goalAreaPlayer2: {fileID: 194313776}
-  startIndicatorP1: {fileID: 1795409692}
-  goalIndicatorP1: {fileID: 550246215}
-  startIndicatorP2: {fileID: 809130371}
-  goalIndicatorP2: {fileID: 439528043}
-  startTextP1: {fileID: 1582762638}
-  goalTextP1: {fileID: 1203166096}
-  startTextP2: {fileID: 552268698}
-  goalTextP2: {fileID: 557216540}
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  terrainLayer:
-    serializedVersion: 2
-    m_Bits: 4096
-  gridSize: 0.5
+--- !u!114 &1839022570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1839022567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e97731a8745bf8498bb34b4d6b2efbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allObstacles:
+  - prefab: {fileID: 380774823418479577, guid: 9bbd871770aa024489f7c722c96a1d30, type: 3}
+    icon: {fileID: 21300000, guid: a70c17930af09cc4e9cef649182545ed, type: 3}
+  - prefab: {fileID: 380774823418479577, guid: c8632de341c272f43907c0754a0d1726, type: 3}
+    icon: {fileID: 21300000, guid: 6e5526efb9c5e5947b0ae64a11eaeb35, type: 3}
+  - prefab: {fileID: 2771088618442085018, guid: bdfb921430d1b4c45bb9354dcf4387fc, type: 3}
+    icon: {fileID: 21300000, guid: c058be467da218a49a55946f1ce552c4, type: 3}
+  obstaclePlacer: {fileID: 1839022569}
+--- !u!114 &1839022571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1839022567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec9ef7b1e0199c489bd54ccb7e616b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  indicators:
+  - {fileID: 1795409692}
+  - {fileID: 550246215}
+  - {fileID: 809130371}
+  - {fileID: 439528043}
 --- !u!1 &1900127645
 GameObject:
   m_ObjectHideFlags: 0
@@ -16020,10 +16035,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ObstaclePlacer, Assembly-CSharp
-        m_MethodName: SelectObstacle
-        m_Mode: 3
+      - m_Target: {fileID: 1839022567}
+        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -16236,7 +16251,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ObstaclePlacer, Assembly-CSharp
-        m_MethodName: SelectObstacle
+        m_MethodName: 
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

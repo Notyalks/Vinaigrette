@@ -11,6 +11,10 @@ public class TurnManager : MonoBehaviour
     public GameObject inventoryPlayer1;
     public GameObject inventoryPlayer2;
 
+    [Header("Managers")]
+    public ObstaclePlacer placer;
+    public InventoryManager inventoryManager;
+
     [Header("Painéis de Transição")]
     public GameObject turnTransitionPanel;
     public Text turnTransitionText;
@@ -20,8 +24,6 @@ public class TurnManager : MonoBehaviour
     [Header("Timer UI")]
     public Text timerPlayer1;
     public Text timerPlayer2;
-
-    public ObstaclePlacer placer;
 
     [Header("Timer")]
     public float turnDuration = 10f;
@@ -60,7 +62,6 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-
     public void StartTurn(int player)
     {
         currentPlayer = player;
@@ -70,16 +71,20 @@ public class TurnManager : MonoBehaviour
         UpdatePanels();
         UpdateHUDVisibility();
 
-        // Passa para o ObstaclePlacer qual inventário usar
+        // Escolhe inventário atual e área de colocação
         GameObject currentInventory = (currentPlayer == 1) ? inventoryPlayer1 : inventoryPlayer2;
-        placer.StartPlayerTurn(currentPlayer, currentInventory);
+        Collider2D placementArea = (currentPlayer == 1) ? placer.placementAreaPlayer2 : placer.placementAreaPlayer1;
+
+        // Prepara inventário
+        inventoryManager.SetupInventory(currentInventory, placementArea);
     }
 
     public void EndTurn()
     {
         turnActive = false;
 
-        placer.EndPlayerTurn();
+        placer.EndPlacement();
+        inventoryManager.ClearInventory();
         UpdateHUDVisibility();
 
         if (currentPlayer == 1) panelPlayer1.SetActive(false);
@@ -95,7 +100,6 @@ public class TurnManager : MonoBehaviour
         turnTransitionText.text = "Vez do Jogador " + nextPlayer;
         turnTransitionPanel.SetActive(true);
 
-        // Armazena jogador que vai começar após input
         pendingNextPlayer = nextPlayer;
     }
 

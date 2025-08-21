@@ -6,8 +6,9 @@ public enum GameState { Build, Play, End }
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance; // Singleton simples
+    public static GameManager Instance;
     public GameState currentState = GameState.Build;
+    public event System.Action<GameState> OnGameStateChanged;
 
     [Header("Turnos de Construção")]
     public int buildRounds = 1;
@@ -29,10 +30,7 @@ public class GameManager : MonoBehaviour
     [Header("Elementos Visuais")]
     public GameObject constructionGrid;
 
-    [Header("UI de Vidas")]
-    public GameObject heartsP1;
-    public GameObject heartsP2;
-
+    [Header("Tela de Vitória")]
     public GameObject winScreen;
     public Text winText;
 
@@ -65,6 +63,7 @@ public class GameManager : MonoBehaviour
     public void StartBuildPhase()
     {
         currentState = GameState.Build;
+        OnGameStateChanged?.Invoke(currentState);
         currentBuildTurn = 0;
         constructionGrid.SetActive(true);
         turnManager.StartTurn(1);
@@ -75,32 +74,24 @@ public class GameManager : MonoBehaviour
         player1.isActive = false;
         player2.isActive = false;
 
-        // Esconde as vidas
-        if (heartsP1) heartsP1.SetActive(false);
-        if (heartsP2) heartsP2.SetActive(false);
+        player1.SetLivesUIVisible(false);
+        player2.SetLivesUIVisible(false);
     }
 
     public void OnTurnEnded(int previousPlayer)
     {
         currentBuildTurn++;
-
         int maxTurns = buildRounds * 2;
 
         if (currentBuildTurn >= maxTurns)
-        {
             ShowPreparePanel();
-        }
         else
-        {
-            int nextPlayer = previousPlayer == 1 ? 2 : 1;
-            turnManager.ShowTurnTransition(nextPlayer);
-        }
+            turnManager.ShowTurnTransition(previousPlayer == 1 ? 2 : 1);
     }
 
     void ShowPreparePanel()
     {
         constructionGrid.SetActive(false);
-
         preparePanel.SetActive(true);
         prepareCanvasGroup.alpha = 1f;
         StartCoroutine(FadeOutPrepareAndStartGameplay());
@@ -109,33 +100,27 @@ public class GameManager : MonoBehaviour
     public void StartPlayPhase()
     {
         currentState = GameState.Play;
+        OnGameStateChanged?.Invoke(currentState);
         preparePanel.SetActive(false);
 
         constructionGrid.SetActive(false);
         turnManager.gameObject.SetActive(false);
 
-        // Mostra jogadores e reseta status
+        // Ativa jogadores
         player1.gameObject.SetActive(true);
         player2.gameObject.SetActive(true);
-        player1.hasFinished = false;
-        player2.hasFinished = false;
-        player1.isActive = player1.lives > 0;
-        player2.isActive = player2.lives > 0;
 
-        player1.SetBehindPlayer1(false);
-        player2.SetBehindPlayer1(false);
+        player1.ReactivatePlayer();
+        player2.ReactivatePlayer();
 
-        player1.RestoreOriginalSorting();
-        player2.RestoreOriginalSorting();
-
-        // Mostra as vidas
-        if (heartsP1) heartsP1.SetActive(true);
-        if (heartsP2) heartsP2.SetActive(true);
+        player1.SetLivesUIVisible(true);
+        player2.SetLivesUIVisible(true);
     }
 
     public void EndGame(int winner)
     {
         currentState = GameState.End;
+        OnGameStateChanged?.Invoke(currentState);
 
         constructionGrid.SetActive(false);
         player1.isActive = false;
@@ -143,7 +128,6 @@ public class GameManager : MonoBehaviour
 
         winScreen.SetActive(true);
         winText.text = "Jogador " + winner + " venceu!";
-
         waitingToRestart = true;
     }
 
@@ -184,33 +168,17 @@ public class GameManager : MonoBehaviour
     public void RestartRound()
     {
         currentState = GameState.Build;
+        OnGameStateChanged?.Invoke(currentState);
         currentBuildTurn = 0;
 
-        player1.transform.position = player1StartPosition;
-        player2.transform.position = player2StartPosition;
-        player1.lives = player1.maxLives;
-        player2.lives = player2.maxLives;
-        player1.UpdateLivesUI();
-        player2.UpdateLivesUI();
+        player1.ResetPlayer();
+        player2.ResetPlayer();
 
         ScoreManager.Instance.ResetRoundState();
-
-        player1.gameObject.SetActive(false);
-        player2.gameObject.SetActive(false);
-        player1.isActive = false;
-        player2.isActive = false;
-
-        if (heartsP1) heartsP1.SetActive(false);
-        if (heartsP2) heartsP2.SetActive(false);
 
         constructionGrid.SetActive(true);
         turnManager.gameObject.SetActive(true);
         turnManager.StartTurn(1);
-
-        player1.SetBehindPlayer1(false);
-        player2.SetBehindPlayer1(false);
-        player1.RestoreOriginalSorting();
-        player2.RestoreOriginalSorting();
     }
 
     public Vector3 GetRandomStartPosition(int playerId)
@@ -218,15 +186,11 @@ public class GameManager : MonoBehaviour
         Collider2D area = (playerId == 1) ? startAreaP1 : startAreaP2;
         Bounds bounds = area.bounds;
 
-        // Altura do jogador (metade do collider)
         float playerHeight = (playerId == 1 ? player1 : player2)
             .GetComponent<Collider2D>().bounds.extents.y;
 
-        // X aleatório
         float x = Random.Range(bounds.min.x, bounds.max.x);
-
-        // Y fixo no chão com um pequeno offset para evitar colisões
-        float offsetY = 0.05f; // 5cm acima do chão
+        float offsetY = 0.05f;
         float y = bounds.min.y + playerHeight + offsetY;
 
         return new Vector3(x, y, 0f);

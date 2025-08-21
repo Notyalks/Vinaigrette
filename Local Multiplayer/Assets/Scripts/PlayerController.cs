@@ -25,13 +25,11 @@ public class PlayerController : MonoBehaviour
     public bool hasFinished = false;
     public bool isActive = true;
 
+    [Header("Invencibilidade")]
     public float respawnInvincibleTime = 2f;
-    private bool invincible = false;
-    private SpriteRenderer spriteRenderer;
-
-    public bool isInvincible = false;
     public float invincibleTime = 2f;
-    public bool IsInvincible() => isInvincible;
+    public bool invincible = false;
+    private SpriteRenderer spriteRenderer;
 
     [HideInInspector] public string originalSortingLayer;
     [HideInInspector] public int originalSortingOrder;
@@ -107,6 +105,7 @@ public class PlayerController : MonoBehaviour
         if (lives <= 0)
         {
             isActive = false;
+            SetOffscreenIndicatorActive(false);
             ScoreManager.Instance.CheckRoundEnd();
         }
         else
@@ -117,7 +116,6 @@ public class PlayerController : MonoBehaviour
 
             ReactivatePlayer();
             StartCoroutine(RespawnInvincibility());
-            StartCoroutine(SetInvincible(invincibleTime));
         }
     }
 
@@ -137,8 +135,32 @@ public class PlayerController : MonoBehaviour
             SetBehindPlayer1(false);
             RestoreOriginalSorting();
         }
+
+        StartCoroutine(SetTemporaryInvincible(invincibleTime));
     }
 
+    public void ResetPlayer()
+    {
+        lives = maxLives;
+        UpdateLivesUI();
+
+        transform.position = GameManager.Instance.GetRandomStartPosition(playerId);
+        rb.linearVelocity = Vector2.zero;
+
+        isActive = false;
+        hasFinished = false;
+        rb.simulated = true;
+        GetComponent<Collider2D>().enabled = true;
+
+        gameObject.SetActive(false); // só será ativado no PlayPhase
+        SetOffscreenIndicatorActive(false);
+    }
+
+    public void SetLivesUIVisible(bool visible)
+    {
+        if (livesUI != null)
+            livesUI.SetActive(visible);
+    }
 
     public void UpdateLivesUI()
     {
@@ -197,11 +219,11 @@ public class PlayerController : MonoBehaviour
         isActive = true;
     }
 
-    public IEnumerator SetInvincible(float time)
+    public IEnumerator SetTemporaryInvincible(float time)
     {
-        isInvincible = true;
+        invincible = true;
         yield return new WaitForSeconds(time);
-        isInvincible = false;
+        invincible = false;
     }
 
     public void RestoreOriginalSorting()
@@ -226,4 +248,3 @@ public class PlayerController : MonoBehaviour
             offscreenIndicator.SetActive(active);
     }
 }
-
