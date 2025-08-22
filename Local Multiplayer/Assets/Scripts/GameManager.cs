@@ -12,13 +12,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Turnos de Construção")]
     public int buildRounds = 1;
-    private int currentBuildTurn = 0;
-
-    [Header("Transição para gameplay")]
-    public GameObject preparePanel;
-    public CanvasGroup prepareCanvasGroup;
-    public float prepareDuration = 3f;
-    public float fadeDuration = 1f;
+    public int currentBuildTurn = 0;
 
     [Header("Referências")]
     public TurnManager turnManager;
@@ -27,16 +21,7 @@ public class GameManager : MonoBehaviour
     public Collider2D startAreaP1;
     public Collider2D startAreaP2;
 
-    [Header("Elementos Visuais")]
-    public GameObject constructionGrid;
-
-    [Header("Tela de Vitória")]
-    public GameObject winScreen;
-    public Text winText;
-
     private bool waitingToRestart = false;
-    private Vector3 player1StartPosition;
-    private Vector3 player2StartPosition;
 
     void Awake()
     {
@@ -45,8 +30,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        player1StartPosition = player1.transform.position;
-        player2StartPosition = player2.transform.position;
         StartBuildPhase();
     }
 
@@ -55,28 +38,29 @@ public class GameManager : MonoBehaviour
         if (waitingToRestart && Input.anyKeyDown)
         {
             waitingToRestart = false;
-            winScreen.SetActive(false);
             RestartRound();
         }
     }
 
+    // -----------------------------
+    // FASE DE CONSTRUÇÃO
+    // -----------------------------
     public void StartBuildPhase()
     {
         currentState = GameState.Build;
         OnGameStateChanged?.Invoke(currentState);
+
         currentBuildTurn = 0;
-        constructionGrid.SetActive(true);
-        turnManager.StartTurn(1);
+        UIManager.Instance.ShowConstructionGrid();
 
-        // Esconde jogadores no modo construção
-        player1.gameObject.SetActive(false);
-        player2.gameObject.SetActive(false);
-        player1.isActive = false;
-        player2.isActive = false;
+        // Mostra transição antes do primeiro turno
+        turnManager.ResetTurnState();
+        turnManager.ShowTurnTransition(1);
 
-        player1.SetLivesUIVisible(false);
-        player2.SetLivesUIVisible(false);
+        player1.HideForBuildPhase();
+        player2.HideForBuildPhase();
     }
+
 
     public void OnTurnEnded(int previousPlayer)
     {
@@ -84,75 +68,54 @@ public class GameManager : MonoBehaviour
         int maxTurns = buildRounds * 2;
 
         if (currentBuildTurn >= maxTurns)
-            ShowPreparePanel();
+        {
+            UIManager.Instance.ShowPreparePanel();
+        }
         else
-            turnManager.ShowTurnTransition(previousPlayer == 1 ? 2 : 1);
+        {
+            int nextPlayer = (previousPlayer == 1) ? 2 : 1;
+
+            // Agora sempre mostra a transição ANTES do próximo jogador
+            turnManager.ShowTurnTransition(nextPlayer);
+        }
     }
 
-    void ShowPreparePanel()
-    {
-        constructionGrid.SetActive(false);
-        preparePanel.SetActive(true);
-        prepareCanvasGroup.alpha = 1f;
-        StartCoroutine(FadeOutPrepareAndStartGameplay());
-    }
-
+    // -----------------------------
+    // FASE DE JOGO
+    // -----------------------------
     public void StartPlayPhase()
     {
         currentState = GameState.Play;
         OnGameStateChanged?.Invoke(currentState);
-        preparePanel.SetActive(false);
 
-        constructionGrid.SetActive(false);
+        UIManager.Instance.HideConstructionGrid();
+
         turnManager.gameObject.SetActive(false);
 
-        // Ativa jogadores
-        player1.gameObject.SetActive(true);
-        player2.gameObject.SetActive(true);
-
-        player1.ReactivatePlayer();
-        player2.ReactivatePlayer();
-
-        player1.SetLivesUIVisible(true);
-        player2.SetLivesUIVisible(true);
+        player1.ShowForPlayPhase();
+        player2.ShowForPlayPhase();
     }
 
+    // -----------------------------
+    // FIM DE JOGO
+    // -----------------------------
     public void EndGame(int winner)
     {
         currentState = GameState.End;
         OnGameStateChanged?.Invoke(currentState);
 
-        constructionGrid.SetActive(false);
-        player1.isActive = false;
-        player2.isActive = false;
+        UIManager.Instance.HideConstructionGrid();
 
-        winScreen.SetActive(true);
-        winText.text = "Jogador " + winner + " venceu!";
+        player1.Deactivate();
+        player2.Deactivate();
+
+        UIManager.Instance.ShowWinScreen(winner);
         waitingToRestart = true;
     }
 
-    public bool IsLastBuildTurn()
-    {
-        int maxTurns = buildRounds * 2;
-        return currentBuildTurn + 1 >= maxTurns;
-    }
-
-    IEnumerator FadeOutPrepareAndStartGameplay()
-    {
-        yield return new WaitForSeconds(prepareDuration);
-
-        float t = 0f;
-        while (t < fadeDuration)
-        {
-            t += Time.deltaTime;
-            prepareCanvasGroup.alpha = Mathf.Lerp(1f, 0f, t / fadeDuration);
-            yield return null;
-        }
-
-        preparePanel.SetActive(false);
-        StartPlayPhase();
-    }
-
+    // -----------------------------
+    // RESTART DE RODADA
+    // -----------------------------
     public void EndRound()
     {
         Debug.Log("Rodada terminou!");
@@ -176,11 +139,18 @@ public class GameManager : MonoBehaviour
 
         ScoreManager.Instance.ResetRoundState();
 
-        constructionGrid.SetActive(true);
+        UIManager.Instance.ShowConstructionGrid();
         turnManager.gameObject.SetActive(true);
-        turnManager.StartTurn(1);
+
+        // Mostra transição antes do Player 1
+        turnManager.ResetTurnState();
+        turnManager.ShowTurnTransition(1);
     }
 
+
+    // -----------------------------
+    // UTILS
+    // -----------------------------
     public Vector3 GetRandomStartPosition(int playerId)
     {
         Collider2D area = (playerId == 1) ? startAreaP1 : startAreaP2;
@@ -196,13 +166,16 @@ public class GameManager : MonoBehaviour
         return new Vector3(x, y, 0f);
     }
 
-    public void PlayerReachedGoal(int playerId, int livesRemaining)
+    public bool IsLastBuildTurn()
     {
-        ScoreManager.Instance.PlayerReachedGoal(playerId, livesRemaining);
+        int maxTurns = buildRounds * 2;
+        return currentBuildTurn + 1 >= maxTurns;
     }
 
-    public void PlayerDied(int playerId)
-    {
+    // Notificações para ScoreManager
+    public void PlayerReachedGoal(int playerId, int livesRemaining) =>
+        ScoreManager.Instance.PlayerReachedGoal(playerId, livesRemaining);
+
+    public void PlayerDied(int playerId) =>
         ScoreManager.Instance.PlayerDied(playerId);
-    }
 }

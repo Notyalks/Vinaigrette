@@ -3,27 +3,11 @@ using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
-    [Header("Painéis de Ocultação")]
-    public GameObject panelPlayer1;
-    public GameObject panelPlayer2;
-
-    [Header("Inventários")]
-    public GameObject inventoryPlayer1;
-    public GameObject inventoryPlayer2;
-
     [Header("Managers")]
     public ObstaclePlacer placer;
     public InventoryManager inventoryManager;
 
-    [Header("Painéis de Transição")]
-    public GameObject turnTransitionPanel;
-    public Text turnTransitionText;
-
     private bool waitingForInput = false;
-
-    [Header("Timer UI")]
-    public Text timerPlayer1;
-    public Text timerPlayer2;
 
     [Header("Timer")]
     public float turnDuration = 10f;
@@ -33,11 +17,6 @@ public class TurnManager : MonoBehaviour
     private int currentPlayer = 1;
     private int pendingNextPlayer = -1;
 
-    void Start()
-    {
-        StartTurn(1);
-    }
-
     void Update()
     {
         if (waitingForInput)
@@ -45,7 +24,9 @@ public class TurnManager : MonoBehaviour
             if (Input.anyKeyDown)
             {
                 waitingForInput = false;
-                turnTransitionPanel.SetActive(false);
+                UIManager.Instance.HideTurnTransition();
+
+                // Agora sempre inicia o turno depois da transição
                 StartTurn(pendingNextPlayer);
             }
             return;
@@ -54,7 +35,7 @@ public class TurnManager : MonoBehaviour
         if (!turnActive) return;
 
         currentTimer -= Time.deltaTime;
-        UpdateTimerUI();
+        UIManager.Instance.UpdateTimerUI(Mathf.CeilToInt(currentTimer));
 
         if (currentTimer <= 0f)
         {
@@ -62,18 +43,26 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    // -----------------------------
+    // TURNOS
+    // -----------------------------
     public void StartTurn(int player)
     {
         currentPlayer = player;
         currentTimer = turnDuration;
         turnActive = true;
 
-        UpdatePanels();
-        UpdateHUDVisibility();
+        // Atualiza UI do jogador atual
+        UIManager.Instance.ShowTurnUI(currentPlayer, true);
 
-        // Escolhe inventário atual e área de colocação
-        GameObject currentInventory = (currentPlayer == 1) ? inventoryPlayer1 : inventoryPlayer2;
-        Collider2D placementArea = (currentPlayer == 1) ? placer.placementAreaPlayer2 : placer.placementAreaPlayer1;
+        // Define inventário e área de colocação
+        GameObject currentInventory = (currentPlayer == 1)
+            ? UIManager.Instance.inventoryPlayer1
+            : UIManager.Instance.inventoryPlayer2;
+
+        Collider2D placementArea = (currentPlayer == 1)
+            ? placer.placementAreaPlayer2
+            : placer.placementAreaPlayer1;
 
         // Prepara inventário
         inventoryManager.SetupInventory(currentInventory, placementArea);
@@ -85,45 +74,43 @@ public class TurnManager : MonoBehaviour
 
         placer.EndPlacement();
         inventoryManager.ClearInventory();
-        UpdateHUDVisibility();
 
-        if (currentPlayer == 1) panelPlayer1.SetActive(false);
-        else panelPlayer2.SetActive(false);
+        // Esconde HUD do jogador atual
+        UIManager.Instance.ShowTurnUI(currentPlayer, false);
 
-        // Agora só notificamos o GameManager
+        // Notifica o GameManager
         GameManager.Instance.OnTurnEnded(currentPlayer);
     }
 
     public void ShowTurnTransition(int nextPlayer)
     {
         waitingForInput = true;
-        turnTransitionText.text = "Vez do Jogador " + nextPlayer;
-        turnTransitionPanel.SetActive(true);
-
         pendingNextPlayer = nextPlayer;
+        UIManager.Instance.ShowTurnTransition(nextPlayer);
     }
 
-    void UpdatePanels()
-    {
-        panelPlayer1.SetActive(currentPlayer == 1);
-        panelPlayer2.SetActive(currentPlayer == 2);
-    }
-
-    void UpdateHUDVisibility()
-    {
-        inventoryPlayer1.SetActive(currentPlayer == 1 && turnActive);
-        inventoryPlayer2.SetActive(currentPlayer == 2 && turnActive);
-
-        timerPlayer1.gameObject.SetActive(currentPlayer == 1 && turnActive);
-        timerPlayer2.gameObject.SetActive(currentPlayer == 2 && turnActive);
-    }
-
+    // -----------------------------
+    // TIMER
+    // -----------------------------
     void UpdateTimerUI()
     {
         int time = Mathf.CeilToInt(currentTimer);
-        timerPlayer1.text = time.ToString();
-        timerPlayer2.text = time.ToString();
+        UIManager.Instance.UpdateTimerUI(time);
     }
 
+    // -----------------------------
+    // RESET DE ESTADO
+    // -----------------------------
+    public void ResetTurnState()
+    {
+        waitingForInput = false;
+        turnActive = false;
+        pendingNextPlayer = -1;
+        UIManager.Instance.HideTurnTransition();
+    }
+
+    // -----------------------------
+    // GETTERS
+    // -----------------------------
     public int GetCurrentPlayer() => currentPlayer;
 }

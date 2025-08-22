@@ -139,8 +139,7 @@ public class ObstaclePlacer : MonoBehaviour
         ghostObstacle = null;
         ghostRenderer = null;
 
-        // selectedObstacle = null;  // causa CS0037
-        selectedObstacle = default;  // reseta struct
+        selectedObstacle = default; 
         isPlacing = false;
     }
 }

@@ -13,7 +13,8 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
 
     [Header("UI")]
-    public GameObject livesUI; // Container com os corações
+    public GameObject livesUI;       // Container com os corações (cheios)
+    public GameObject livesUIBG;     // Container com o fundo dos corações
     private Image[] heartImages;
 
     [Header("Indicador Fora da Tela")]
@@ -139,28 +140,33 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(SetTemporaryInvincible(invincibleTime));
     }
 
+    public void Deactivate()
+    {
+        isActive = false;
+        rb.linearVelocity = Vector2.zero;
+    }
+
     public void ResetPlayer()
     {
         lives = maxLives;
         UpdateLivesUI();
 
-        transform.position = GameManager.Instance.GetRandomStartPosition(playerId);
+        Vector3 respawnPos = GameManager.Instance.GetRandomStartPosition(playerId);
+        transform.position = respawnPos;
+
         rb.linearVelocity = Vector2.zero;
-
-        isActive = false;
-        hasFinished = false;
-        rb.simulated = true;
-        GetComponent<Collider2D>().enabled = true;
-
-        gameObject.SetActive(false); // só será ativado no PlayPhase
-        SetOffscreenIndicatorActive(false);
+        ReactivatePlayer();
     }
 
     public void SetLivesUIVisible(bool visible)
     {
         if (livesUI != null)
             livesUI.SetActive(visible);
+
+        if (livesUIBG != null)
+            livesUIBG.SetActive(visible);
     }
+
 
     public void UpdateLivesUI()
     {
@@ -247,4 +253,18 @@ public class PlayerController : MonoBehaviour
         if (offscreenIndicator != null)
             offscreenIndicator.SetActive(active);
     }
+    public void HideForBuildPhase()
+    {
+        gameObject.SetActive(false);
+        isActive = false;
+        SetLivesUIVisible(false);
+    }
+
+    public void ShowForPlayPhase()
+    {
+        gameObject.SetActive(true);
+        ReactivatePlayer();
+        SetLivesUIVisible(true);
+    }
+
 }
