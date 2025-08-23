@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     public GameState currentState = GameState.Build;
     public event System.Action<GameState> OnGameStateChanged;
 
+    public event System.Action OnPlayPhaseStarted;
+
     [Header("Turnos de Construção")]
     public int buildRounds = 1;
     public int currentBuildTurn = 0;
@@ -73,9 +75,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            int nextPlayer = (previousPlayer == 1) ? 2 : 1;
-
-            // Agora sempre mostra a transição ANTES do próximo jogador
+            int nextPlayer = previousPlayer == 1 ? 2 : 1;
             turnManager.ShowTurnTransition(nextPlayer);
         }
     }
@@ -94,6 +94,8 @@ public class GameManager : MonoBehaviour
 
         player1.ShowForPlayPhase();
         player2.ShowForPlayPhase();
+
+        OnPlayPhaseStarted?.Invoke();
     }
 
     // -----------------------------

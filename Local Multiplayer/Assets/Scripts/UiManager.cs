@@ -28,8 +28,10 @@ public class UIManager : MonoBehaviour
     public GameObject inventoryPlayer2;
 
     [Header("Turnos - Painéis de Transição")]
-    public GameObject turnTransitionPanel;
-    public Text turnTransitionText;
+    public GameObject turnTransitionPanelP1;
+    public Text turnTransitionTextP1;
+    public GameObject turnTransitionPanelP2;
+    public Text turnTransitionTextP2;
 
     [Header("Turnos - Timer UI")]
     public Text timerPlayer1;
@@ -128,13 +130,27 @@ public class UIManager : MonoBehaviour
 
     public void ShowTurnTransition(int nextPlayer)
     {
-        turnTransitionText.text = "Vez do Jogador " + nextPlayer;
-        turnTransitionPanel.SetActive(true);
+        // garante estado limpo antes de ativar
+        turnTransitionPanelP1.SetActive(false);
+        turnTransitionPanelP2.SetActive(false);
+
+        if (nextPlayer == 1)
+        {
+            turnTransitionTextP1.text = "Vez do Jogador 1";
+            turnTransitionPanelP1.SetActive(true);
+        }
+        else
+        {
+            turnTransitionTextP2.text = "Vez do Jogador 2";
+            turnTransitionPanelP2.SetActive(true);
+        }
     }
 
-    public void HideTurnTransition()
+
+    public void HideTurnTransition(int player)
     {
-        turnTransitionPanel.SetActive(false);
+        if (player == 1) turnTransitionPanelP1.SetActive(false);
+        else turnTransitionPanelP2.SetActive(false);
     }
 
     // -----------------------------

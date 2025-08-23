@@ -142,4 +142,21 @@ public class ObstaclePlacer : MonoBehaviour
         selectedObstacle = default; 
         isPlacing = false;
     }
+    void OnDrawGizmosSelected()
+    {
+        if (ghostObstacle != null && ghostObstacle.TryGetComponent(out BoxCollider2D ghostCollider))
+        {
+            Vector2 size = ghostCollider.size;
+            Vector2 scale = ghostObstacle.transform.lossyScale;
+            Vector2 scaledSize = new Vector2(size.x * scale.x, size.y * scale.y);
+
+            Gizmos.color = isValidPlacement ? Color.green : Color.red;
+            Gizmos.matrix = Matrix4x4.TRS(
+                ghostObstacle.transform.position,
+                Quaternion.Euler(0, 0, ghostObstacle.transform.eulerAngles.z),
+                Vector3.one
+            );
+            Gizmos.DrawWireCube(Vector3.zero, scaledSize);
+        }
+    }
 }

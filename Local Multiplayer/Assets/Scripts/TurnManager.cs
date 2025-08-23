@@ -1,13 +1,10 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
     [Header("Managers")]
     public ObstaclePlacer placer;
     public InventoryManager inventoryManager;
-
-    private bool waitingForInput = false;
 
     [Header("Timer")]
     public float turnDuration = 10f;
@@ -17,16 +14,21 @@ public class TurnManager : MonoBehaviour
     private int currentPlayer = 1;
     private int pendingNextPlayer = -1;
 
+    // --- Controle da transição ---
+    private bool waitingForInput = false;
+    private float allowInputAt = 0f;
+    [SerializeField] private float inputDelay = 0.25f; // tempo mínimo antes de aceitar input
+
     void Update()
     {
         if (waitingForInput)
         {
-            if (Input.anyKeyDown)
+            if (Time.unscaledTime >= allowInputAt && Input.anyKeyDown)
             {
                 waitingForInput = false;
-                UIManager.Instance.HideTurnTransition();
+                UIManager.Instance.HideTurnTransition(pendingNextPlayer);
 
-                // Agora sempre inicia o turno depois da transição
+                // Inicia o próximo turno
                 StartTurn(pendingNextPlayer);
             }
             return;
@@ -64,7 +66,6 @@ public class TurnManager : MonoBehaviour
             ? placer.placementAreaPlayer2
             : placer.placementAreaPlayer1;
 
-        // Prepara inventário
         inventoryManager.SetupInventory(currentInventory, placementArea);
     }
 
@@ -75,42 +76,31 @@ public class TurnManager : MonoBehaviour
         placer.EndPlacement();
         inventoryManager.ClearInventory();
 
-        // Esconde HUD do jogador atual
         UIManager.Instance.ShowTurnUI(currentPlayer, false);
 
-        // Notifica o GameManager
         GameManager.Instance.OnTurnEnded(currentPlayer);
     }
 
+    // Chamado pelo GameManager
     public void ShowTurnTransition(int nextPlayer)
     {
         waitingForInput = true;
         pendingNextPlayer = nextPlayer;
+        allowInputAt = Time.unscaledTime + inputDelay;
+
         UIManager.Instance.ShowTurnTransition(nextPlayer);
     }
 
     // -----------------------------
-    // TIMER
-    // -----------------------------
-    void UpdateTimerUI()
-    {
-        int time = Mathf.CeilToInt(currentTimer);
-        UIManager.Instance.UpdateTimerUI(time);
-    }
-
-    // -----------------------------
-    // RESET DE ESTADO
+    // Reset de Estado
     // -----------------------------
     public void ResetTurnState()
     {
         waitingForInput = false;
         turnActive = false;
         pendingNextPlayer = -1;
-        UIManager.Instance.HideTurnTransition();
     }
 
-    // -----------------------------
-    // GETTERS
-    // -----------------------------
+    // Getter
     public int GetCurrentPlayer() => currentPlayer;
 }

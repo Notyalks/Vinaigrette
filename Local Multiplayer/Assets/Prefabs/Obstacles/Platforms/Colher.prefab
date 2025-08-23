@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 988690831498329894}
   - component: {fileID: 8028255390487730690}
-  - component: {fileID: 2317024941451841178}
+  - component: {fileID: 7798932084329346175}
+  - component: {fileID: 6052868705090643987}
   m_Layer: 7
   m_Name: Colher
   m_TagString: Untagged
@@ -77,8 +78,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: f8b6150815af1b446b00052f49193d80, type: 3}
-  m_Color: {r: 0.8207547, g: 0.8133894, b: 0.80914026, a: 1}
+  m_Sprite: {fileID: 21300000, guid: de6cb314d3aac614887740b42f8dac37, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -88,7 +89,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &2317024941451841178
+--- !u!114 &7798932084329346175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 380774823418479577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe6cb1f4d69562439931ef8df7ba134, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 50
+  rotationAxis: {x: 0, y: 0, z: 1}
+  useLocalRotation: 1
+  autoRotate: 1
+--- !u!61 &6052868705090643987
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,15 +139,15 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.5, y: 0.25}
+  m_Offset: {x: 0.25, y: 0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 1}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0.5, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 0.5}
+  m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
