@@ -13251,6 +13251,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8362285544237114912, guid: 46bd0f353e291af4e8c20cdf091e86bc, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5634296921563106023, guid: 46bd0f353e291af4e8c20cdf091e86bc, type: 3}
     m_RemovedGameObjects: []
@@ -15935,12 +15939,12 @@ MonoBehaviour:
   allObstacles:
   - prefab: {fileID: 380774823418479577, guid: 9bbd871770aa024489f7c722c96a1d30, type: 3}
     icon: {fileID: 21300000, guid: a70c17930af09cc4e9cef649182545ed, type: 3}
-  - prefab: {fileID: 7793177922924259640, guid: 900ac5add58b76b42bfd208df8070d9f, type: 3}
-    icon: {fileID: 21300000, guid: f8b6150815af1b446b00052f49193d80, type: 3}
   - prefab: {fileID: 380774823418479577, guid: a2d55a8dbf2827541b5f0a2ba4c9d008, type: 3}
     icon: {fileID: 21300000, guid: de6cb314d3aac614887740b42f8dac37, type: 3}
   - prefab: {fileID: 2771088618442085018, guid: 686d9b40006d3aa4faf857990b17fad6, type: 3}
     icon: {fileID: 21300000, guid: 63a6b973d3d413944862dbd3410fee5c, type: 3}
+  - prefab: {fileID: 7793177922924259640, guid: 89ebbf73c4c10444cacb4315a4cabb23, type: 3}
+    icon: {fileID: 21300000, guid: 56d8dbe2cc426a94ab6ccf87722712c6, type: 3}
   obstaclePlacer: {fileID: 1839022569}
 --- !u!4 &1957408460
 Transform:
@@ -16858,6 +16862,10 @@ PrefabInstance:
     - target: {fileID: 8362285544237114912, guid: 46bd0f353e291af4e8c20cdf091e86bc, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8362285544237114912, guid: 46bd0f353e291af4e8c20cdf091e86bc, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5634296921563106023, guid: 46bd0f353e291af4e8c20cdf091e86bc, type: 3}

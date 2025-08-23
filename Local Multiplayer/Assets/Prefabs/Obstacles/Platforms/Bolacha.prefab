@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6008738217247784049}
   - component: {fileID: 3078488257594896781}
-  - component: {fileID: -8564341477416502282}
+  - component: {fileID: -6371337245775994020}
+  - component: {fileID: 6782246388117028172}
   m_Layer: 7
   m_Name: Bolacha
   m_TagString: Untagged
@@ -77,8 +78,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: c058be467da218a49a55946f1ce552c4, type: 3}
-  m_Color: {r: 0.9528302, g: 0.77609384, b: 0.27416337, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 63a6b973d3d413944862dbd3410fee5c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -88,7 +89,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &-8564341477416502282
+--- !u!114 &-6371337245775994020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2771088618442085018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c38c6d085f5f444b9f307b5ecfc97c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSteps: 2
+  breakDelay: 0.5
+  brokenEffectPrefab: {fileID: 0}
+--- !u!61 &6782246388117028172
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,8 +141,8 @@ BoxCollider2D:
   m_Offset: {x: 0.25, y: 0.25}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0.5, y: 0.5}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
