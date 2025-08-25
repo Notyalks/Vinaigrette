@@ -2,33 +2,32 @@ using UnityEngine;
 
 public class SaltShakerObstacle : TimedObstacleBase
 {
-    [Header("Configurações de Disparo")]
-    public GameObject projectilePrefab;   // Prefab do projétil
-    public Transform firePoint;           // Ponto de onde o projétil sai
-    public float projectileSpeed = 5f;    // Velocidade do projétil
-    public Vector2 fireDirection = Vector2.right; // Direção do disparo
+    [Header("Disparo")]
+    public Transform firePoint;
+    public SaltProjectile projectilePrefab;
+    public float projectileSpeed = 6f;
+
+    [Tooltip("Se true, o projétil trava no eixo dominante (X ou Y).")]
+    public bool snapToAxis = true;
+
+    [Tooltip("Inverte a direção calculada (ex.: virar para esquerda em vez de direita).")]
+    public bool invertDirection = false;
 
     protected override void OnInterval()
     {
-        FireProjectile();
-    }
-
-    private void FireProjectile()
-    {
         if (projectilePrefab == null || firePoint == null) return;
 
-        GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+        // Instancia com a rotação do firePoint (apenas para orientação visual inicial)
+        var proj = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
 
-        Rigidbody2D rb = proj.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.velocity = fireDirection.normalized * projectileSpeed;
-        }
-    }
+        // Configura velocidade (pode ajustar direto no prefab também)
+        proj.speed = projectileSpeed;
 
-    protected override void ResetObstacle()
-    {
-        base.ResetObstacle();
-        // Nada especial aqui, pois o TimedObstacleBase já reinicia a rotina ao ativar
+        // Calcula direção em MUNDO a partir do firePoint
+        Vector2 rawDir = firePoint.right; // "frente" do firePoint
+        if (invertDirection) rawDir = -rawDir;
+
+        // Lança com snap de eixo (decide +X/-X ou +Y/-Y)
+        proj.Launch(rawDir, snapToAxis);
     }
 }

@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04041364049d1554c87d9affaafe2f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 3
   lifetime: 10
   damage: 1
   hitEffectPrefab: {fileID: 6348621695862949793, guid: ffbad6317c693a14ca8757d2acd61b39, type: 3}

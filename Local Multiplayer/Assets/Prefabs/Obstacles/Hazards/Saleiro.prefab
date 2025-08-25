@@ -24,13 +24,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2940265756192504324}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.26, y: 0.25, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
+  m_LocalPosition: {x: -0.13, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3081965672048717120}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!1 &7793177922924259640
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,7 +181,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interval: 5
   startDelay: 2
-  projectilePrefab: {fileID: 2361111132968800438, guid: b20e3c909230c774cadb3270227c1839, type: 3}
   firePoint: {fileID: 7498999347890824407}
+  projectilePrefab: {fileID: 7590927545026266974, guid: b20e3c909230c774cadb3270227c1839, type: 3}
   projectileSpeed: 5
-  fireDirection: {x: 1, y: 0}
+  snapToAxis: 1
+  invertDirection: 0
