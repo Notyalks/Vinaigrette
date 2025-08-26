@@ -15945,6 +15945,10 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 63a6b973d3d413944862dbd3410fee5c, type: 3}
   - prefab: {fileID: 7793177922924259640, guid: 89ebbf73c4c10444cacb4315a4cabb23, type: 3}
     icon: {fileID: 21300000, guid: 56d8dbe2cc426a94ab6ccf87722712c6, type: 3}
+  - prefab: {fileID: 7793177922924259640, guid: 83de0f0e37202e348948c1bfa5d8abbf, type: 3}
+    icon: {fileID: 21300000, guid: 24de636b55ce69846b00458d4bd3f10a, type: 3}
+  - prefab: {fileID: 7793177922924259640, guid: 900ac5add58b76b42bfd208df8070d9f, type: 3}
+    icon: {fileID: 21300000, guid: cbb3b3e59bf156849a3809b1c440370b, type: 3}
   obstaclePlacer: {fileID: 1839022569}
 --- !u!4 &1957408460
 Transform:
