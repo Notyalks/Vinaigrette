@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 1665387416435822445}
   m_Layer: 7
   m_Name: Saleiro
-  m_TagString: Hazard
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

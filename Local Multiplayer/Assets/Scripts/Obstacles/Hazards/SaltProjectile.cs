@@ -83,7 +83,7 @@ public class SaltProjectile : MonoBehaviour
             return;
         }
 
-        if (collision.collider.CompareTag("Obstacle") ||
+        if (collision.collider.CompareTag("Obstacles") ||
             collision.collider.CompareTag("Terrain") ||
             collision.collider.CompareTag("Ground"))
         {
