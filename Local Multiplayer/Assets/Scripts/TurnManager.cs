@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class TurnManager : MonoBehaviour
 {
@@ -69,8 +70,16 @@ public class TurnManager : MonoBehaviour
         inventoryManager.SetupInventory(currentInventory, placementArea);
     }
 
-    public void EndTurn()
+    public void EndTurn(float extraDelay = 0f)
     {
+        StartCoroutine(EndTurnRoutine(extraDelay));
+    }
+
+    private IEnumerator EndTurnRoutine(float extraDelay)
+    {
+        if (extraDelay > 0f)
+            yield return new WaitForSeconds(extraDelay);
+
         turnActive = false;
 
         placer.EndPlacement();

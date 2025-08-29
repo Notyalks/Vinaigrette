@@ -9,38 +9,25 @@ public class GarlicBomb : MonoBehaviour
     public Color highlightColor = Color.red;       // cor antes de destruir
     public float destroyDelay = 0.1f;              // tempo antes de destruir
 
-    private List<GameObject> obstaclesInRange = new List<GameObject>();
-    private Dictionary<SpriteRenderer, Color> originalColors = new Dictionary<SpriteRenderer, Color>();
+    [Header("Efeitos")]
+    public GameObject explosionEffect;
+    public float effectDuration = 0.5f; // tempo para mostrar efeitos antes de trocar turno
+
     private bool placed = false;
 
     void Update()
     {
         if (placed) return;
 
+        // Só para visual feedback antes de colocar
         Vector3 spriteCenter = GetComponent<SpriteRenderer>().bounds.center;
         Collider2D[] hits = Physics2D.OverlapBoxAll(spriteCenter, areaSize, 0f, obstacleMask);
 
-        // Reset cores antigas
-        foreach (var kvp in originalColors)
-        {
-            if (kvp.Key != null)
-                kvp.Key.color = kvp.Value;
-        }
-        obstaclesInRange.Clear();
-        originalColors.Clear();
-
-        // Marcar obstáculos encontrados
         foreach (var hit in hits)
         {
             SpriteRenderer sr = hit.GetComponent<SpriteRenderer>();
             if (sr != null)
-            {
-                if (!originalColors.ContainsKey(sr))
-                    originalColors[sr] = sr.color;
-
                 sr.color = highlightColor;
-                obstaclesInRange.Add(hit.gameObject);
-            }
         }
     }
 
@@ -52,20 +39,25 @@ public class GarlicBomb : MonoBehaviour
         if (placed) return;
         placed = true;
 
-        if (obstaclesInRange.Count > 0)
+        Vector3 spriteCenter = GetComponent<SpriteRenderer>().bounds.center;
+        Collider2D[] hits = Physics2D.OverlapBoxAll(spriteCenter, areaSize, 0f, obstacleMask);
+
+        if (hits.Length > 0)
         {
-            foreach (var obj in obstaclesInRange)
+            foreach (var hit in hits)
             {
-                if (obj != null)
-                {
-                    Debug.Log($"[GarlicBomb] Destruindo obstáculo: {obj.name}");
-                    Destroy(obj, destroyDelay);
-                }
+                Debug.Log($"[GarlicBomb] Destruindo obstáculo: {hit.name}");
+                Destroy(hit.gameObject, destroyDelay);
             }
         }
         else
         {
             Debug.Log("[GarlicBomb] Nenhum obstáculo atingido.");
+        }
+
+        if (explosionEffect != null)
+        {
+            Instantiate(explosionEffect, spriteCenter, Quaternion.identity);
         }
 
         // A bomba sempre some
