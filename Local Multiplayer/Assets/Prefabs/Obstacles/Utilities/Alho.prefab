@@ -105,5 +105,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   highlightColor: {r: 1, g: 0, b: 0, a: 1}
-  destroyDelay: 0.1
-  explosionEffect: {fileID: 6286431591799196681, guid: 532ca0bb3d1d63e409eb46169f805236, type: 3}
+  destroyDelay: 2
+  explosionEffect: {fileID: 0}

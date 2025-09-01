@@ -5,11 +5,12 @@ public class DestroyEffect : MonoBehaviour
     [Header("Efeito de Destruição")]
     public GameObject destroyEffectPrefab;
 
-    private void OnDestroy()
+    public void PlayEffect()
     {
         if (destroyEffectPrefab != null && Application.isPlaying)
         {
-            Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
+            GameObject effect = Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(effect, 2f); // tempo de vida do efeito
         }
     }
 }

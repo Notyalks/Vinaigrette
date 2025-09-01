@@ -78,19 +78,26 @@ public class ObstaclePlacer : MonoBehaviour
 
     private void PlaceObstacle()
     {
-        if (selectedObstacle.prefab == null) return; // checa prefab
+        if (selectedObstacle.prefab == null) return;
 
         GameObject placed = Instantiate(selectedObstacle.prefab, ghostObstacle.transform.position, ghostObstacle.transform.rotation);
 
-        // Caso seja uma bomba de alho, ativa imediatamente
         if (placed.TryGetComponent<GarlicBomb>(out var bomb))
         {
+            bomb.OnBombResolved += () =>
+            {
+                turnManager.EndTurn(bomb.destroyDelay); // espera antes de encerrar
+            };
             bomb.Place();
+        }
+        else
+        {
+            turnManager.EndTurn();
         }
 
         ClearPlacement();
-        turnManager.EndTurn();
     }
+
 
     private void RotateGhost(float angle)
     {
