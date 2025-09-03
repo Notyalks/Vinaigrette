@@ -6204,7 +6204,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: Tempo
 --- !u!222 &556942528
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11434,7 +11434,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: Tempo
 --- !u!1 &748747675
 GameObject:
   m_ObjectHideFlags: 0
