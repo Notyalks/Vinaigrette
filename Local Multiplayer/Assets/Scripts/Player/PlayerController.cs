@@ -47,49 +47,12 @@ public class PlayerController : MonoBehaviour
         UpdateLivesUI();
     }
 
-    void Update()
-    {
-        if (!isActive || hasFinished || GameManager.Instance.currentState != GameState.Play)
-        {
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            return;
-        }
-
-        float move = 0f;
-
-        if (playerId == 1)
-        {
-            if (Input.GetKey(KeyCode.A)) move = -1;
-            if (Input.GetKey(KeyCode.D)) move = 1;
-            if (Input.GetKeyDown(KeyCode.W) && isGrounded)
-                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        }
-        else
-        {
-            if (Input.GetKey(KeyCode.LeftArrow)) move = -1;
-            if (Input.GetKey(KeyCode.RightArrow)) move = 1;
-            if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
-                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        }
-
-        rb.linearVelocity = new Vector2(move * speed, rb.linearVelocity.y);
-    }
-
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.contacts[0].normal.y > 0.5f)
-            isGrounded = true;
-
         if (col.collider.CompareTag("Hazard") && !invincible)
         {
             LoseLife();
         }
-    }
-
-    void OnCollisionExit2D(Collision2D col)
-    {
-        if (col.contacts.Length > 0 && col.contacts[0].normal.y > 0.5f)
-            isGrounded = false;
     }
 
     public void LoseLife()
