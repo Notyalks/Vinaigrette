@@ -178,11 +178,9 @@ public abstract class PlayerMovementBase : MonoBehaviour
         Vector2 centerLeft = new Vector2(b.min.x - size.x * 0.5f, b.center.y);
         Vector2 centerRight = new Vector2(b.max.x + size.x * 0.5f, b.center.y);
 
-        Collider2D leftCol = Physics2D.OverlapBox(centerLeft, size, 0f, wallLayer);
-        Collider2D rightCol = Physics2D.OverlapBox(centerRight, size, 0f, wallLayer);
+        bool leftHit = Physics2D.OverlapBox(centerLeft, size, 0f, wallLayer) is Collider2D leftCol && !leftCol.isTrigger;
+        bool rightHit = Physics2D.OverlapBox(centerRight, size, 0f, wallLayer) is Collider2D rightCol && !rightCol.isTrigger;
 
-        bool leftHit = leftCol != null && !leftCol.isTrigger;
-        bool rightHit = rightCol != null && !rightCol.isTrigger;
 
         if (leftHit)
         {

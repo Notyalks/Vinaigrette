@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections;
 
 public class UIManager : MonoBehaviour
@@ -29,13 +30,15 @@ public class UIManager : MonoBehaviour
 
     [Header("Turnos - Painéis de Transição")]
     public GameObject turnTransitionPanelP1;
-    public Text turnTransitionTextP1;
+    public TextMeshProUGUI turnTransitionTextP1;
     public GameObject turnTransitionPanelP2;
-    public Text turnTransitionTextP2;
+    public TextMeshProUGUI turnTransitionTextP2;
 
     [Header("Turnos - Timer UI")]
-    public Text timerPlayer1;
-    public Text timerPlayer2;
+    public TextMeshProUGUI timerPlayer1;
+    public GameObject imageTimerPlayer1;
+    public TextMeshProUGUI timerPlayer2;
+    public GameObject imageTimerPlayer2;
 
     [Header("Referências Extras")]
     public GameObject startIndicatorP1;
@@ -119,7 +122,9 @@ public class UIManager : MonoBehaviour
         inventoryPlayer2.SetActive(player == 2 && active);
 
         timerPlayer1.gameObject.SetActive(player == 1 && active);
+        imageTimerPlayer1.gameObject.SetActive(player == 1 && active);
         timerPlayer2.gameObject.SetActive(player == 2 && active);
+        imageTimerPlayer2.gameObject.SetActive(player == 2 && active);
     }
 
     public void UpdateTimerUI(int time)
