@@ -37,15 +37,15 @@ public abstract class PlayerMovementBase : MonoBehaviour
     public bool canAirDash = true;         // se pode usar no ar
 
     // Estado de movimento
-    protected Vector2 moveInput;
+    public Vector2 moveInput;
     protected bool jumpQueued;
     protected bool dashQueued;
-    private bool isDashing = false;
+    public bool isDashing = false;
     private bool dashOnCooldown = false;
 
     private bool grounded;
     public bool IsGrounded => grounded;
-
+    public bool IsWallSliding => (!grounded && isTouchingWall && moveInput.x == wallDirection);
     private bool isTouchingWall;
     private int wallDirection; // -1 = esquerda, +1 = direita
 

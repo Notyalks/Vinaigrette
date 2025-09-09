@@ -22,6 +22,10 @@ public class TurnManager : MonoBehaviour
 
     void Update()
     {
+        // Só processa lógica durante a fase de construção
+        if (GameManager.Instance.currentState != GameState.Build)
+            return;
+
         if (waitingForInput)
         {
             if (Time.unscaledTime >= allowInputAt && Input.anyKeyDown)
@@ -55,14 +59,7 @@ public class TurnManager : MonoBehaviour
         currentTimer = turnDuration;
         turnActive = true;
 
-        // Atualiza UI do jogador atual
-        UIManager.Instance.ShowTurnUI(currentPlayer, true);
-
-        // Define inventário e área de colocação
-        GameObject currentInventory = (currentPlayer == 1)
-            ? UIManager.Instance.inventoryPlayer1
-            : UIManager.Instance.inventoryPlayer2;
-
+        GameObject currentInventory;
         Collider2D placementArea;
 
         if (GameManager.Instance.currentBuildMode == BuildMode.Adversary)
@@ -97,7 +94,6 @@ public class TurnManager : MonoBehaviour
                 UIManager.Instance.ShowTurnUI(1, true);
             }
         }
-
 
         inventoryManager.SetupInventory(currentInventory, placementArea);
     }

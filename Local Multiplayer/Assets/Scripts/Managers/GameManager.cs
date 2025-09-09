@@ -94,6 +94,7 @@ public class GameManager : MonoBehaviour
 
         UIManager.Instance.HideConstructionGrid();
 
+        turnManager.ResetTurnState(); // evita input atrasado da fase de construção
         turnManager.gameObject.SetActive(false);
 
         player1.ShowForPlayPhase();

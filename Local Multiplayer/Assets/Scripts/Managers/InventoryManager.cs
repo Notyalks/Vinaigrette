@@ -12,7 +12,6 @@ public class InventoryManager : MonoBehaviour
     private List<ObstacleOption> currentOptions = new();
 
     private int roundCounter = 0; // conta rodadas
-
     private bool forceBombNext = false;
 
     public void SetupInventory(GameObject inventoryUI, Collider2D placementArea)
@@ -30,6 +29,7 @@ public class InventoryManager : MonoBehaviour
 
             Image btnImg = inventoryButtons[i].GetComponent<Image>();
             btnImg.sprite = allObstacles[rand].icon;
+            btnImg.preserveAspect = true; // mantém a proporção original
             btnImg.color = Color.white;
 
             int index = i;
@@ -65,6 +65,7 @@ public class InventoryManager : MonoBehaviour
                 // Atualiza botão
                 Image btnImg = inventoryButtons[randomIndex].GetComponent<Image>();
                 btnImg.sprite = bomb.icon;
+                btnImg.preserveAspect = true; // mantém a proporção também na bomba
                 btnImg.color = Color.white;
 
                 int index = randomIndex;
@@ -77,6 +78,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
+
     public void ForceBombNextSetup()
     {
         forceBombNext = true;
@@ -89,8 +91,10 @@ public class InventoryManager : MonoBehaviour
         foreach (var btn in inventoryButtons)
         {
             btn.onClick.RemoveAllListeners();
-            btn.GetComponent<Image>().sprite = null;
-            btn.GetComponent<Image>().color = Color.clear;
+            var img = btn.GetComponent<Image>();
+            img.sprite = null;
+            img.color = Color.clear;
+            img.preserveAspect = true; // garante que continue correto no próximo setup
         }
         currentOptions.Clear();
     }
