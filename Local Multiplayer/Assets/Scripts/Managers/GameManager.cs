@@ -3,14 +3,18 @@ using UnityEngine.UI;
 using System.Collections;
 
 public enum GameState { Build, Play, End }
+public enum BuildMode { Adversary, Self }
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public GameState currentState = GameState.Build;
     public event System.Action<GameState> OnGameStateChanged;
-
     public event System.Action OnPlayPhaseStarted;
+
+    [Header("Rodadas")]
+    public int roundNumber = 1; // começa na rodada 1
+    public BuildMode currentBuildMode = BuildMode.Adversary;
 
     [Header("Turnos de Construção")]
     public int buildRounds = 1;
@@ -132,12 +136,32 @@ public class GameManager : MonoBehaviour
 
     public void RestartRound()
     {
+        roundNumber++;
         currentState = GameState.Build;
         OnGameStateChanged?.Invoke(currentState);
         currentBuildTurn = 0;
 
+        // Alterna entre modos
+        if (roundNumber % 2 == 0)
+            currentBuildMode = BuildMode.Adversary;
+        else
+            currentBuildMode = BuildMode.Self;
+
+        // Notificar inventário que precisa forçar bomba
+        if (currentBuildMode == BuildMode.Self)
+        {
+            InventoryManager[] inventories = FindObjectsOfType<InventoryManager>();
+            foreach (var inv in inventories)
+                inv.ForceBombNextSetup();
+        }
+
+        // Reset players
         player1.ResetPlayer();
         player2.ResetPlayer();
+
+        // Esconde players na fase de construção
+        player1.HideForBuildPhase();
+        player2.HideForBuildPhase();
 
         ScoreManager.Instance.ResetRoundState();
 
@@ -148,7 +172,6 @@ public class GameManager : MonoBehaviour
         turnManager.ResetTurnState();
         turnManager.ShowTurnTransition(1);
     }
-
 
     // -----------------------------
     // UTILS

@@ -80,7 +80,7 @@ public abstract class PlayerMovementBase : MonoBehaviour
         if (!controller.isActive || controller.hasFinished) return;
 
         if (!horizontalLocked && !isDashing)
-            rb.velocity = new Vector2(moveInput.x * moveSpeed, rb.velocity.y);
+            rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
     }
 
     // ----------------- Input -----------------
@@ -104,15 +104,15 @@ public abstract class PlayerMovementBase : MonoBehaviour
         if (grounded)
         {
             // Pulo normal
-            if (rb.velocity.y < 0f)
-                rb.velocity = new Vector2(rb.velocity.x, 0f);
+            if (rb.linearVelocity.y < 0f)
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
 
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
         else if (isTouchingWall)
         {
             // Wall jump
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             Vector2 force = new Vector2(-wallDirection * wallJumpHorizontalForce, wallJumpForce);
             rb.AddForce(force, ForceMode2D.Impulse);
 
@@ -138,9 +138,9 @@ public abstract class PlayerMovementBase : MonoBehaviour
         if (!grounded && isTouchingWall && Mathf.Sign(moveInput.x) == wallDirection)
         {
             // força a velocidade vertical para um valor constante de descida
-            if (rb.velocity.y < 0f)
+            if (rb.linearVelocity.y < 0f)
             {
-                rb.velocity = new Vector2(rb.velocity.x, -wallSlideSpeed);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, -wallSlideSpeed);
             }
         }
     }
@@ -225,7 +225,7 @@ public abstract class PlayerMovementBase : MonoBehaviour
 
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
-        rb.velocity = Vector2.zero; // reset para consistência
+        rb.linearVelocity = Vector2.zero; // reset para consistência
 
         // garantir apenas horizontal
         direction.y = 0f;
@@ -261,7 +261,7 @@ public abstract class PlayerMovementBase : MonoBehaviour
         Vector2 centerLeft = new Vector2(b.min.x - wallSize.x * 0.5f, b.center.y);
         Vector2 centerRight = new Vector2(b.max.x + wallSize.x * 0.5f, b.center.y);
 
-        Gizmos.color = Color.cyan;
+        Gizmos.color = isTouchingWall ? Color.green : Color.red;
         Gizmos.DrawWireCube(centerLeft, wallSize);
         Gizmos.DrawWireCube(centerRight, wallSize);
     }

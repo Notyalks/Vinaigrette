@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 988690831498329894}
   - component: {fileID: 8028255390487730690}
   - component: {fileID: 7798932084329346175}
-  - component: {fileID: 6052868705090643987}
+  - component: {fileID: -6791880384903608007}
   m_Layer: 7
   m_Name: Colher
   m_TagString: Untagged
@@ -102,10 +102,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 50
-  rotationAxis: {x: 0, y: 0, z: 1}
-  useLocalRotation: 1
-  autoRotate: 1
---- !u!61 &6052868705090643987
+  clockwise: 1
+--- !u!61 &-6791880384903608007
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

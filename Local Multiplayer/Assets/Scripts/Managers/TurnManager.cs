@@ -63,9 +63,41 @@ public class TurnManager : MonoBehaviour
             ? UIManager.Instance.inventoryPlayer1
             : UIManager.Instance.inventoryPlayer2;
 
-        Collider2D placementArea = (currentPlayer == 1)
-            ? placer.placementAreaPlayer2
-            : placer.placementAreaPlayer1;
+        Collider2D placementArea;
+
+        if (GameManager.Instance.currentBuildMode == BuildMode.Adversary)
+        {
+            currentInventory = (currentPlayer == 1)
+                ? UIManager.Instance.inventoryPlayer1
+                : UIManager.Instance.inventoryPlayer2;
+
+            placementArea = (currentPlayer == 1)
+                ? placer.placementAreaPlayer2
+                : placer.placementAreaPlayer1;
+
+            // mostra painel normal
+            UIManager.Instance.ShowTurnUI(currentPlayer, true);
+        }
+        else // --- modo próprio ---
+        {
+            if (currentPlayer == 1)
+            {
+                currentInventory = UIManager.Instance.inventoryPlayer2;
+                placementArea = placer.placementAreaPlayer1;
+
+                // ativa painel 2 (já que player1 está construindo no caminho dele)
+                UIManager.Instance.ShowTurnUI(2, true);
+            }
+            else // currentPlayer == 2
+            {
+                currentInventory = UIManager.Instance.inventoryPlayer1;
+                placementArea = placer.placementAreaPlayer2;
+
+                // ativa painel 1 (já que player2 está construindo no caminho dele)
+                UIManager.Instance.ShowTurnUI(1, true);
+            }
+        }
+
 
         inventoryManager.SetupInventory(currentInventory, placementArea);
     }
