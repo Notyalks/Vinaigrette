@@ -71,6 +71,9 @@ public class PlayerController : MonoBehaviour
             isActive = false;
             SetOffscreenIndicatorActive(false);
             ScoreManager.Instance.CheckRoundEnd();
+            var anim = GetComponent<Animator>();
+            if (anim != null)
+                anim.SetTrigger("Die");
         }
         else
         {

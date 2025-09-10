@@ -18,27 +18,18 @@ public class PlayerAnimator : MonoBehaviour
 
     void Update()
     {
-        if (!controller.isActive) return;
+        if (animator == null || controller == null || movement == null) return;
 
-        // Idle/Walk
+        // ====== Outros parâmetros (apenas se NÃO estiver morto) ======
         animator.SetFloat("Speed", Mathf.Abs(movement.moveInput.x));
-
-        // Jump
         animator.SetBool("IsGrounded", movement.IsGrounded);
-
-        // Dash
         animator.SetBool("IsDashing", movement.isDashing);
-
-        // Wall Slide
         animator.SetBool("IsWallSliding", movement.IsWallSliding);
 
-        // Death
-        animator.SetBool("IsDead", !controller.isActive || controller.lives <= 0);
-
-        // -------- FlipX --------
+        // -------- Flip do sprite de acordo com input (mantém facing) --------
         if (movement.moveInput.x > 0.01f)
-            spriteRenderer.flipX = false; // olhando para a direita
+            spriteRenderer.flipX = false;
         else if (movement.moveInput.x < -0.01f)
-            spriteRenderer.flipX = true; // olhando para a esquerda
+            spriteRenderer.flipX = true;
     }
 }

@@ -9,6 +9,12 @@ public class SaltProjectile : MonoBehaviour
     [Header("Dano")]
     public int damage = 1;
 
+    [Header("Colisão")]
+    [Tooltip("Layers que destroem o projétil ao colidir.")]
+    public LayerMask destroyOnCollision;
+    [Tooltip("Offset de rotação para alinhar sprite com a direção (ex.: 90 se sprite está deitado).")]
+    public float rotationOffset = 0f;
+
     [Header("Efeitos (opcional)")]
     public GameObject hitEffectPrefab;
 
@@ -23,26 +29,21 @@ public class SaltProjectile : MonoBehaviour
 
     private void Start()
     {
-        // Caso o atirador não tenha chamado Launch, tenta inferir pela rotação atual
         if (!launched)
         {
-            Vector2 dir = transform.right; // direção local "frente" do projétil
+            Vector2 dir = transform.right;
             Launch(dir, snapToAxis: true);
         }
 
         Destroy(gameObject, lifetime);
     }
 
-    /// <summary>
-    /// Lança o projétil em uma direção. Se snapToAxis = true, trava no eixo dominante (X ou Y),
-    /// respeitando o sinal (+X, -X, +Y, -Y).
-    /// </summary>
     public void Launch(Vector2 dir, bool snapToAxis)
     {
         launched = true;
 
         if (dir.sqrMagnitude < 0.0001f)
-            dir = Vector2.right; // fallback seguro
+            dir = Vector2.right;
 
         if (snapToAxis)
         {
@@ -65,13 +66,14 @@ public class SaltProjectile : MonoBehaviour
 #endif
         }
 
-        // Opcional: alinha a rotação visual com a direção de movimento
+        // Aplica rotação visual
         float ang = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.AngleAxis(ang, Vector3.forward);
+        transform.rotation = Quaternion.AngleAxis(ang + rotationOffset, Vector3.forward);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // --- jogador ---
         var player = collision.collider.GetComponent<PlayerController>();
         if (player != null && player.isActive && !player.invincible)
         {
@@ -83,15 +85,13 @@ public class SaltProjectile : MonoBehaviour
             return;
         }
 
-        if (collision.collider.CompareTag("Obstacles") ||
-            collision.collider.CompareTag("Terrain") ||
-            collision.collider.CompareTag("Ground"))
+        // --- layers configuráveis ---
+        if (((1 << collision.collider.gameObject.layer) & destroyOnCollision) != 0)
         {
             SpawnHitEffect();
             Destroy(gameObject);
         }
     }
-
 
     private void SpawnHitEffect()
     {

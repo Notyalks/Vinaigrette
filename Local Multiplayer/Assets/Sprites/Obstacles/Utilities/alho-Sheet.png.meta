@@ -81,7 +81,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -163,7 +163,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
@@ -185,15 +185,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 99d2bce6008500bf0800000000000000
+      spriteID: 3602ec5fae37a304bad76abdfb07d776
       internalID: -360191211307586151
       vertices: []
       indices: 
@@ -207,15 +207,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 45c2f0a92729d34c0800000000000000
+      spriteID: 2fabe6dc20188e844926847e2b2f1647
       internalID: -4306124647787713452
       vertices: []
       indices: 
@@ -229,15 +229,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: acfa40b6a76805b10800000000000000
+      spriteID: aecc98beac97b0541a9c076f2f374d84
       internalID: 1968220897500508106
       vertices: []
       indices: 
@@ -251,15 +251,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 05ec8183c9d5462e0800000000000000
+      spriteID: 3d1fe49fd0177284bb7c46c686a38ebd
       internalID: -2133477397929341360
       vertices: []
       indices: 
@@ -273,15 +273,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 68e0c803982a4ccb0800000000000000
+      spriteID: 3b222fe1174343146960056c2504dac4
       internalID: -4844568589035106682
       vertices: []
       indices: 
@@ -295,15 +295,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 15522e0bb17bb0740800000000000000
+      spriteID: 9c46dc6b3ace166419e8d57b6e7d1c8a
       internalID: 5119386730996311377
       vertices: []
       indices: 
@@ -317,15 +317,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: a8d4dce04c72d3410800000000000000
+      spriteID: fe3622054e16a4541a7d9ebb1957e1f2
       internalID: 1458365577353317770
       vertices: []
       indices: 
@@ -339,15 +339,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: abaa160429415d970800000000000000
+      spriteID: 30c14bfea7f10c34d9d36bdd69225f25
       internalID: 8778945667006573242
       vertices: []
       indices: 
@@ -361,15 +361,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 0561ee3559c3b6a00800000000000000
+      spriteID: 2ed181c11cfaabd48afe106493436921
       internalID: 750760374943225424
       vertices: []
       indices: 
@@ -383,16 +383,38 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: e61feb3ba4f65fb90800000000000000
+      spriteID: 6dce2007d5211fe4092afd9b7527d808
       internalID: -7208733261902712466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: alho-Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 0
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6de2cd2838a3494fad3d85282529b58
+      internalID: 1346074426
       vertices: []
       indices: 
       edges: []
@@ -414,6 +436,7 @@ TextureImporter:
       alho-Sheet_0: 5032066128686428354
       alho-Sheet_1: -360191211307586151
       alho-Sheet_10: -7208733261902712466
+      alho-Sheet_11: 1346074426
       alho-Sheet_2: -4306124647787713452
       alho-Sheet_3: 1968220897500508106
       alho-Sheet_4: -2133477397929341360

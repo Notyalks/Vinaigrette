@@ -60,40 +60,40 @@ public class GarlicBomb : MonoBehaviour
     {
         Vector3 spriteCenter = GetComponent<SpriteRenderer>().bounds.center;
 
-        // Efeito da bomba
+        // toca a animação da bomba
+        Animator anim = GetComponent<Animator>();
+        if (anim != null)
+        {
+            anim.SetTrigger("Explode");
+            // espera a duração da animação antes de destruir
+            yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+        }
+
+        // Efeito de partículas extra (se tiver)
         if (explosionEffect != null)
             Instantiate(explosionEffect, spriteCenter, Quaternion.identity);
 
+        // Destrói obstáculos na área
         Collider2D[] hits = Physics2D.OverlapBoxAll(spriteCenter, areaSize, 0f, obstacleMask);
 
-        if (hits.Length > 0)
+        foreach (var hit in hits)
         {
-            foreach (var hit in hits)
-            {
-                Debug.Log($"[GarlicBomb] Destruindo obstáculo: {hit.name}");
+            Debug.Log($"[GarlicBomb] Destruindo obstáculo: {hit.name}");
 
-                // Toca o efeito imediatamente
-                DestroyEffect effect = hit.GetComponent<DestroyEffect>();
-                if (effect != null)
-                    effect.PlayEffect();
+            DestroyEffect effect = hit.GetComponent<DestroyEffect>();
+            if (effect != null) effect.PlayEffect();
 
-                // Some imediatamente (sprite e colisão)
-                SpriteRenderer sr = hit.GetComponent<SpriteRenderer>();
-                if (sr != null) sr.enabled = false;
+            SpriteRenderer sr = hit.GetComponent<SpriteRenderer>();
+            if (sr != null) sr.enabled = false;
 
-                Collider2D col = hit.GetComponent<Collider2D>();
-                if (col != null) col.enabled = false;
+            Collider2D col = hit.GetComponent<Collider2D>();
+            if (col != null) col.enabled = false;
 
-                // Destrói de fato depois
-                Destroy(hit.gameObject, destroyDelay);
-            }
-        }
-        else
-        {
-            Debug.Log("[GarlicBomb] Nenhum obstáculo atingido.");
+            Destroy(hit.gameObject, destroyDelay);
         }
 
         yield return new WaitForSeconds(destroyDelay);
+
         Destroy(gameObject);
         OnBombResolved?.Invoke();
     }
