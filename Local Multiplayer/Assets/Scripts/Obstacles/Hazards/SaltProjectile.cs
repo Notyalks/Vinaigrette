@@ -75,11 +75,16 @@ public class SaltProjectile : MonoBehaviour
     {
         // --- jogador ---
         var player = collision.collider.GetComponent<PlayerController>();
-        if (player != null && player.isActive && !player.invincible)
+        if (player != null)
         {
-            for (int i = 0; i < damage; i++)
-                player.LoseLife();
+            // Só causa dano se estiver ativo e não invencível
+            if (player.isActive && !player.invincible)
+            {
+                for (int i = 0; i < damage; i++)
+                    player.LoseLife();
+            }
 
+            // Sempre destrói o projétil ao colidir com jogador, mesmo morto
             SpawnHitEffect();
             Destroy(gameObject);
             return;

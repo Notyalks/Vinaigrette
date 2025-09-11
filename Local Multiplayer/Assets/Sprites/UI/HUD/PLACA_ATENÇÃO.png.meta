@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      "PLACA_ATEN\xC7\xC3O_0": 4790640946783115223
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -30,9 +31,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Turnos - Painéis de Transição")]
     public GameObject turnTransitionPanelP1;
-    public TextMeshProUGUI turnTransitionTextP1;
     public GameObject turnTransitionPanelP2;
-    public TextMeshProUGUI turnTransitionTextP2;
 
     [Header("Turnos - Timer UI")]
     public TextMeshProUGUI timerPlayer1;
@@ -40,11 +39,26 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI timerPlayer2;
     public GameObject imageTimerPlayer2;
 
-    [Header("Referências Extras")]
+    [Header("Indicadores visuais")]
     public GameObject startIndicatorP1;
     public GameObject goalIndicatorP1;
     public GameObject startIndicatorP2;
     public GameObject goalIndicatorP2;
+
+    [Header("Indicadores de Texto")]
+    public TextMeshProUGUI startTextP1;
+    public TextMeshProUGUI goalTextP1;
+    public TextMeshProUGUI startTextP2;
+    public TextMeshProUGUI goalTextP2;
+
+    [Header("Painel de Modo (Adversário/Próprio)")]
+    public GameObject modeInfoPanel;
+    public TextMeshProUGUI modeInfoText;
+    [Tooltip("Tempo mínimo (segundos) que o painel do modo fica visível antes de aceitar input para fechar.")]
+    public float modeInfoMinDisplay = 0.12f;
+
+    // coroutine handle para evitar múltiplas chamadas sobrepostas
+    private Coroutine modeInfoCoroutine;
 
     void Awake()
     {
@@ -60,10 +74,8 @@ public class UIManager : MonoBehaviour
         preparePanel.SetActive(true);
         prepareCanvasGroup.alpha = 1f;
 
-        // Esconde os indicadores de início/fim
         HideIndicators();
 
-        // Ativa jogadores + UI de vidas antes do fade-out
         GameManager.Instance.player1.SetLivesUIVisible(true);
         GameManager.Instance.player2.SetLivesUIVisible(true);
 
@@ -86,17 +98,42 @@ public class UIManager : MonoBehaviour
         }
 
         preparePanel.SetActive(false);
-        GameManager.Instance.StartPlayPhase(); // depois do fade, começa o jogo
+        GameManager.Instance.StartPlayPhase();
     }
 
     // -----------------------------
     // CONSTRUCTION GRID
     // -----------------------------
-    public void ShowConstructionGrid() =>
+    public void ShowConstructionGrid()
+    {
         constructionGrid.SetActive(true);
+        HideIndicators();
+    }
+    public void ShowConstructionGridForOwner(int owner)
+    {
+        ShowConstructionGrid();
 
-    public void HideConstructionGrid() =>
+        if (owner == 1)
+        {
+            if (startIndicatorP1) startIndicatorP1.SetActive(true);
+            if (goalIndicatorP1) goalIndicatorP1.SetActive(true);
+            if (startTextP1) startTextP1.gameObject.SetActive(true);
+            if (goalTextP1) goalTextP1.gameObject.SetActive(true);
+        }
+        else // owner == 2
+        {
+            if (startIndicatorP2) startIndicatorP2.SetActive(true);
+            if (goalIndicatorP2) goalIndicatorP2.SetActive(true);
+            if (startTextP2) startTextP2.gameObject.SetActive(true);
+            if (goalTextP2) goalTextP2.gameObject.SetActive(true);
+        }
+    }
+
+    public void HideConstructionGrid()
+    {
         constructionGrid.SetActive(false);
+        HideIndicators();
+    }
 
     // -----------------------------
     // WIN SCREEN
@@ -122,9 +159,9 @@ public class UIManager : MonoBehaviour
         inventoryPlayer2.SetActive(player == 2 && active);
 
         timerPlayer1.gameObject.SetActive(player == 1 && active);
-        imageTimerPlayer1.gameObject.SetActive(player == 1 && active);
+        imageTimerPlayer1.SetActive(player == 1 && active);
         timerPlayer2.gameObject.SetActive(player == 2 && active);
-        imageTimerPlayer2.gameObject.SetActive(player == 2 && active);
+        imageTimerPlayer2.SetActive(player == 2 && active);
     }
 
     public void UpdateTimerUI(int time)
@@ -133,6 +170,9 @@ public class UIManager : MonoBehaviour
         timerPlayer2.text = time.ToString();
     }
 
+    // -----------------------------
+    // TURN TRANSITION (sem texto "Vez do jogador X")
+    // -----------------------------
     public void ShowTurnTransition(int nextPlayer)
     {
         // garante estado limpo antes de ativar
@@ -140,17 +180,10 @@ public class UIManager : MonoBehaviour
         turnTransitionPanelP2.SetActive(false);
 
         if (nextPlayer == 1)
-        {
-            turnTransitionTextP1.text = "Vez do Jogador 1";
             turnTransitionPanelP1.SetActive(true);
-        }
         else
-        {
-            turnTransitionTextP2.text = "Vez do Jogador 2";
             turnTransitionPanelP2.SetActive(true);
-        }
     }
-
 
     public void HideTurnTransition(int player)
     {
@@ -159,13 +192,79 @@ public class UIManager : MonoBehaviour
     }
 
     // -----------------------------
+    // Painel de Modo (sobrecargas)
+    // -----------------------------
+    public void ShowModeInfo(BuildMode mode, Action onDismiss = null)
+    {
+        string msg = (mode == BuildMode.Adversary)
+            ? "Dificulte o caminho do seu adversário!"
+            : "Construa no seu próprio caminho!";
+        ShowModeInfo(msg, onDismiss);
+    }
+
+    public void ShowModeInfo(string message, Action onDismiss = null)
+    {
+        if (modeInfoPanel == null || modeInfoText == null)
+        {
+            onDismiss?.Invoke();
+            return;
+        }
+
+        // atualiza texto e ativa painel
+        modeInfoText.text = message;
+        modeInfoPanel.SetActive(true);
+
+        // garante que não existam corrotinas duplicadas
+        if (modeInfoCoroutine != null)
+        {
+            StopCoroutine(modeInfoCoroutine);
+            modeInfoCoroutine = null;
+        }
+
+        modeInfoCoroutine = StartCoroutine(ModeInfoRoutine(onDismiss));
+    }
+
+    private IEnumerator ModeInfoRoutine(Action onDismiss)
+    {
+        // pequena espera para evitar fechar instantaneamente por um input que ocorreu um quadro antes
+        if (modeInfoMinDisplay > 0f)
+            yield return new WaitForSecondsRealtime(modeInfoMinDisplay);
+
+        // espera por qualquer tecla
+        while (!Input.anyKeyDown)
+            yield return null;
+
+        // fecha e chama callback
+        modeInfoPanel.SetActive(false);
+        modeInfoCoroutine = null;
+
+        onDismiss?.Invoke();
+    }
+
+    public void HideModeInfo()
+    {
+        if (modeInfoCoroutine != null)
+        {
+            StopCoroutine(modeInfoCoroutine);
+            modeInfoCoroutine = null;
+        }
+        if (modeInfoPanel != null)
+            modeInfoPanel.SetActive(false);
+    }
+
+    // -----------------------------
     // INDICADORES
     // -----------------------------
     public void HideIndicators()
     {
-        if (startIndicatorP1 != null) startIndicatorP1.SetActive(false);
-        if (startIndicatorP2 != null) startIndicatorP2.SetActive(false);
-        if (goalIndicatorP1 != null) goalIndicatorP1.SetActive(false);
-        if (goalIndicatorP2 != null) goalIndicatorP2.SetActive(false);
+        if (startIndicatorP1) startIndicatorP1.SetActive(false);
+        if (goalIndicatorP1) goalIndicatorP1.SetActive(false);
+        if (startIndicatorP2) startIndicatorP2.SetActive(false);
+        if (goalIndicatorP2) goalIndicatorP2.SetActive(false);
+
+        if (startTextP1) startTextP1.gameObject.SetActive(false);
+        if (goalTextP1) goalTextP1.gameObject.SetActive(false);
+        if (startTextP2) startTextP2.gameObject.SetActive(false);
+        if (goalTextP2) goalTextP2.gameObject.SetActive(false);
     }
 }

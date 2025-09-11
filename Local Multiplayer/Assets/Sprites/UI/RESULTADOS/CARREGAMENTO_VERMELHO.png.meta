@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f0ada3e044eb05247b57c082a95ee98b
+guid: a8b127d4432100e40a4806cd95726c10
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 851029886496670389
-    second: CONF_0
+      213: 1928000837754942531
+    second: CARREGAMENTO_VERMELHO_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CONF_0
+      name: CARREGAMENTO_VERMELHO_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1920
-        height: 1080
+        width: 403
+        height: 26
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5b200ed3c277fcb00800000000000000
-      internalID: 851029886496670389
+      spriteID: 344f9050c82a1ca10800000000000000
+      internalID: 1928000837754942531
       vertices: []
       indices: 
       edges: []
@@ -147,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      CONF_0: 851029886496670389
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

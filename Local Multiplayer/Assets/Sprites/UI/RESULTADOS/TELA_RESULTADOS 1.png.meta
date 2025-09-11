@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 8702dacdcd64a7248bac85ae871f801f
+guid: fccf813f63c22da438db4bf2f63c2f52
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7658034301422817068
-    second: TELA_VEZ_DO_JOGADOR_0
+      213: 5835042874061849805
+    second: TELA_RESULTADOS 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -109,30 +109,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TELA_VEZ_DO_JOGADOR_0
+      name: TELA_RESULTADOS 1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1582
-        height: 884
+        width: 1920
+        height: 1080
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c2f40168f9dc64a60800000000000000
-      internalID: 7658034301422817068
+      spriteID: dc481ad149c3af050800000000000000
+      internalID: 5835042874061849805
       vertices: []
       indices: 
       edges: []

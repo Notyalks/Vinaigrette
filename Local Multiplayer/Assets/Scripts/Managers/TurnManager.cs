@@ -18,12 +18,16 @@ public class TurnManager : MonoBehaviour
     // --- Controle da transição ---
     private bool waitingForInput = false;
     private float allowInputAt = 0f;
-    [SerializeField] private float inputDelay = 0.25f; // tempo mínimo antes de aceitar input
+    [SerializeField] private float inputDelay = 0.25f;
+
+    // --- Controle do painel de modo ---
+    private BuildMode lastShownBuildMode;
+    private bool hasShownModeBefore = false;
 
     void Update()
     {
-        // Só processa lógica durante a fase de construção
-        if (GameManager.Instance.currentState != GameState.Build)
+        // === Só processa durante fase de construção ===
+        if (GameManager.Instance == null || GameManager.Instance.currentState != GameState.Build)
             return;
 
         if (waitingForInput)
@@ -72,28 +76,31 @@ public class TurnManager : MonoBehaviour
                 ? placer.placementAreaPlayer2
                 : placer.placementAreaPlayer1;
 
-            // mostra painel normal
+            // mostra painel normal do jogador (o panel do player atual)
             UIManager.Instance.ShowTurnUI(currentPlayer, true);
         }
-        else // --- modo próprio ---
+        else // modo próprio
         {
             if (currentPlayer == 1)
             {
                 currentInventory = UIManager.Instance.inventoryPlayer2;
                 placementArea = placer.placementAreaPlayer1;
 
-                // ativa painel 2 (já que player1 está construindo no caminho dele)
+                // ativa painel do caminho que será visto (player2 panel)
                 UIManager.Instance.ShowTurnUI(2, true);
             }
-            else // currentPlayer == 2
+            else
             {
                 currentInventory = UIManager.Instance.inventoryPlayer1;
                 placementArea = placer.placementAreaPlayer2;
 
-                // ativa painel 1 (já que player2 está construindo no caminho dele)
                 UIManager.Instance.ShowTurnUI(1, true);
             }
         }
+
+        // Determina qual owner tem o placementArea (1 ou 2) para mostrar apenas os indicadores corretos
+        int placementOwner = (placementArea == placer.placementAreaPlayer1) ? 1 : 2;
+        UIManager.Instance.ShowConstructionGridForOwner(placementOwner);
 
         inventoryManager.SetupInventory(currentInventory, placementArea);
     }
@@ -121,6 +128,31 @@ public class TurnManager : MonoBehaviour
     // Chamado pelo GameManager
     public void ShowTurnTransition(int nextPlayer)
     {
+        // Se nunca mostrou o modo ainda, ou se o modo atual mudou, mostramos o painel de modo.
+        BuildMode currentMode = GameManager.Instance.currentBuildMode;
+        if (!hasShownModeBefore || currentMode != lastShownBuildMode)
+        {
+            hasShownModeBefore = true;
+            lastShownBuildMode = currentMode;
+
+            string msg = (currentMode == BuildMode.Adversary)
+                ? "Dificulte o caminho do seu adversário!"
+                : "Construa no seu próprio caminho!";
+
+            UIManager.Instance.ShowModeInfo(msg, () =>
+            {
+                // callback: depois do dismiss, inicia a transição normal
+                BeginTransition(nextPlayer);
+            });
+        }
+        else
+        {
+            BeginTransition(nextPlayer);
+        }
+    }
+
+    private void BeginTransition(int nextPlayer)
+    {
         waitingForInput = true;
         pendingNextPlayer = nextPlayer;
         allowInputAt = Time.unscaledTime + inputDelay;
@@ -138,6 +170,5 @@ public class TurnManager : MonoBehaviour
         pendingNextPlayer = -1;
     }
 
-    // Getter
     public int GetCurrentPlayer() => currentPlayer;
 }
