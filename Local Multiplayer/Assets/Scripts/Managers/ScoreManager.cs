@@ -1,4 +1,8 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using System.Collections;
+
 
 public class ScoreManager : MonoBehaviour
 {
@@ -18,9 +22,20 @@ public class ScoreManager : MonoBehaviour
     private int player1FinishOrder = 0;
     private int player2FinishOrder = 0;
 
+    [Header("UI de Resultados")]
+    public GameObject roundResultPanel;
+    public Slider sliderPlayer1;
+    public Slider sliderPlayer2;
+    public TextMeshProUGUI textPercentPlayer1;
+    public TextMeshProUGUI textPercentPlayer2;
+    public Button continueButton;
+
     private void Awake()
     {
         Instance = this;
+
+        if (continueButton != null)
+            continueButton.onClick.AddListener(OnContinuePressed);
     }
 
     public void ResetRoundState()
@@ -77,8 +92,7 @@ public class ScoreManager : MonoBehaviour
             player1ScoreFinalized = true;
             player2ScoreFinalized = true;
 
-            CheckForWinner();
-            GameManager.Instance.EndRound();
+            ShowRoundResults();
             return;
         }
 
@@ -88,8 +102,7 @@ public class ScoreManager : MonoBehaviour
             scorePlayer1 += 100;
             player1ScoreFinalized = true;
 
-            CheckForWinner();
-            GameManager.Instance.EndRound();
+            ShowRoundResults();
             return;
         }
         else if (playerId == 2 && !GameManager.Instance.player1.isActive)
@@ -97,8 +110,7 @@ public class ScoreManager : MonoBehaviour
             scorePlayer2 += 100;
             player2ScoreFinalized = true;
 
-            CheckForWinner();
-            GameManager.Instance.EndRound();
+            ShowRoundResults();
             return;
         }
     }
@@ -112,8 +124,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (!GameManager.Instance.player1.isActive && !GameManager.Instance.player2.isActive)
         {
-            CheckForWinner();
-            GameManager.Instance.EndRound();
+            ShowRoundResults();
             return;
         }
 
@@ -121,9 +132,7 @@ public class ScoreManager : MonoBehaviour
         {
             scorePlayer1 += 100;
             player1ScoreFinalized = true;
-
-            CheckForWinner();
-            GameManager.Instance.EndRound();
+            ShowRoundResults();
             return;
         }
 
@@ -131,15 +140,56 @@ public class ScoreManager : MonoBehaviour
         {
             scorePlayer2 += 100;
             player2ScoreFinalized = true;
-
-            CheckForWinner();
-            GameManager.Instance.EndRound();
+            ShowRoundResults();
             return;
         }
     }
 
-    private void CheckForWinner()
+    private void ShowRoundResults()
     {
+        roundResultPanel.SetActive(true);
+
+        float p1Target = Mathf.Clamp01((float)scorePlayer1 / winningScore);
+        float p2Target = Mathf.Clamp01((float)scorePlayer2 / winningScore);
+
+        // Reseta valores antes da animação
+        sliderPlayer1.value = 0f;
+        sliderPlayer2.value = 0f;
+        textPercentPlayer1.text = "0%";
+        textPercentPlayer2.text = "0%";
+
+        // Inicia corrotina de animação
+        StartCoroutine(AnimateResults(sliderPlayer1, textPercentPlayer1, p1Target));
+        StartCoroutine(AnimateResults(sliderPlayer2, textPercentPlayer2, p2Target));
+    }
+
+    private IEnumerator AnimateResults(Slider slider, TextMeshProUGUI text, float targetValue)
+    {
+        float duration = 1.2f; // tempo da animação
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+
+            float value = Mathf.Lerp(0f, targetValue, t);
+            slider.value = value;
+            text.text = Mathf.RoundToInt(value * 100f) + "%";
+
+            yield return null;
+        }
+
+        // Garante valor final exato
+        slider.value = targetValue;
+        text.text = Mathf.RoundToInt(targetValue * 100f) + "%";
+    }
+
+
+    private void OnContinuePressed()
+    {
+        roundResultPanel.SetActive(false);
+
         if (scorePlayer1 >= winningScore)
         {
             GameManager.Instance.EndGame(1);
@@ -147,6 +197,10 @@ public class ScoreManager : MonoBehaviour
         else if (scorePlayer2 >= winningScore)
         {
             GameManager.Instance.EndGame(2);
+        }
+        else
+        {
+            GameManager.Instance.EndRound();
         }
     }
 }
