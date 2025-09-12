@@ -26,8 +26,8 @@ public class TurnManager : MonoBehaviour
 
     void Update()
     {
-        // === Só processa durante fase de construção ===
-        if (GameManager.Instance == null || GameManager.Instance.currentState != GameState.Build)
+        // Bloqueia input se o jogo estiver pausado ou fora da fase de construção
+        if (PauseMenu.GameIsPaused || GameManager.Instance == null || GameManager.Instance.currentState != GameState.Build)
             return;
 
         if (waitingForInput)

@@ -65,6 +65,8 @@ public abstract class PlayerMovementBase : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (PauseMenu.GameIsPaused) return; // bloqueia input/movimento
+
         if (!controller.isActive || controller.hasFinished) return;
 
         grounded = CheckGrounded();
@@ -77,12 +79,13 @@ public abstract class PlayerMovementBase : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
+        if (PauseMenu.GameIsPaused) return; //  bloqueia física do input
+
         if (!controller.isActive || controller.hasFinished) return;
 
         if (!horizontalLocked && !isDashing)
             rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
     }
-
     // ----------------- Input -----------------
     // SetMove agora atualiza facingDirection quando apropriado
     public void SetMove(Vector2 input)

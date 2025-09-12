@@ -27,9 +27,11 @@ public class ObstaclePlacer : MonoBehaviour
 
     void Update()
     {
+        if (PauseMenu.GameIsPaused) return; // bloqueia colocação de obstáculos
+
         if (!isPlacing || ghostObstacle == null) return;
 
-        // Seguir mouse no grid (pivot do sprite continua sendo o transform.position)
+        // Seguir mouse no grid
         Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
         mousePos.x = Mathf.Round(mousePos.x / gridSize) * gridSize;
@@ -41,7 +43,7 @@ public class ObstaclePlacer : MonoBehaviour
         float scroll = Input.mouseScrollDelta.y;
         if (scroll != 0) RotateGhost(scroll > 0 ? 90f : -90f);
 
-        // Validar posição --- agora IsPlacementValid calcula o centro real do colisor
+        // Validar posição
         isValidPlacement = IsPlacementValid(mousePos);
         UpdateGhostColor();
 
@@ -49,6 +51,7 @@ public class ObstaclePlacer : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && isValidPlacement)
             PlaceObstacle();
     }
+
 
     public void BeginPlacement(ObstacleOption option, Collider2D placementArea)
     {

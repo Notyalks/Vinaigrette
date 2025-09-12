@@ -41,6 +41,10 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        // Bloqueia qualquer lógica enquanto o jogo estiver pausado
+        if (PauseMenu.GameIsPaused)
+            return;
+
         if (waitingToRestart && Input.anyKeyDown)
         {
             waitingToRestart = false;
