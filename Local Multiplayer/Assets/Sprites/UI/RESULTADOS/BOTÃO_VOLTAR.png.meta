@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      "BOT\xC3O_VOLTAR_0": -4497223410065764810
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
