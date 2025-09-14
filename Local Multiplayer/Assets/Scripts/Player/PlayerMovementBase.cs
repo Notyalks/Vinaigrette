@@ -47,7 +47,11 @@ public abstract class PlayerMovementBase : MonoBehaviour
     public bool IsGrounded => grounded;
     public bool IsWallSliding => (!grounded && isTouchingWall && moveInput.x == wallDirection);
     private bool isTouchingWall;
-    private int wallDirection; // -1 = esquerda, +1 = direita
+    private int wallDirection;
+
+    private bool inputBlocked = false;
+    public bool InputBlocked => inputBlocked;
+    // -1 = esquerda, +1 = direita
 
     // facing - guarda última direção horizontal não-nula
     // inicia 1 (direita)
@@ -90,13 +94,37 @@ public abstract class PlayerMovementBase : MonoBehaviour
     // SetMove agora atualiza facingDirection quando apropriado
     public void SetMove(Vector2 input)
     {
+        if (inputBlocked) return; // ignora
         moveInput = input;
         // atualiza direção apenas se houver input significativo e controle não estiver travado
         if (!horizontalLocked && Mathf.Abs(input.x) > 0.1f)
             facingDirection = input.x > 0f ? 1 : -1;
     }
-    public void QueueJump() => jumpQueued = true;
-    public void QueueDash() => dashQueued = true;
+    public void QueueJump()
+    {
+        if (!inputBlocked) // ignora
+            jumpQueued = true;
+    }
+
+
+    public void QueueDash()
+    {
+        if (!inputBlocked) // ignora
+            dashQueued = true;
+    }
+
+    public void BlockInputs(bool block)
+    {
+        inputBlocked = block;
+
+        if (block)
+        {
+            // zera inputs ativos
+            moveInput = Vector2.zero;
+            jumpQueued = false;
+            dashQueued = false;
+        }
+    }
 
     // ----------------- Jump -----------------
     private void HandleJump()

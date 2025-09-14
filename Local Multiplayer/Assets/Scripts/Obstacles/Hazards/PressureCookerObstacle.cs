@@ -1,71 +1,118 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 
+[RequireComponent(typeof(Collider2D), typeof(Animator))]
 public class PressureCookerObstacle : TimedObstacleBase
 {
     [Header("Configuração do Vapor")]
-    public float pushForce = 15f;          // Força de empurrão do vapor
-    public float pushDuration = 0.5f;      // Quanto tempo o jato dura
-    public ParticleSystem steamEffect;     // Partículas de vapor (opcional)
+    public float verticalForce = 25f;   // força padrão quando para cima/baixo
+    public float horizontalForce = 100f; // força quando para esquerda/direita
 
     private bool isPushing = false;
-    private List<Rigidbody2D> affectedPlayers = new List<Rigidbody2D>();
+    private bool atMaxForce = false;
+    private List<PlayerMovementBase> playersInside = new List<PlayerMovementBase>();
+    private Animator anim;
+    private Collider2D col;
+
+    protected override void Start()
+    {
+        base.Start();
+        anim = GetComponent<Animator>();
+        col = GetComponent<Collider2D>();
+    }
 
     protected override void OnInterval()
     {
-        if (!isPushing)
-            StartCoroutine(DoSteamBlast());
+        anim.SetTrigger("Steam");
     }
 
-    private IEnumerator DoSteamBlast()
+    // =====================
+    // EVENTOS DA ANIMAÇÃO
+    // =====================
+    public void StartSteamPush()
     {
         isPushing = true;
+        atMaxForce = false;
 
-        // Rotaciona o sistema de partículas na direção do empurrão
-        if (steamEffect != null)
+        // bloqueia inputs
+        foreach (var player in playersInside)
         {
-            steamEffect.transform.rotation = transform.rotation;
-            steamEffect.Play();
+            if (player != null)
+                player.BlockInputs(true);
         }
-
-        float timer = 0f;
-        while (timer < pushDuration)
-        {
-            // Calcula a direção dinâmica baseada na rotação do objeto
-            Vector2 dynamicDirection = transform.up;
-
-            foreach (var rb in affectedPlayers)
-            {
-                if (rb != null)
-                    rb.AddForce(dynamicDirection.normalized * pushForce, ForceMode2D.Force);
-            }
-
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        if (steamEffect != null)
-            steamEffect.Stop();
-
-        isPushing = false;
     }
 
+    public void BlockSteamArea()
+    {
+        atMaxForce = true;
+    }
+
+    public void EndSteamPush()
+    {
+        isPushing = false;
+        atMaxForce = false;
+
+        // libera inputs
+        foreach (var player in playersInside)
+        {
+            if (player != null)
+                player.BlockInputs(false);
+        }
+    }
+
+    // =====================
+    // EMPURRÃO
+    // =====================
+    private void FixedUpdate()
+    {
+        if (!isPushing) return;
+
+        // Direção do jato
+        Vector2 dir = transform.up.normalized;
+
+        // Define força baseada na orientação
+        float baseForce = Mathf.Abs(dir.x) > Mathf.Abs(dir.y) ? horizontalForce : verticalForce;
+        float currentForce = atMaxForce ? baseForce : baseForce * 0.5f;
+
+        foreach (var player in playersInside)
+        {
+            if (player != null)
+            {
+                Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+                if (rb != null)
+                {
+                    // Remove componente contrária (se o player estiver competindo contra o jato)
+                    float dot = Vector2.Dot(rb.velocity, dir);
+                    if (dot < 0)
+                    {
+                        // Cancela a velocidade contrária
+                        rb.velocity -= dir * dot;
+                    }
+
+                    // Aplica força do vapor
+                    rb.AddForce(dir * currentForce, ForceMode2D.Force);
+                }
+            }
+        }
+    }
+
+    // =====================
+    // DETECÇÃO DE PLAYERS
+    // =====================
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var player = other.GetComponent<PlayerController>();
-        if (player != null)
-        {
-            var rb = player.GetComponent<Rigidbody2D>();
-            if (!affectedPlayers.Contains(rb))
-                affectedPlayers.Add(rb);
-        }
+        var move = other.GetComponent<PlayerMovementBase>();
+        if (move != null && !playersInside.Contains(move))
+            playersInside.Add(move);
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        var player = other.GetComponent<PlayerController>();
-        if (player != null)
-            affectedPlayers.Remove(player.GetComponent<Rigidbody2D>());
+        var move = other.GetComponent<PlayerMovementBase>();
+        if (move != null)
+        {
+            move.BlockInputs(false); // garante que inputs liberam ao sair
+            playersInside.Remove(move);
+        }
     }
 }

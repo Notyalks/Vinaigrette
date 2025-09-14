@@ -36,7 +36,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: panela
+    m_ConditionEvent: Steam
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1418036053972367851}
@@ -98,7 +98,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 536b192a9a91bd14c8dc8fa04a8ebbb4, type: 2}
+  m_Motion: {fileID: 7400000, guid: 52f7da170fde7ee48808602ea5319326, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -113,7 +113,7 @@ AnimatorController:
   m_Name: "panela de press\xE3o_0"
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: panela
+  - m_Name: Steam
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0

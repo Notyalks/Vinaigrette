@@ -84,7 +84,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 96
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -528,28 +528,6 @@ TextureImporter:
       bones: []
       spriteID: 0e4323b6060204646a3fac3b8d8d75ab
       internalID: -1163167306
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "panela de press\xE3o_17"
-      rect:
-        serializedVersion: 2
-        x: 1632
-        y: 0
-        width: 96
-        height: 192
-      alignment: 6
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 40695b782904a934a86eae38ef6cc183
-      internalID: 849772138
       vertices: []
       indices: 
       edges: []
