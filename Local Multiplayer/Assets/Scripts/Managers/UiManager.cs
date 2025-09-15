@@ -19,7 +19,6 @@ public class UIManager : MonoBehaviour
 
     [Header("Tela de Vitória")]
     public GameObject winScreen;
-    public Text winText;
 
     [Header("Turnos - Painéis de Ocultação")]
     public GameObject panelPlayer1;
@@ -140,12 +139,16 @@ public class UIManager : MonoBehaviour
     // -----------------------------
     public void ShowWinScreen(int winner)
     {
-        winScreen.SetActive(true);
-        winText.text = "Jogador " + winner + " venceu!";
+        if (winScreen != null)
+            winScreen.SetActive(true);
+        // Texto não é mais usado, WinScreenManager cuida da imagem
     }
 
-    public void HideWinScreen() =>
-        winScreen.SetActive(false);
+    public void HideWinScreen()
+    {
+        if (winScreen != null)
+            winScreen.SetActive(false);
+    }
 
     // -----------------------------
     // TURNOS

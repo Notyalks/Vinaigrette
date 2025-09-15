@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      TOALHA_AZUL_0: 1061460364021306925
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

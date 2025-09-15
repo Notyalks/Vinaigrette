@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     public Collider2D startAreaP1;
     public Collider2D startAreaP2;
 
+    private int lastWinner = 0;
+
     private bool waitingToRestart = false;
 
     void Awake()
@@ -123,9 +125,13 @@ public class GameManager : MonoBehaviour
         player1.Deactivate();
         player2.Deactivate();
 
+        lastWinner = winner; // salva vencedor
+
         UIManager.Instance.ShowWinScreen(winner);
         waitingToRestart = true;
     }
+
+    public int GetLastWinner() => lastWinner;
 
     // -----------------------------
     // RESTART DE RODADA
