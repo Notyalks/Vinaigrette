@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 875d6ef4bcb184a428bb5f92fc4f5b8a
+guid: 533bfeba4e48c4e4cbdf700e34eeee19
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4086554380485413153
-    second: "TELA_VIT\xD3RIA__0"
+      213: -1814189256033847352
+    second: TUTORIAL 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "TELA_VIT\xD3RIA__0"
+      name: TUTORIAL 1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 129462cbe8b56b830800000000000000
-      internalID: 4086554380485413153
+      spriteID: 8c7b5cecb74b2d6e0800000000000000
+      internalID: -1814189256033847352
       vertices: []
       indices: 
       edges: []
@@ -147,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      "TELA_VIT\xD3RIA__0": 4086554380485413153
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

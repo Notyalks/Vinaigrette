@@ -27,7 +27,10 @@ public class BreadSliceProjectile : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.bodyType = RigidbodyType2D.Kinematic; // sempre controlado por script
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.gravityScale = 0f;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        rb.mass = float.MaxValue; // torna "imparável"
     }
 
     private void Start()
@@ -91,8 +94,8 @@ public class BreadSliceProjectile : MonoBehaviour
         // --- layers configuráveis ---
         if (((1 << collision.collider.gameObject.layer) & destroyOnCollision) != 0)
         {
-            Destroy(gameObject);
             SpawnHitEffect();
+            Destroy(gameObject);
         }
     }
     private void SpawnHitEffect()

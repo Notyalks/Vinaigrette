@@ -4,9 +4,9 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Collider2D), typeof(Animator))]
 public class PressureCookerObstacle : TimedObstacleBase
 {
-    [Header("Configuração do Vapor")]
-    public float verticalForce = 25f;   // força padrão quando para cima/baixo
-    public float horizontalForce = 100f; // força quando para esquerda/direita
+    [Header("Configuraï¿½ï¿½o do Vapor")]
+    public float verticalForce = 25f;   // forï¿½a padrï¿½o quando para cima/baixo
+    public float horizontalForce = 100f; // forï¿½a quando para esquerda/direita
 
     private bool isPushing = false;
     private bool atMaxForce = false;
@@ -27,7 +27,7 @@ public class PressureCookerObstacle : TimedObstacleBase
     }
 
     // =====================
-    // EVENTOS DA ANIMAÇÃO
+    // EVENTOS DA ANIMAï¿½ï¿½O
     // =====================
     public void StartSteamPush()
     {
@@ -61,16 +61,16 @@ public class PressureCookerObstacle : TimedObstacleBase
     }
 
     // =====================
-    // EMPURRÃO
+    // EMPURRï¿½O
     // =====================
     private void FixedUpdate()
     {
         if (!isPushing) return;
 
-        // Direção do jato
+        // Direï¿½ï¿½o do jato
         Vector2 dir = transform.up.normalized;
 
-        // Define força baseada na orientação
+        // Define forï¿½a baseada na orientaï¿½ï¿½o
         float baseForce = Mathf.Abs(dir.x) > Mathf.Abs(dir.y) ? horizontalForce : verticalForce;
         float currentForce = atMaxForce ? baseForce : baseForce * 0.5f;
 
@@ -81,15 +81,15 @@ public class PressureCookerObstacle : TimedObstacleBase
                 Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
                 if (rb != null)
                 {
-                    // Remove componente contrária (se o player estiver competindo contra o jato)
-                    float dot = Vector2.Dot(rb.velocity, dir);
+                    // Remove componente contrï¿½ria (se o player estiver competindo contra o jato)
+                    float dot = Vector2.Dot(rb.linearVelocity, dir);
                     if (dot < 0)
                     {
-                        // Cancela a velocidade contrária
-                        rb.velocity -= dir * dot;
+                        // Cancela a velocidade contrï¿½ria
+                        rb.linearVelocity -= dir * dot;
                     }
 
-                    // Aplica força do vapor
+                    // Aplica forï¿½a do vapor
                     rb.AddForce(dir * currentForce, ForceMode2D.Force);
                 }
             }
@@ -97,7 +97,7 @@ public class PressureCookerObstacle : TimedObstacleBase
     }
 
     // =====================
-    // DETECÇÃO DE PLAYERS
+    // DETECï¿½ï¿½O DE PLAYERS
     // =====================
     private void OnTriggerEnter2D(Collider2D other)
     {

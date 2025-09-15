@@ -108,6 +108,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 3200
   rotationOffset: 90
+  hitEffectPrefab: {fileID: 0}
   pushForce: 1
 --- !u!50 &-3536409669166647825
 Rigidbody2D:
@@ -117,7 +118,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2361111132968800438}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
