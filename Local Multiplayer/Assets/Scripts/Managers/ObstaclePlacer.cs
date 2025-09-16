@@ -28,7 +28,6 @@ public class ObstaclePlacer : MonoBehaviour
     void Update()
     {
         if (PauseMenu.GameIsPaused) return; // bloqueia colocação de obstáculos
-
         if (!isPlacing || ghostObstacle == null) return;
 
         // Seguir mouse no grid
@@ -52,7 +51,6 @@ public class ObstaclePlacer : MonoBehaviour
             PlaceObstacle();
     }
 
-
     public void BeginPlacement(ObstacleOption option, Collider2D placementArea)
     {
         ClearPlacement();
@@ -61,7 +59,10 @@ public class ObstaclePlacer : MonoBehaviour
         activePlacementArea = placementArea;
 
         ghostObstacle = Instantiate(option.prefab);
-        if (ghostObstacle.TryGetComponent(out Collider2D col)) col.enabled = false;
+
+        // Desativa TODOS os colliders do ghost
+        foreach (var col in ghostObstacle.GetComponents<Collider2D>())
+            col.enabled = false;
 
         ghostRenderer = ghostObstacle.GetComponent<SpriteRenderer>();
         ghostOriginalColor = ghostRenderer.color;
@@ -106,60 +107,75 @@ public class ObstaclePlacer : MonoBehaviour
         ghostObstacle.transform.Rotate(0f, 0f, angle);
     }
 
-    // agora recebe a posição do pivot (transform.position) mas usa o centro real do colisor
     private bool IsPlacementValid(Vector3 pivotPosition)
     {
         if (activePlacementArea == null) return false;
 
-        // Determinar o centro em mundo do colisor (se houver)
-        Vector2 checkCenter = new Vector2(pivotPosition.x, pivotPosition.y);
-        float angle = 0f;
-        Vector2 scaledSize = Vector2.zero;
-        BoxCollider2D ghostBox = null;
+        // Vamos checar TODOS os colliders do ghost
+        Collider2D[] colliders = ghostObstacle.GetComponents<Collider2D>();
+        if (colliders.Length == 0) return false;
 
-        if (ghostObstacle.TryGetComponent(out BoxCollider2D box))
+        foreach (var col in colliders)
         {
-            ghostBox = box;
-            // centro do colisor em mundo (leva em conta offset, rotação e escala)
-            Vector3 worldCenter3 = ghostObstacle.transform.TransformPoint(ghostBox.offset);
-            checkCenter = new Vector2(worldCenter3.x, worldCenter3.y);
+            Vector2 checkCenter = ghostObstacle.transform.position;
 
-            // tamanho do colisor em unidades já com escala aplicada
-            Vector2 size = ghostBox.size;
-            Vector2 scale = ghostObstacle.transform.lossyScale;
-            scaledSize = new Vector2(size.x * Mathf.Abs(scale.x), size.y * Mathf.Abs(scale.y));
+            if (col is BoxCollider2D box)
+            {
+                Vector2 size = Vector2.Scale(box.size, ghostObstacle.transform.lossyScale);
+                Vector2 center = ghostObstacle.transform.TransformPoint(box.offset);
 
-            angle = ghostObstacle.transform.eulerAngles.z;
+                if (!activePlacementArea.OverlapPoint(center)) return false;
+                if (Physics2D.OverlapBox(center, size, ghostObstacle.transform.eulerAngles.z, obstacleLayer)) return false;
+
+                Collider2D[] hits = Physics2D.OverlapBoxAll(center, size, ghostObstacle.transform.eulerAngles.z);
+                foreach (var hit in hits)
+                {
+                    if (hit != null && hit.CompareTag("Terrain")) return false;
+                }
+            }
+            else if (col is CircleCollider2D circle)
+            {
+                Vector2 center = ghostObstacle.transform.TransformPoint(circle.offset);
+                float radius = circle.radius * Mathf.Max(ghostObstacle.transform.lossyScale.x, ghostObstacle.transform.lossyScale.y);
+
+                if (!activePlacementArea.OverlapPoint(center)) return false;
+                if (Physics2D.OverlapCircle(center, radius, obstacleLayer)) return false;
+            }
+            else if (col is PolygonCollider2D poly)
+            {
+                // 1) Colisão com obstáculos
+                ContactFilter2D filter = new ContactFilter2D();
+                filter.SetLayerMask(obstacleLayer);
+                filter.useTriggers = false;
+
+                Collider2D[] results = new Collider2D[5];
+                int hits = Physics2D.OverlapCollider(poly, filter, results);
+                if (hits > 0) return false;
+
+                // 2) Verificar Start/Goal/Terrain usando todos os pontos do polígono
+                Vector2[] localPoints = poly.points;
+                foreach (var p in localPoints)
+                {
+                    Vector2 worldPoint = ghostObstacle.transform.TransformPoint(p + poly.offset);
+
+                    // dentro da área de colocação?
+                    if (!activePlacementArea.OverlapPoint(worldPoint)) return false;
+
+                    // bloqueio por terreno
+                    if (Physics2D.OverlapPoint(worldPoint, obstacleLayer) is Collider2D terrainHit && terrainHit.CompareTag("Terrain"))
+                        return false;
+                }
+            }
         }
 
-        // Verifica se o centro do colisor está dentro da área de colocação
-        if (!activePlacementArea.OverlapPoint(checkCenter))
-            return false;
-
-        // Checa áreas de start/goal (usando o centro do colisor)
+        // Checa áreas de start/goal usando o pivot (posição principal do objeto)
         if (activePlacementArea == placementAreaPlayer1)
         {
-            if (startAreaPlayer1.OverlapPoint(checkCenter) || goalAreaPlayer1.OverlapPoint(checkCenter)) return false;
+            if (startAreaPlayer1.OverlapPoint(pivotPosition) || goalAreaPlayer1.OverlapPoint(pivotPosition)) return false;
         }
         else if (activePlacementArea == placementAreaPlayer2)
         {
-            if (startAreaPlayer2.OverlapPoint(checkCenter) || goalAreaPlayer2.OverlapPoint(checkCenter)) return false;
-        }
-
-        // Se tivermos um BoxCollider2D, usamos OverlapBox com o centro correto
-        if (ghostBox != null)
-        {
-            // checa colisão com outros obstáculos (usando obstacleLayer)
-            if (Physics2D.OverlapBox(checkCenter, scaledSize, angle, obstacleLayer))
-                return false;
-
-            // checa colisão com terreno via tag (sem filtro de layer aqui — alternativamente você pode ter uma layer para terrain)
-            Collider2D[] hits = Physics2D.OverlapBoxAll(checkCenter, scaledSize, angle);
-            foreach (var hit in hits)
-            {
-                if (hit == null) continue;
-                if (hit.CompareTag("Terrain")) return false;
-            }
+            if (startAreaPlayer2.OverlapPoint(pivotPosition) || goalAreaPlayer2.OverlapPoint(pivotPosition)) return false;
         }
 
         return true;
@@ -187,19 +203,45 @@ public class ObstaclePlacer : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        if (ghostObstacle != null && ghostObstacle.TryGetComponent(out BoxCollider2D ghostCollider))
+        if (ghostObstacle == null) return;
+
+        Gizmos.color = isValidPlacement ? Color.green : Color.red;
+
+        foreach (var col in ghostObstacle.GetComponents<Collider2D>())
         {
-            Vector2 size = ghostCollider.size;
-            Vector2 scale = ghostObstacle.transform.lossyScale;
-            Vector2 scaledSize = new Vector2(size.x * Mathf.Abs(scale.x), size.y * Mathf.Abs(scale.y));
+            if (col is BoxCollider2D box)
+            {
+                Vector2 size = Vector2.Scale(box.size, ghostObstacle.transform.lossyScale);
+                Vector3 centerWorld = ghostObstacle.transform.TransformPoint(box.offset);
 
-            // Centro real do colisor em mundo
-            Vector3 centerWorld = ghostObstacle.transform.TransformPoint(ghostCollider.offset);
+                Gizmos.matrix = Matrix4x4.TRS(centerWorld, ghostObstacle.transform.rotation, Vector3.one);
+                Gizmos.DrawWireCube(Vector3.zero, size);
+            }
+            else if (col is CircleCollider2D circle)
+            {
+                Vector3 centerWorld = ghostObstacle.transform.TransformPoint(circle.offset);
+                float radius = circle.radius * Mathf.Max(ghostObstacle.transform.lossyScale.x, ghostObstacle.transform.lossyScale.y);
 
-            Gizmos.color = isValidPlacement ? Color.green : Color.red;
-            // usamos o centro real e a rotação do transform
-            Gizmos.matrix = Matrix4x4.TRS(centerWorld, ghostObstacle.transform.rotation, Vector3.one);
-            Gizmos.DrawWireCube(Vector3.zero, scaledSize);
+                Gizmos.matrix = Matrix4x4.identity;
+                Gizmos.DrawWireSphere(centerWorld, radius);
+            }
+            else if (col is PolygonCollider2D poly)
+            {
+                Vector3[] worldPoints = new Vector3[poly.points.Length];
+                for (int i = 0; i < poly.points.Length; i++)
+                {
+                    Vector2 local = poly.points[i] + poly.offset;
+                    worldPoints[i] = ghostObstacle.transform.TransformPoint(local);
+                }
+
+                Gizmos.matrix = Matrix4x4.identity;
+                for (int i = 0; i < worldPoints.Length; i++)
+                {
+                    Vector3 current = worldPoints[i];
+                    Vector3 next = worldPoints[(i + 1) % worldPoints.Length];
+                    Gizmos.DrawLine(current, next);
+                }
+            }
         }
     }
 }

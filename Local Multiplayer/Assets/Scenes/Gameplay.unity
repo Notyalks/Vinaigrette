@@ -3637,7 +3637,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 79bc21788da5509498b698ead5580cc1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -8017,7 +8017,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5.06
+  orthographic size: 5.03
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -8395,7 +8395,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 79bc21788da5509498b698ead5580cc1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -15923,7 +15923,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 79bc21788da5509498b698ead5580cc1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -17300,7 +17300,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 2
   m_Sprite: {fileID: 7106784051281036629, guid: 76791793ebc98224fb0dd16f57be288c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -18736,7 +18736,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 2
   m_Sprite: {fileID: 7106784051281036629, guid: 76791793ebc98224fb0dd16f57be288c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -20867,7 +20867,7 @@ MonoBehaviour:
   modeInfoPanel: {fileID: 2105115658}
   modeInfoText: {fileID: 683314298}
   modeInfoMinDisplay: 0.12
-  preparePanelController: {fileID: 0}
+  preparePanelController: {fileID: 1479696960}
 --- !u!1 &1749057503
 GameObject:
   m_ObjectHideFlags: 0
@@ -21097,7 +21097,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 79bc21788da5509498b698ead5580cc1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -21859,8 +21859,11 @@ MonoBehaviour:
   - prefab: {fileID: 7412453467919257893, guid: b58b0fd1ff2a8c14eba27a136c60b758, type: 3}
     icon: {fileID: 4695074269077807098, guid: 56eec2278f6b4344eb3809659b03397f, type: 3}
     isBomb: 0
-  - prefab: {fileID: 380774823418479577, guid: 9bbd871770aa024489f7c722c96a1d30, type: 3}
-    icon: {fileID: 21300000, guid: a70c17930af09cc4e9cef649182545ed, type: 3}
+  - prefab: {fileID: 380774823418479577, guid: f718be4893e4e6c4eb456be4858d6e71, type: 3}
+    icon: {fileID: 21300000, guid: 87280e1a237448a4db56788deec039bc, type: 3}
+    isBomb: 0
+  - prefab: {fileID: 7793177922924259640, guid: 900ac5add58b76b42bfd208df8070d9f, type: 3}
+    icon: {fileID: 21300000, guid: c6f7e5e7051ea5042b6e02c6ae044a4c, type: 3}
     isBomb: 0
   obstaclePlacer: {fileID: 1839022569}
 --- !u!4 &1957408460

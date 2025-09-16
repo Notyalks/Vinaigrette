@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 3081965672048717120}
   - component: {fileID: 9179718247242667809}
   - component: {fileID: -6873595160331690975}
-  - component: {fileID: -7695481121577566269}
+  - component: {fileID: 5541781352217317862}
   - component: {fileID: 353034263914974291}
   - component: {fileID: 6339024127934192901}
-  - component: {fileID: 5541781352217317862}
   m_Layer: 7
   m_Name: "Panela de press\xE3o"
   m_TagString: Untagged
@@ -108,8 +107,8 @@ MonoBehaviour:
   startDelay: 2
   verticalForce: 25
   horizontalForce: 100
---- !u!61 &-7695481121577566269
-BoxCollider2D:
+--- !u!60 &5541781352217317862
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -142,7 +141,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.5, y: 0.34269834}
+  m_Offset: {x: 0, y: -0.07}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -152,8 +151,18 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 0.6853967}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.692275, y: 0.60742366}
+      - {x: 0.5252743, y: 0.6847976}
+      - {x: 0.19493309, y: 0.68819344}
+      - {x: 0.040581852, y: 0.5522064}
+      - {x: 0.039585218, y: 0.079576164}
+      - {x: 0.67902434, y: 0.07650107}
+      - {x: 0.6813111, y: 0.47652715}
+      - {x: 1.0086904, y: 0.47395247}
+      - {x: 1.0109072, y: 0.6064537}
+  m_UseDelaunayMesh: 0
 --- !u!61 &353034263914974291
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -188,7 +197,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.504098, y: 1.0374963}
+  m_Offset: {x: 0.504098, y: 0.9967786}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -198,7 +207,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.9425825, y: 1.0479469}
+  m_Size: {x: 0.9425825, y: 0.9665117}
   m_EdgeRadius: 0
 --- !u!95 &6339024127934192901
 Animator:
@@ -222,59 +231,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!60 &5541781352217317862
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7793177922924259640}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 1, y: 2}
-    newSize: {x: 1, y: 2}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.7291667, y: 0.6267479}
-      - {x: 0.43040982, y: 0.6935813}
-      - {x: 0.19493309, y: 0.68819344}
-      - {x: 0.022957683, y: 0.53618443}
-      - {x: 0.0236395, y: 0.07855669}
-      - {x: 0.68257475, y: 0.06592292}
-      - {x: 0.6813111, y: 0.47652715}
-      - {x: 1.0086904, y: 0.47395247}
-      - {x: 1.0109072, y: 0.6064537}
-  m_UseDelaunayMesh: 0
