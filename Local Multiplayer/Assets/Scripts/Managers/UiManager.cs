@@ -13,10 +13,6 @@ public class UIManager : MonoBehaviour
     public CanvasGroup prepareCanvasGroup;
     public GameObject constructionGrid;
 
-    [Header("Configurações de Transição")]
-    public float prepareDuration = 3f;
-    public float fadeDuration = 1f;
-
     [Header("Tela de Vitória")]
     public GameObject winScreen;
 
@@ -56,6 +52,8 @@ public class UIManager : MonoBehaviour
     [Tooltip("Tempo mínimo (segundos) que o painel do modo fica visível antes de aceitar input para fechar.")]
     public float modeInfoMinDisplay = 0.12f;
 
+    public PreparePanelController preparePanelController;
+
     // coroutine handle para evitar múltiplas chamadas sobrepostas
     private Coroutine modeInfoCoroutine;
 
@@ -70,8 +68,7 @@ public class UIManager : MonoBehaviour
     public void ShowPreparePanel()
     {
         constructionGrid.SetActive(false);
-        preparePanel.SetActive(true);
-        prepareCanvasGroup.alpha = 1f;
+        preparePanelController.Show();
 
         HideIndicators();
 
@@ -80,24 +77,6 @@ public class UIManager : MonoBehaviour
 
         GameManager.Instance.player1.gameObject.SetActive(true);
         GameManager.Instance.player2.gameObject.SetActive(true);
-
-        StartCoroutine(FadeOutPrepareAndStartGameplay());
-    }
-
-    private IEnumerator FadeOutPrepareAndStartGameplay()
-    {
-        yield return new WaitForSeconds(prepareDuration);
-
-        float t = 0f;
-        while (t < fadeDuration)
-        {
-            t += Time.deltaTime;
-            prepareCanvasGroup.alpha = Mathf.Lerp(1f, 0f, t / fadeDuration);
-            yield return null;
-        }
-
-        preparePanel.SetActive(false);
-        GameManager.Instance.StartPlayPhase();
     }
 
     // -----------------------------
