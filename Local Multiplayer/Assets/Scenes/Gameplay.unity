@@ -20436,7 +20436,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1712331692
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21830,27 +21830,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allObstacles:
-  - prefab: {fileID: 6409888631071132014, guid: f8306f20f6f36944596f3ed2285957d2, type: 3}
-    icon: {fileID: 21300000, guid: d5777cdf97f4a8b4982be6df81e20f88, type: 3}
+  - name: 
+    prefab: {fileID: 6409888631071132014, guid: f8306f20f6f36944596f3ed2285957d2, type: 3}
+    icon: {fileID: 0}
     isBomb: 1
-  - prefab: {fileID: 380774823418479577, guid: a2d55a8dbf2827541b5f0a2ba4c9d008, type: 3}
-    icon: {fileID: 21300000, guid: de6cb314d3aac614887740b42f8dac37, type: 3}
+    availableForPlayer1: 1
+    availableForPlayer2: 1
+  - name: 
+    prefab: {fileID: 380774823418479577, guid: a2d55a8dbf2827541b5f0a2ba4c9d008, type: 3}
+    icon: {fileID: 0}
     isBomb: 0
-  - prefab: {fileID: 7793177922924259640, guid: 89ebbf73c4c10444cacb4315a4cabb23, type: 3}
-    icon: {fileID: 21300000, guid: 1bdecb6b8bfab3443bedace3009be751, type: 3}
+    availableForPlayer1: 1
+    availableForPlayer2: 1
+  - name: 
+    prefab: {fileID: 7793177922924259640, guid: 89ebbf73c4c10444cacb4315a4cabb23, type: 3}
+    icon: {fileID: 0}
     isBomb: 0
-  - prefab: {fileID: 7793177922924259640, guid: 83de0f0e37202e348948c1bfa5d8abbf, type: 3}
-    icon: {fileID: -2743495688436913111, guid: 7d9efee83d4c48b43a1af562c8bcd9be, type: 3}
+    availableForPlayer1: 1
+    availableForPlayer2: 1
+  - name: 
+    prefab: {fileID: 7793177922924259640, guid: 83de0f0e37202e348948c1bfa5d8abbf, type: 3}
+    icon: {fileID: 0}
     isBomb: 0
-  - prefab: {fileID: 7412453467919257893, guid: b58b0fd1ff2a8c14eba27a136c60b758, type: 3}
-    icon: {fileID: 4695074269077807098, guid: 56eec2278f6b4344eb3809659b03397f, type: 3}
+    availableForPlayer1: 1
+    availableForPlayer2: 1
+  - name: 
+    prefab: {fileID: 7412453467919257893, guid: b58b0fd1ff2a8c14eba27a136c60b758, type: 3}
+    icon: {fileID: 0}
     isBomb: 0
-  - prefab: {fileID: 380774823418479577, guid: f718be4893e4e6c4eb456be4858d6e71, type: 3}
-    icon: {fileID: 21300000, guid: 87280e1a237448a4db56788deec039bc, type: 3}
+    availableForPlayer1: 1
+    availableForPlayer2: 1
+  - name: 
+    prefab: {fileID: 380774823418479577, guid: f718be4893e4e6c4eb456be4858d6e71, type: 3}
+    icon: {fileID: 0}
     isBomb: 0
-  - prefab: {fileID: 7793177922924259640, guid: 900ac5add58b76b42bfd208df8070d9f, type: 3}
-    icon: {fileID: 21300000, guid: c6f7e5e7051ea5042b6e02c6ae044a4c, type: 3}
+    availableForPlayer1: 1
+    availableForPlayer2: 1
+  - name: 
+    prefab: {fileID: 7793177922924259640, guid: 900ac5add58b76b42bfd208df8070d9f, type: 3}
+    icon: {fileID: 0}
     isBomb: 0
+    availableForPlayer1: 1
+    availableForPlayer2: 1
   obstaclePlacer: {fileID: 1839022569}
 --- !u!4 &1957408460
 Transform:
