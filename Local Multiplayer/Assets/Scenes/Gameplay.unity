@@ -9318,7 +9318,6 @@ GameObject:
   - component: {fileID: 619384992}
   - component: {fileID: 619384991}
   - component: {fileID: 619384990}
-  - component: {fileID: 619384993}
   m_Layer: 11
   m_Name: FundoP2
   m_TagString: Untagged
@@ -9405,7 +9404,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 047091ac0d3eefd4db88a091e6fba1cd, type: 2}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -13472,19 +13471,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &619384993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 619384988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2cca8c6a34b17b45917fcaabd2af10b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Img: {fileID: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
