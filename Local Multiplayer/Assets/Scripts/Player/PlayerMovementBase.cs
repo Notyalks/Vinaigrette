@@ -35,12 +35,16 @@ public abstract class PlayerMovementBase : MonoBehaviour
     public float dashDuration = 0.2f;      // tempo de duração
     public float dashCooldown = 0.5f;      // tempo antes de poder usar de novo
     public bool canAirDash = true;         // se pode usar no ar
+    public bool isDashing = false;
+
+    [Header("One Way Platforms")]
+    public float dropThroughDuration = 0.3f; // tempo que o player ignora a plataforma
+
 
     // Estado de movimento
     public Vector2 moveInput;
     protected bool jumpQueued;
     protected bool dashQueued;
-    public bool isDashing = false;
     private bool dashOnCooldown = false;
 
     private bool grounded;
@@ -51,6 +55,8 @@ public abstract class PlayerMovementBase : MonoBehaviour
 
     private bool inputBlocked = false;
     public bool InputBlocked => inputBlocked;
+    private bool droppingThrough = false;
+
     // -1 = esquerda, +1 = direita
 
     // facing - guarda última direção horizontal não-nula
@@ -79,6 +85,7 @@ public abstract class PlayerMovementBase : MonoBehaviour
         HandleJump();
         HandleWallSlide();
         HandleDash();
+        HandleDropThrough();
     }
 
     protected virtual void FixedUpdate()
@@ -272,6 +279,46 @@ public abstract class PlayerMovementBase : MonoBehaviour
         yield return new WaitForSeconds(dashCooldown);
         dashOnCooldown = false;
     }
+
+    // ----------------- Drop Through -----------------
+private void HandleDropThrough()
+{
+    // só funciona se estiver no chão e não já dropando
+    if (!grounded || droppingThrough) return;
+
+    // tecla S ou seta para baixo
+    if (moveInput.y < -0.5f) 
+    {
+        // checa se está sobre uma plataforma one-way
+        Collider2D hit = Physics2D.OverlapBox(
+            bodyCollider.bounds.center,
+            bodyCollider.bounds.size * 0.9f,
+            0f,
+            groundLayer
+        );
+
+        if (hit != null && hit.TryGetComponent(out PlatformEffector2D effector))
+        {
+            StartCoroutine(DoDropThrough(hit));
+        }
+    }
+}
+
+private IEnumerator DoDropThrough(Collider2D platform)
+{
+    droppingThrough = true;
+
+    // ignora colisão entre player e plataforma
+    Physics2D.IgnoreCollision(bodyCollider, platform, true);
+
+    yield return new WaitForSeconds(dropThroughDuration);
+
+    // reativa colisão
+    if (platform != null)
+        Physics2D.IgnoreCollision(bodyCollider, platform, false);
+
+    droppingThrough = false;
+}
 
     // ----------------- Gizmos -----------------
     private void OnDrawGizmosSelected()

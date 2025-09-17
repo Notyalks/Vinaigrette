@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4258117652981751333}
   - component: {fileID: -3536409669166647825}
   - component: {fileID: 4739888944061126371}
+  - component: {fileID: 7104069152310845707}
   m_Layer: 7
   m_Name: Bread
   m_TagString: Untagged
@@ -183,3 +184,22 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.7003736, y: 0.6084478}
   m_EdgeRadius: 0
+--- !u!251 &7104069152310845707
+PlatformEffector2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2361111132968800438}
+  m_Enabled: 1
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RotationalOffset: 0
+  m_UseOneWay: 1
+  m_UseOneWayGrouping: 0
+  m_SurfaceArc: 180
+  m_UseSideFriction: 0
+  m_UseSideBounce: 0
+  m_SideArc: 1

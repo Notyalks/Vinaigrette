@@ -23150,8 +23150,9 @@ MonoBehaviour:
   dashDuration: 0.2
   dashCooldown: 1
   canAirDash: 1
-  moveInput: {x: 0, y: 0}
   isDashing: 0
+  dropThroughDuration: 0.5
+  moveInput: {x: 0, y: 0}
 --- !u!114 &5741366610546450571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23307,8 +23308,9 @@ MonoBehaviour:
   dashDuration: 0.2
   dashCooldown: 1
   canAirDash: 1
-  moveInput: {x: 0, y: 0}
   isDashing: 0
+  dropThroughDuration: 0.5
+  moveInput: {x: 0, y: 0}
 --- !u!58 &8591636842137199196
 CircleCollider2D:
   m_ObjectHideFlags: 0

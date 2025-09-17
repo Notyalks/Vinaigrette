@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8028255390487730690}
   - component: {fileID: 7798932084329346175}
   - component: {fileID: -6791880384903608007}
+  - component: {fileID: -7292369774059022881}
   m_Layer: 7
   m_Name: Colher
   m_TagString: Untagged
@@ -149,3 +150,22 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
+--- !u!251 &-7292369774059022881
+PlatformEffector2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 380774823418479577}
+  m_Enabled: 1
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RotationalOffset: 0
+  m_UseOneWay: 1
+  m_UseOneWayGrouping: 0
+  m_SurfaceArc: 180
+  m_UseSideFriction: 0
+  m_UseSideBounce: 0
+  m_SideArc: 1
