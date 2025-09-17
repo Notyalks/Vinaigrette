@@ -3,7 +3,6 @@ using UnityEngine;
 [System.Serializable]
 public class ObstacleOption
 {
-    public string name;
     public GameObject prefab;
     public Sprite icon;
 

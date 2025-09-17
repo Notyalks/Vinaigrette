@@ -14,22 +14,36 @@ public class InventoryManager : MonoBehaviour
     private int roundCounter = 0; // conta rodadas
     private bool forceBombNext = false;
 
-    public void SetupInventory(GameObject inventoryUI, Collider2D placementArea)
+    public void SetupInventory(GameObject inventoryUI, Collider2D placementArea, int playerId)
     {
         inventoryButtons = inventoryUI.GetComponentsInChildren<Button>();
 
         currentOptions.Clear();
         roundCounter++;
 
+        // --- filtra obstáculos disponíveis para o jogador ---
+        List<ObstacleOption> filtered = new();
+        foreach (var opt in allObstacles)
+        {
+            if ((playerId == 1 && opt.availableForPlayer1) ||
+                (playerId == 2 && opt.availableForPlayer2))
+            {
+                filtered.Add(opt);
+            }
+        }
+
+        // segurança: se filtro estiver vazio, usa todos
+        if (filtered.Count == 0) filtered.AddRange(allObstacles);
+
         // --- gera opções ---
         for (int i = 0; i < inventoryButtons.Length; i++)
         {
-            int rand = Random.Range(0, allObstacles.Length);
-            currentOptions.Add(allObstacles[rand]);
+            int rand = Random.Range(0, filtered.Count);
+            currentOptions.Add(filtered[rand]);
 
             Image btnImg = inventoryButtons[i].GetComponent<Image>();
-            btnImg.sprite = allObstacles[rand].icon;
-            btnImg.preserveAspect = true; // mantém a proporção original
+            btnImg.sprite = filtered[rand].icon;
+            btnImg.preserveAspect = true;
             btnImg.color = Color.white;
 
             int index = i;
@@ -44,28 +58,32 @@ public class InventoryManager : MonoBehaviour
         // --- a cada 2 rodadas força bomba ---
         if (forceBombNext)
         {
-            EnsureBombInOptions(placementArea, inventoryUI);
+            EnsureBombInOptions(placementArea, inventoryUI, playerId);
             forceBombNext = false;
         }
     }
 
-    private void EnsureBombInOptions(Collider2D placementArea, GameObject inventoryUI)
+    private void EnsureBombInOptions(Collider2D placementArea, GameObject inventoryUI, int playerId)
     {
         bool hasBomb = currentOptions.Exists(opt => opt.isBomb);
 
         if (!hasBomb)
         {
             int randomIndex = Random.Range(0, currentOptions.Count);
-            ObstacleOption bomb = System.Array.Find(allObstacles, o => o.isBomb);
 
-            if (bomb.prefab != null)
+            ObstacleOption bomb = System.Array.Find(allObstacles, o =>
+                o.isBomb &&
+                ((playerId == 1 && o.availableForPlayer1) ||
+                 (playerId == 2 && o.availableForPlayer2))
+            );
+
+            if (bomb != null && bomb.prefab != null)
             {
                 currentOptions[randomIndex] = bomb;
 
-                // Atualiza botão
                 Image btnImg = inventoryButtons[randomIndex].GetComponent<Image>();
                 btnImg.sprite = bomb.icon;
-                btnImg.preserveAspect = true; // mantém a proporção também na bomba
+                btnImg.preserveAspect = true;
                 btnImg.color = Color.white;
 
                 int index = randomIndex;

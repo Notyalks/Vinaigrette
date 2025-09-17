@@ -26,7 +26,6 @@ public class TurnManager : MonoBehaviour
 
     void Update()
     {
-        // Bloqueia input se o jogo estiver pausado ou fora da fase de construção
         if (PauseMenu.GameIsPaused || GameManager.Instance == null || GameManager.Instance.currentState != GameState.Build)
             return;
 
@@ -36,8 +35,6 @@ public class TurnManager : MonoBehaviour
             {
                 waitingForInput = false;
                 UIManager.Instance.HideTurnTransition(pendingNextPlayer);
-
-                // Inicia o próximo turno
                 StartTurn(pendingNextPlayer);
             }
             return;
@@ -76,7 +73,6 @@ public class TurnManager : MonoBehaviour
                 ? placer.placementAreaPlayer2
                 : placer.placementAreaPlayer1;
 
-            // mostra painel normal do jogador (o panel do player atual)
             UIManager.Instance.ShowTurnUI(currentPlayer, true);
         }
         else // modo próprio
@@ -86,7 +82,6 @@ public class TurnManager : MonoBehaviour
                 currentInventory = UIManager.Instance.inventoryPlayer2;
                 placementArea = placer.placementAreaPlayer1;
 
-                // ativa painel do caminho que será visto (player2 panel)
                 UIManager.Instance.ShowTurnUI(2, true);
             }
             else
@@ -98,11 +93,12 @@ public class TurnManager : MonoBehaviour
             }
         }
 
-        // Determina qual owner tem o placementArea (1 ou 2) para mostrar apenas os indicadores corretos
+        // Determina o owner da área de construção (1 ou 2)
         int placementOwner = (placementArea == placer.placementAreaPlayer1) ? 1 : 2;
         UIManager.Instance.ShowConstructionGridForOwner(placementOwner);
 
-        inventoryManager.SetupInventory(currentInventory, placementArea);
+        // passa também o id do jogador dono do turno
+        inventoryManager.SetupInventory(currentInventory, placementArea, currentPlayer);
     }
 
     public void EndTurn(float extraDelay = 0f)
@@ -125,10 +121,8 @@ public class TurnManager : MonoBehaviour
         GameManager.Instance.OnTurnEnded(currentPlayer);
     }
 
-    // Chamado pelo GameManager
     public void ShowTurnTransition(int nextPlayer)
     {
-        // Se nunca mostrou o modo ainda, ou se o modo atual mudou, mostramos o painel de modo.
         BuildMode currentMode = GameManager.Instance.currentBuildMode;
         if (!hasShownModeBefore || currentMode != lastShownBuildMode)
         {
@@ -141,7 +135,6 @@ public class TurnManager : MonoBehaviour
 
             UIManager.Instance.ShowModeInfo(msg, () =>
             {
-                // callback: depois do dismiss, inicia a transição normal
                 BeginTransition(nextPlayer);
             });
         }
@@ -160,9 +153,6 @@ public class TurnManager : MonoBehaviour
         UIManager.Instance.ShowTurnTransition(nextPlayer);
     }
 
-    // -----------------------------
-    // Reset de Estado
-    // -----------------------------
     public void ResetTurnState()
     {
         waitingForInput = false;
