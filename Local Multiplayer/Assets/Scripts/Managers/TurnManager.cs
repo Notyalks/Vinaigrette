@@ -26,8 +26,16 @@ public class TurnManager : MonoBehaviour
 
     void Update()
     {
+        // se saiu da fase de construção, garante reset
         if (PauseMenu.GameIsPaused || GameManager.Instance == null || GameManager.Instance.currentState != GameState.Build)
+        {
+            if (waitingForInput)
+            {
+                waitingForInput = false;
+                pendingNextPlayer = -1;
+            }
             return;
+        }
 
         if (waitingForInput)
         {
@@ -35,6 +43,7 @@ public class TurnManager : MonoBehaviour
             {
                 waitingForInput = false;
                 UIManager.Instance.HideTurnTransition(pendingNextPlayer);
+
                 StartTurn(pendingNextPlayer);
             }
             return;
@@ -51,6 +60,7 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+
     // -----------------------------
     // TURNOS
     // -----------------------------
@@ -62,6 +72,7 @@ public class TurnManager : MonoBehaviour
 
         GameObject currentInventory;
         Collider2D placementArea;
+        int inventoryOwner; // novo
 
         if (GameManager.Instance.currentBuildMode == BuildMode.Adversary)
         {
@@ -73,15 +84,17 @@ public class TurnManager : MonoBehaviour
                 ? placer.placementAreaPlayer2
                 : placer.placementAreaPlayer1;
 
+            inventoryOwner = currentPlayer; // usa o próprio
             UIManager.Instance.ShowTurnUI(currentPlayer, true);
         }
-        else // modo próprio
+        else // modo próprio (self)
         {
             if (currentPlayer == 1)
             {
                 currentInventory = UIManager.Instance.inventoryPlayer2;
                 placementArea = placer.placementAreaPlayer1;
 
+                inventoryOwner = 2; // invertido
                 UIManager.Instance.ShowTurnUI(2, true);
             }
             else
@@ -89,16 +102,16 @@ public class TurnManager : MonoBehaviour
                 currentInventory = UIManager.Instance.inventoryPlayer1;
                 placementArea = placer.placementAreaPlayer2;
 
+                inventoryOwner = 1; // invertido
                 UIManager.Instance.ShowTurnUI(1, true);
             }
         }
 
-        // Determina o owner da área de construção (1 ou 2)
         int placementOwner = (placementArea == placer.placementAreaPlayer1) ? 1 : 2;
         UIManager.Instance.ShowConstructionGridForOwner(placementOwner);
 
-        // passa também o id do jogador dono do turno
-        inventoryManager.SetupInventory(currentInventory, placementArea, currentPlayer);
+        // passa o id do jogador que define os obstáculos visíveis
+        inventoryManager.SetupInventory(currentInventory, placementArea, inventoryOwner);
     }
 
     public void EndTurn(float extraDelay = 0f)
@@ -121,8 +134,10 @@ public class TurnManager : MonoBehaviour
         GameManager.Instance.OnTurnEnded(currentPlayer);
     }
 
+    // Chamado pelo GameManager
     public void ShowTurnTransition(int nextPlayer)
     {
+        // Se nunca mostrou o modo ainda, ou se o modo atual mudou, mostramos o painel de modo.
         BuildMode currentMode = GameManager.Instance.currentBuildMode;
         if (!hasShownModeBefore || currentMode != lastShownBuildMode)
         {
@@ -135,6 +150,7 @@ public class TurnManager : MonoBehaviour
 
             UIManager.Instance.ShowModeInfo(msg, () =>
             {
+                // callback: depois do dismiss, inicia a transição normal
                 BeginTransition(nextPlayer);
             });
         }
@@ -153,6 +169,9 @@ public class TurnManager : MonoBehaviour
         UIManager.Instance.ShowTurnTransition(nextPlayer);
     }
 
+    // -----------------------------
+    // Reset de Estado
+    // -----------------------------
     public void ResetTurnState()
     {
         waitingForInput = false;

@@ -81,6 +81,9 @@ public class GameManager : MonoBehaviour
 
         if (currentBuildTurn >= maxTurns)
         {
+            // garante que não tenha input pendente
+            turnManager.ResetTurnState();
+
             UIManager.Instance.ShowPreparePanel();
         }
         else
@@ -100,16 +103,29 @@ public class GameManager : MonoBehaviour
 
         UIManager.Instance.HideConstructionGrid();
 
-        // limpa qualquer estado pendente do TurnManager (waitingForInput, pendingNextPlayer, etc.)
         if (turnManager != null)
             turnManager.ResetTurnState();
 
         turnManager.gameObject.SetActive(false);
 
+        // Desbloqueia players visualmente mas bloqueia input por segurança
         player1.ShowForPlayPhase();
         player2.ShowForPlayPhase();
 
+        player1.GetComponent<PlayerMovementBase>().BlockInputs(true);
+        player2.GetComponent<PlayerMovementBase>().BlockInputs(true);
+
+        StartCoroutine(EnablePlayerInputsAfterDelay(0.3f)); //  delay curtinho
+
         OnPlayPhaseStarted?.Invoke();
+    }
+
+    private IEnumerator EnablePlayerInputsAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        player1.GetComponent<PlayerMovementBase>().BlockInputs(false);
+        player2.GetComponent<PlayerMovementBase>().BlockInputs(false);
     }
 
     // -----------------------------
