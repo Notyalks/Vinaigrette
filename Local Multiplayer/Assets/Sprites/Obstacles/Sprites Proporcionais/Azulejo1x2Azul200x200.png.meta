@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1bdecb6b8bfab3443bedace3009be751
+guid: 8eb609c37d5595844ba39b27aa9b84e4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8827099869757696405
-    second: Paliteiro_0
+      213: 6164695802452240376
+    second: Azulejo1x2Azul200x200_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,9 +49,9 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 0
-  alignment: 6
+  alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -109,17 +109,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Paliteiro_0
+      name: Azulejo1x2Azul200x200_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 0
-        width: 17
-        height: 20
+        x: 3
+        y: 51
+        width: 194
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 599edc54098208a70800000000000000
-      internalID: 8827099869757696405
+      spriteID: 8f7e18d9b266d8550800000000000000
+      internalID: 6164695802452240376
       vertices: []
       indices: 
       edges: []
@@ -148,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Paliteiro_0: 8827099869757696405
+      Azulejo1x2Azul200x200_0: 6164695802452240376
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

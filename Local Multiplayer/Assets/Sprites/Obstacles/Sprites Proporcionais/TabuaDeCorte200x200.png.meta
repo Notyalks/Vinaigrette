@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e60f6bda1c5abdd438792a12116beae0
+guid: e9a5980cb318dcc499a90d552ead4207
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3489151436616962213
-    second: "PANELA_DE_PRESS\xC3O_0"
+      213: -1424930054162211361
+    second: TabuaDeCorte200x200_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 96
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "PANELA_DE_PRESS\xC3O_0"
+      name: TabuaDeCorte200x200_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 6
-        width: 96
-        height: 69
+        x: 32
+        y: 5
+        width: 136
+        height: 190
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5a0191bceb4fb6030800000000000000
-      internalID: 3489151436616962213
+      spriteID: fdd12e35aa1a93ce0800000000000000
+      internalID: -1424930054162211361
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "PANELA_DE_PRESS\xC3O_0": 3489151436616962213
+      TabuaDeCorte200x200_0: -1424930054162211361
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

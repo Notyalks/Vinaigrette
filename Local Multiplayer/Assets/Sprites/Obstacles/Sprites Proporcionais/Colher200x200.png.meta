@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 44e28c7990dd9be4b897fc62f5bed077
+guid: fcea2de1042fc5847bc37c9ebca83c5c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 728051816066330470
-    second: TORRADEIRA_0
+      213: -410609552860018612
+    second: Colher200x200_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,9 +49,9 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 0
-  alignment: 6
+  alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 96
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -114,7 +114,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TORRADEIRA_0
+      name: Colher200x200_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 5
-        width: 26
-        height: 19
+        x: 73
+        y: 17
+        width: 54
+        height: 165
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 66f26b2f44f8a1a00800000000000000
-      internalID: 728051816066330470
+      spriteID: c48856489c83d4af0800000000000000
+      internalID: -410609552860018612
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      TORRADEIRA_0: 728051816066330470
+      Colher200x200_0: -410609552860018612
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
