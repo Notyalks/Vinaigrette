@@ -26,7 +26,6 @@ public class OptionsMenu : MonoBehaviour
         // --- Carrega resoluções ---
         resolutions = Screen.resolutions;
 
-        // Pega resolução atual
         for (int i = 0; i < resolutions.Length; i++)
         {
             if (resolutions[i].width == Screen.currentResolution.width &&
@@ -37,14 +36,23 @@ public class OptionsMenu : MonoBehaviour
             }
         }
 
-        ApplyResolution(); // já aplica inicial
+        ApplyResolution();
         UpdateResolutionText();
 
-        // --- Carrega PlayerPrefs ---
-        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume", 1f);
-        vfxSlider.value = PlayerPrefs.GetFloat("VFXVolume", 1f);
+        // --- Carrega PlayerPrefs e aplica volumes ---
+        float savedMusic = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        float savedVFX = PlayerPrefs.GetFloat("VFXVolume", 1f);
 
-        // Adiciona listeners
+        musicSlider.value = savedMusic;
+        vfxSlider.value = savedVFX;
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetMusicVolume(savedMusic);
+            AudioManager.Instance.SetSFXVolume(savedVFX);
+        }
+
+        // --- Listeners ---
         musicSlider.onValueChanged.AddListener(SetMusicVolume);
         vfxSlider.onValueChanged.AddListener(SetVFXVolume);
     }
@@ -84,14 +92,18 @@ public class OptionsMenu : MonoBehaviour
     {
         PlayerPrefs.SetFloat("MusicVolume", value);
         PlayerPrefs.Save();
-        // futuramente: conectar no AudioMixer
+
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.SetMusicVolume(value);
     }
 
     public void SetVFXVolume(float value)
     {
         PlayerPrefs.SetFloat("VFXVolume", value);
         PlayerPrefs.Save();
-        // futuramente: conectar no AudioMixer
+
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.SetSFXVolume(value);
     }
 
     // ================================

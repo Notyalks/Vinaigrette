@@ -8,6 +8,8 @@ public abstract class ActiveObstacleBase : MonoBehaviour
     private Quaternion initialRotation;
     private Vector3 initialScale;
 
+    protected virtual void Awake()
+    { }
     protected virtual void Start()
     {
         // Salva estado inicial

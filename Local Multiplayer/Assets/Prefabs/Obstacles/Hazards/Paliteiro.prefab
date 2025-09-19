@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: -7616322999746165782}
   - component: {fileID: 3080057846109866336}
   - component: {fileID: 3363274623630978504}
+  - component: {fileID: 6582551501720979525}
   m_Layer: 7
   m_Name: Paliteiro
   m_TagString: Untagged
@@ -243,3 +244,16 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!114 &6582551501720979525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7793177922924259640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81a9f64e2ae9f244a9fb7f558c78da95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyEffectPrefab: {fileID: 4928816262815802892, guid: d84a1d394d9130c4da680f366df71347, type: 3}

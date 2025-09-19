@@ -9,9 +9,9 @@ public class KnifeObstacle : ActiveObstacleBase
     private Vector3 pivotOffset;   // Offset para centralizar o pivot
     private Vector3 pivotWorld;    // Ponto do mundo usado como pivot de rotação
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
 
         // recalculamos o centro do objeto
         Bounds bounds = GetComponent<SpriteRenderer>().bounds;

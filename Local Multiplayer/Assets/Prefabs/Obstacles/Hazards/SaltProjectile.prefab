@@ -109,7 +109,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 3200
   rotationOffset: 90
-  hitEffectPrefab: {fileID: 6348621695862949793, guid: ffbad6317c693a14ca8757d2acd61b39, type: 3}
+  hitEffectPrefab: {fileID: 4928816262815802892, guid: 2b9b2f4a312181e49bd01d4e8d97076f, type: 3}
 --- !u!50 &-3536409669166647825
 Rigidbody2D:
   serializedVersion: 5

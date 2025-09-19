@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7694879330878269151}
   - component: {fileID: 2873005530238025850}
   - component: {fileID: 3885948174813991496}
+  - component: {fileID: 6413050923594921211}
   m_Layer: 7
   m_Name: Azulejo Vermelho 1x3
   m_TagString: Untagged
@@ -154,3 +155,16 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!114 &6413050923594921211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3441412370135906138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81a9f64e2ae9f244a9fb7f558c78da95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyEffectPrefab: {fileID: 4928816262815802892, guid: aa03e60b8b5dc534883b0873ceec9a01, type: 3}

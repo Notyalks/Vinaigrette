@@ -21830,21 +21830,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allObstacles:
-  - prefab: {fileID: 2771088618442085018, guid: bdfb921430d1b4c45bb9354dcf4387fc, type: 3}
-    icon: {fileID: 21300000, guid: 2bb81e727a5e704438ae40dbb5e370ec, type: 3}
-    isBomb: 0
-    availableForPlayer1: 0
-    availableForPlayer2: 1
-  - prefab: {fileID: 380774823418479577, guid: 9d175d5b5eb916249b4ef959dd03cf2e, type: 3}
-    icon: {fileID: 21300000, guid: 6096603d664880642a87ad91148ab2af, type: 3}
-    isBomb: 0
-    availableForPlayer1: 0
-    availableForPlayer2: 1
-  - prefab: {fileID: 3441412370135906138, guid: 6a54d489ceeeb2d43a8997d17a1a6d2e, type: 3}
-    icon: {fileID: 21300000, guid: e37169cc4dd69c24dba3d4c4c9d7bc83, type: 3}
-    isBomb: 0
-    availableForPlayer1: 0
-    availableForPlayer2: 1
   - prefab: {fileID: 2771088618442085018, guid: 0f8b153eb97efa9418016d5218f47d78, type: 3}
     icon: {fileID: 21300000, guid: 93af11e65e84c05419b7992f94ba6608, type: 3}
     isBomb: 0
@@ -21860,8 +21845,8 @@ MonoBehaviour:
     isBomb: 0
     availableForPlayer1: 1
     availableForPlayer2: 0
-  - prefab: {fileID: 7793177922924259640, guid: 89ebbf73c4c10444cacb4315a4cabb23, type: 3}
-    icon: {fileID: 21300000, guid: 1bdecb6b8bfab3443bedace3009be751, type: 3}
+  - prefab: {fileID: 7793177922924259640, guid: bb23fefb36dc04b4b8b06f0a734ecc70, type: 3}
+    icon: {fileID: 21300000, guid: 06ea8c6049e2aff4fa5ef0bd2aa1ead6, type: 3}
     isBomb: 0
     availableForPlayer1: 1
     availableForPlayer2: 1

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7798932084329346175}
   - component: {fileID: -6791880384903608007}
   - component: {fileID: -7292369774059022881}
+  - component: {fileID: 5369798074726305332}
   m_Layer: 7
   m_Name: Colher
   m_TagString: Untagged
@@ -169,3 +170,16 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!114 &5369798074726305332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 380774823418479577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81a9f64e2ae9f244a9fb7f558c78da95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyEffectPrefab: {fileID: 4928816262815802892, guid: db5088bb89a796d46afa3a1a6541ae99, type: 3}

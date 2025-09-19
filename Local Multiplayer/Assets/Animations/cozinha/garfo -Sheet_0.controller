@@ -36,7 +36,7 @@ AnimatorController:
   m_Name: garfo -Sheet_0
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: garfo
+  - m_Name: Toggle
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -113,7 +113,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: garfo
+    m_ConditionEvent: Toggle
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1633311421837647296}
@@ -143,7 +143,7 @@ AnimatorStateMachine:
     m_Position: {x: 330, y: 70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1633311421837647296}
-    m_Position: {x: 333.7269, y: 192.4451, z: 0}
+    m_Position: {x: 330, y: 200, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []

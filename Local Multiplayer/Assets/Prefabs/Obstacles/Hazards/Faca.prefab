@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: -600203369939028766}
   - component: {fileID: 7768066379119626311}
   - component: {fileID: -4530060978108878209}
+  - component: {fileID: 1354028201085872888}
   m_Layer: 7
   m_Name: Faca
   m_TagString: Untagged
@@ -309,3 +310,16 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!114 &1354028201085872888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7793177922924259640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81a9f64e2ae9f244a9fb7f558c78da95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyEffectPrefab: {fileID: 4928816262815802892, guid: 640cfe86c7ff2404e91f713c2bf9dcd9, type: 3}
