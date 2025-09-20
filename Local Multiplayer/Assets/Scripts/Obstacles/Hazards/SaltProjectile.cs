@@ -18,6 +18,9 @@ public class SaltProjectile : MonoBehaviour
     [Header("Efeitos (opcional)")]
     public GameObject hitEffectPrefab;
 
+    [Header("Som de destruição (opcional)")]
+    public AudioClip destroySFX;
+
     private Rigidbody2D rb;
     private Vector2 moveDir = Vector2.right; // fallback
     private bool launched = false;
@@ -94,6 +97,7 @@ public class SaltProjectile : MonoBehaviour
         if (((1 << collision.collider.gameObject.layer) & destroyOnCollision) != 0)
         {
             SpawnHitEffect();
+            PlayDestroySFX();
             Destroy(gameObject);
         }
     }
@@ -101,6 +105,16 @@ public class SaltProjectile : MonoBehaviour
     private void SpawnHitEffect()
     {
         if (hitEffectPrefab != null)
-            Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+        {
+            GameObject effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(effect, 2f); // destrói o efeito após 2 segundos (ou tempo que preferir)
+        }
+    }
+    private void PlayDestroySFX()
+    {
+        if (destroySFX != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(destroySFX);
+        }
     }
 }

@@ -30,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -110,6 +110,7 @@ MonoBehaviour:
     m_Bits: 3200
   rotationOffset: 90
   hitEffectPrefab: {fileID: 4928816262815802892, guid: 2b9b2f4a312181e49bd01d4e8d97076f, type: 3}
+  destroySFX: {fileID: 8300000, guid: 427a1914fac34b64a9b5e09c19c04e25, type: 3}
 --- !u!50 &-3536409669166647825
 Rigidbody2D:
   serializedVersion: 5

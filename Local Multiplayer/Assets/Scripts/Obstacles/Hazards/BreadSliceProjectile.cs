@@ -7,7 +7,6 @@ public class BreadSliceProjectile : MonoBehaviour
     public float speed = 5f;
     public float lifetime = 5f;
 
-
     [Header("Colisão")]
     [Tooltip("Layers que destroem o pão ao colidir (ex.: terreno, obstáculos).")]
     public LayerMask destroyOnCollision;
@@ -16,6 +15,9 @@ public class BreadSliceProjectile : MonoBehaviour
 
     [Header("Efeitos (opcional)")]
     public GameObject hitEffectPrefab;
+
+    [Header("Som de destruição (opcional)")]
+    public AudioClip destroySFX;
 
     [Header("Empurrão no Player")]
     public float pushForce = 8f;
@@ -95,12 +97,25 @@ public class BreadSliceProjectile : MonoBehaviour
         if (((1 << collision.collider.gameObject.layer) & destroyOnCollision) != 0)
         {
             SpawnHitEffect();
+            PlayDestroySFX(); //  toca o som
             Destroy(gameObject);
         }
     }
+
     private void SpawnHitEffect()
     {
         if (hitEffectPrefab != null)
-            Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+        {
+            GameObject effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(effect, 2f); // destrói o efeito após 2 segundos (ou tempo que preferir)
+        }
+    }
+
+    private void PlayDestroySFX()
+    {
+        if (destroySFX != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(destroySFX);
+        }
     }
 }

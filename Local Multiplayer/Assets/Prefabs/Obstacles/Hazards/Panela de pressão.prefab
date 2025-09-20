@@ -105,10 +105,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bab8504a11d3bc148b4432a3b67bdce6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interval: 5
+  interval: 6
   startDelay: 2
   verticalForce: 25
   horizontalForce: 100
+  steamClip: {fileID: 8300000, guid: c6168eba0b059534a8f7cc2b23c165d9, type: 3}
+  endFadeoutDuration: 0.8
 --- !u!60 &5541781352217317862
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -265,3 +267,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyEffectPrefab: {fileID: 4928816262815802892, guid: acc3803cbb6dd6649862f2601ab76fe8, type: 3}
+  destroySFX: {fileID: 0}

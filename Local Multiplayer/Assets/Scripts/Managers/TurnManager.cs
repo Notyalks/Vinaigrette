@@ -26,9 +26,13 @@ public class TurnManager : MonoBehaviour
 
     public event System.Action OnTransitionConfirmed;
 
+    // Novo evento para contagem regressiva final
+    public event System.Action<int> OnLastSecondsTick;
+
+    private int lastSecondDisplayed = -1;
+
     void Update()
     {
-        // se saiu da fase de construção, garante reset
         if (PauseMenu.GameIsPaused || GameManager.Instance == null || GameManager.Instance.currentState != GameState.Build)
         {
             if (waitingForInput)
@@ -46,7 +50,6 @@ public class TurnManager : MonoBehaviour
                 waitingForInput = false;
                 UIManager.Instance.HideTurnTransition(pendingNextPlayer);
 
-                // dispara evento de áudio
                 OnTransitionConfirmed?.Invoke();
 
                 StartTurn(pendingNextPlayer);
@@ -57,14 +60,27 @@ public class TurnManager : MonoBehaviour
         if (!turnActive) return;
 
         currentTimer -= Time.deltaTime;
-        UIManager.Instance.UpdateTimerUI(Mathf.CeilToInt(currentTimer));
+        int secondsLeft = Mathf.CeilToInt(currentTimer);
+
+        UIManager.Instance.UpdateTimerUI(secondsLeft);
+
+        //  Detecta mudança de segundo
+        if (secondsLeft != lastSecondDisplayed)
+        {
+            lastSecondDisplayed = secondsLeft;
+
+            if (secondsLeft <= 5 && secondsLeft > 0)
+            {
+                // dispara evento de tick dos últimos 5s
+                OnLastSecondsTick?.Invoke(secondsLeft);
+            }
+        }
 
         if (currentTimer <= 0f)
         {
             EndTurn();
         }
     }
-
 
     // -----------------------------
     // TURNOS
@@ -74,10 +90,14 @@ public class TurnManager : MonoBehaviour
         currentPlayer = player;
         currentTimer = turnDuration;
         turnActive = true;
+        lastSecondDisplayed = Mathf.CeilToInt(turnDuration);
+
+        //  Reseta a cor do timer no início do turno
+        UIManager.Instance.ResetTimerColor();
 
         GameObject currentInventory;
         Collider2D placementArea;
-        int inventoryOwner; // novo
+        int inventoryOwner;
 
         if (GameManager.Instance.currentBuildMode == BuildMode.Adversary)
         {
@@ -89,17 +109,17 @@ public class TurnManager : MonoBehaviour
                 ? placer.placementAreaPlayer2
                 : placer.placementAreaPlayer1;
 
-            inventoryOwner = currentPlayer; // usa o próprio
+            inventoryOwner = currentPlayer;
             UIManager.Instance.ShowTurnUI(currentPlayer, true);
         }
-        else // modo próprio (self)
+        else
         {
             if (currentPlayer == 1)
             {
                 currentInventory = UIManager.Instance.inventoryPlayer2;
                 placementArea = placer.placementAreaPlayer1;
 
-                inventoryOwner = 2; // invertido
+                inventoryOwner = 2;
                 UIManager.Instance.ShowTurnUI(2, true);
             }
             else
@@ -107,7 +127,7 @@ public class TurnManager : MonoBehaviour
                 currentInventory = UIManager.Instance.inventoryPlayer1;
                 placementArea = placer.placementAreaPlayer2;
 
-                inventoryOwner = 1; // invertido
+                inventoryOwner = 1;
                 UIManager.Instance.ShowTurnUI(1, true);
             }
         }
@@ -115,7 +135,6 @@ public class TurnManager : MonoBehaviour
         int placementOwner = (placementArea == placer.placementAreaPlayer1) ? 1 : 2;
         UIManager.Instance.ShowConstructionGridForOwner(placementOwner);
 
-        // passa o id do jogador que define os obstáculos visíveis
         inventoryManager.SetupInventory(currentInventory, placementArea, inventoryOwner);
     }
 
@@ -139,10 +158,8 @@ public class TurnManager : MonoBehaviour
         GameManager.Instance.OnTurnEnded(currentPlayer);
     }
 
-    // Chamado pelo GameManager
     public void ShowTurnTransition(int nextPlayer)
     {
-        // Se nunca mostrou o modo ainda, ou se o modo atual mudou, mostramos o painel de modo.
         BuildMode currentMode = GameManager.Instance.currentBuildMode;
         if (!hasShownModeBefore || currentMode != lastShownBuildMode)
         {
@@ -155,7 +172,6 @@ public class TurnManager : MonoBehaviour
 
             UIManager.Instance.ShowModeInfo(msg, () =>
             {
-                // callback: depois do dismiss, inicia a transição normal
                 BeginTransition(nextPlayer);
                 OnTransitionConfirmed?.Invoke();
             });
@@ -165,7 +181,6 @@ public class TurnManager : MonoBehaviour
             BeginTransition(nextPlayer);
             OnTransitionConfirmed?.Invoke();
         }
-
     }
 
     private void BeginTransition(int nextPlayer)
@@ -177,9 +192,6 @@ public class TurnManager : MonoBehaviour
         UIManager.Instance.ShowTurnTransition(nextPlayer);
     }
 
-    // -----------------------------
-    // Reset de Estado
-    // -----------------------------
     public void ResetTurnState()
     {
         waitingForInput = false;

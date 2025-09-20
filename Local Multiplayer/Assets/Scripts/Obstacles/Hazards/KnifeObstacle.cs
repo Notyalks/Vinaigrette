@@ -6,6 +6,9 @@ public class KnifeObstacle : ActiveObstacleBase
     public float rotationSpeed = 60f; // Velocidade da rotação em graus por segundo
     public bool clockwise = true;     // Se a rotação será no sentido horário ou anti-horário
 
+    [Header("Som de impacto")]
+    public AudioClip hitSFX;
+
     private Vector3 pivotOffset;   // Offset para centralizar o pivot
     private Vector3 pivotWorld;    // Ponto do mundo usado como pivot de rotação
 
@@ -36,6 +39,12 @@ public class KnifeObstacle : ActiveObstacleBase
         PlayerController player = collision.GetComponent<PlayerController>();
         if (player != null && !player.invincible)
         {
+            // toca som de impacto
+            if (hitSFX != null && AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySFX(hitSFX);
+            }
+
             player.LoseLife();
         }
     }

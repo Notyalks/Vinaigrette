@@ -110,6 +110,7 @@ MonoBehaviour:
     m_Bits: 3200
   rotationOffset: 90
   hitEffectPrefab: {fileID: 4928816262815802892, guid: 55478cbfc40ca6e45bbda81bc16c24ab, type: 3}
+  destroySFX: {fileID: 8300000, guid: 427a1914fac34b64a9b5e09c19c04e25, type: 3}
   pushForce: 1
 --- !u!50 &-3536409669166647825
 Rigidbody2D:

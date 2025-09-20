@@ -1,12 +1,19 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Collider2D), typeof(Animator))]
 public class PressureCookerObstacle : TimedObstacleBase
 {
-    [Header("Configura��o do Vapor")]
-    public float verticalForce = 25f;   // for�a padr�o quando para cima/baixo
-    public float horizontalForce = 100f; // for�a quando para esquerda/direita
+    [Header("Configuração do Vapor")]
+    public float verticalForce = 25f;
+    public float horizontalForce = 100f;
+
+    [Header("Som do Vapor")]
+    public AudioClip steamClip;             // Som contínuo de vapor
+    public float endFadeoutDuration = 1.5f; // Tempo de fade quando acaba
+    private AudioSource audioSource;
+    private Coroutine fadeCoroutine;
 
     private bool isPushing = false;
     private bool atMaxForce = false;
@@ -19,6 +26,12 @@ public class PressureCookerObstacle : TimedObstacleBase
         base.Start();
         anim = GetComponent<Animator>();
         col = GetComponent<Collider2D>();
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.outputAudioMixerGroup = AudioManager.Instance?.sfxGroup;
+        audioSource.playOnAwake = false;
+        audioSource.loop = true;   // 🔄 som de vapor em loop
+        audioSource.spatialBlend = 0f; // 2D
     }
 
     protected override void OnInterval()
@@ -27,19 +40,18 @@ public class PressureCookerObstacle : TimedObstacleBase
     }
 
     // =====================
-    // EVENTOS DA ANIMA��O
+    // EVENTOS DA ANIMAÇÃO
     // =====================
     public void StartSteamPush()
     {
         isPushing = true;
         atMaxForce = false;
 
-        // bloqueia inputs
         foreach (var player in playersInside)
-        {
             if (player != null)
                 player.BlockInputs(true);
-        }
+
+        PlaySteamSFX();
     }
 
     public void BlockSteamArea()
@@ -52,25 +64,21 @@ public class PressureCookerObstacle : TimedObstacleBase
         isPushing = false;
         atMaxForce = false;
 
-        // libera inputs
         foreach (var player in playersInside)
-        {
             if (player != null)
                 player.BlockInputs(false);
-        }
+
+        PlaySteamEndSFX();
     }
 
     // =====================
-    // EMPURR�O
+    // EMPURRÃO
     // =====================
     private void FixedUpdate()
     {
         if (!isPushing) return;
 
-        // Dire��o do jato
         Vector2 dir = transform.up.normalized;
-
-        // Define for�a baseada na orienta��o
         float baseForce = Mathf.Abs(dir.x) > Mathf.Abs(dir.y) ? horizontalForce : verticalForce;
         float currentForce = atMaxForce ? baseForce : baseForce * 0.5f;
 
@@ -81,15 +89,10 @@ public class PressureCookerObstacle : TimedObstacleBase
                 Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
                 if (rb != null)
                 {
-                    // Remove componente contr�ria (se o player estiver competindo contra o jato)
                     float dot = Vector2.Dot(rb.linearVelocity, dir);
                     if (dot < 0)
-                    {
-                        // Cancela a velocidade contr�ria
                         rb.linearVelocity -= dir * dot;
-                    }
 
-                    // Aplica for�a do vapor
                     rb.AddForce(dir * currentForce, ForceMode2D.Force);
                 }
             }
@@ -97,7 +100,7 @@ public class PressureCookerObstacle : TimedObstacleBase
     }
 
     // =====================
-    // DETEC��O DE PLAYERS
+    // DETECÇÃO DE PLAYERS
     // =====================
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -111,8 +114,49 @@ public class PressureCookerObstacle : TimedObstacleBase
         var move = other.GetComponent<PlayerMovementBase>();
         if (move != null)
         {
-            move.BlockInputs(false); // garante que inputs liberam ao sair
+            move.BlockInputs(false);
             playersInside.Remove(move);
         }
+    }
+
+    // =====================
+    // ÁUDIO
+    // =====================
+    public void PlaySteamSFX()
+    {
+        if (steamClip != null && audioSource != null)
+        {
+            if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+
+            audioSource.Stop();
+            audioSource.clip = steamClip;
+            audioSource.volume = 1f;
+            audioSource.Play();
+        }
+    }
+
+    public void PlaySteamEndSFX()
+    {
+        if (audioSource == null || !audioSource.isPlaying)
+            return;
+
+        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+        fadeCoroutine = StartCoroutine(FadeOutSteam());
+    }
+
+    private IEnumerator FadeOutSteam()
+    {
+        float startVol = audioSource.volume;
+        float t = 0f;
+
+        while (t < endFadeoutDuration)
+        {
+            t += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(startVol, 0f, t / endFadeoutDuration);
+            yield return null;
+        }
+
+        audioSource.Stop();
+        audioSource.volume = 1f;
     }
 }

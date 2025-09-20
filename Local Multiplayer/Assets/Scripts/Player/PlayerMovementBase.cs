@@ -4,6 +4,9 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public abstract class PlayerMovementBase : MonoBehaviour
 {
+    public event System.Action OnJump;
+    public event System.Action OnDash;
+
     protected Rigidbody2D rb;
     protected PlayerController controller;
     protected Collider2D bodyCollider;
@@ -146,6 +149,7 @@ public abstract class PlayerMovementBase : MonoBehaviour
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
 
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            OnJump?.Invoke();
         }
         else if (isTouchingWall)
         {
@@ -156,6 +160,7 @@ public abstract class PlayerMovementBase : MonoBehaviour
 
             // trava o input horizontal por um tempo
             StartCoroutine(LockHorizontalControl(0.2f));
+            OnJump?.Invoke();
         }
 
         jumpQueued = false;
@@ -290,6 +295,8 @@ public abstract class PlayerMovementBase : MonoBehaviour
         direction.Normalize();
 
         rb.AddForce(direction * dashForce, ForceMode2D.Impulse);
+
+        OnDash?.Invoke();
 
         yield return new WaitForSeconds(dashDuration);
 

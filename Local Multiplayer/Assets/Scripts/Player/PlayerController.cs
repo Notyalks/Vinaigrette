@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public string originalSortingLayer;
     [HideInInspector] public int originalSortingOrder;
 
+    public event System.Action OnDeath;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -71,9 +72,16 @@ public class PlayerController : MonoBehaviour
             isActive = false;
             SetOffscreenIndicatorActive(false);
             ScoreManager.Instance.CheckRoundEnd();
+
+            var col = GetComponent<Collider2D>();
+            if (col != null)
+                col.enabled = false;
+
             var anim = GetComponent<Animator>();
             if (anim != null)
                 anim.SetTrigger("Die");
+
+            OnDeath?.Invoke();
         }
         else
         {

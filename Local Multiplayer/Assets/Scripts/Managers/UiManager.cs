@@ -153,6 +153,23 @@ public class UIManager : MonoBehaviour
     }
 
     // -----------------------------
+    // TIMER COLOR
+    // -----------------------------
+    public void SetTimerColor(Color color)
+    {
+        if (timerPlayer1 != null)
+            timerPlayer1.color = color;
+        if (timerPlayer2 != null)
+            timerPlayer2.color = color;
+    }
+
+    public void ResetTimerColor()
+    {
+        Color defaultColor = Color.white; // ou outra cor padrão do HUD
+        SetTimerColor(defaultColor);
+    }
+
+    // -----------------------------
     // TURN TRANSITION (sem texto "Vez do jogador X")
     // -----------------------------
     public void ShowTurnTransition(int nextPlayer)

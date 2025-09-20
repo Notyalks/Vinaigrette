@@ -90,10 +90,9 @@ GameObject:
   - component: {fileID: 9179718247242667809}
   - component: {fileID: 1012149645634303295}
   - component: {fileID: 2261156889769632712}
-  - component: {fileID: -600203369939028766}
   - component: {fileID: 7768066379119626311}
   - component: {fileID: -4530060978108878209}
-  - component: {fileID: 1354028201085872888}
+  - component: {fileID: -600203369939028766}
   m_Layer: 7
   m_Name: Faca
   m_TagString: Untagged
@@ -232,19 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 50
   clockwise: 1
---- !u!114 &-600203369939028766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7793177922924259640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81a9f64e2ae9f244a9fb7f558c78da95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destroyEffectPrefab: {fileID: 4928816262815802892, guid: 307d2a8b74c21d44e82ab167cfe338f2, type: 3}
+  hitSFX: {fileID: 8300000, guid: 427a1914fac34b64a9b5e09c19c04e25, type: 3}
 --- !u!61 &7768066379119626311
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -310,7 +297,7 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
---- !u!114 &1354028201085872888
+--- !u!114 &-600203369939028766
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -322,4 +309,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a9f64e2ae9f244a9fb7f558c78da95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyEffectPrefab: {fileID: 4928816262815802892, guid: 640cfe86c7ff2404e91f713c2bf9dcd9, type: 3}
+  destroyEffectPrefab: {fileID: 4928816262815802892, guid: 307d2a8b74c21d44e82ab167cfe338f2, type: 3}
+  destroySFX: {fileID: 0}

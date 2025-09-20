@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 2940265756192504324}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.8, y: 1.334, z: 0}
+  m_LocalPosition: {x: 0.8, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48,7 +48,6 @@ GameObject:
   - component: {fileID: 3363274623630978504}
   - component: {fileID: 6582551501720979525}
   - component: {fileID: 7656689348913461773}
-  - component: {fileID: 1763295108632284995}
   m_Layer: 7
   m_Name: Paliteiro
   m_TagString: Untagged
@@ -159,6 +158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyEffectPrefab: {fileID: 4928816262815802892, guid: 307d2a8b74c21d44e82ab167cfe338f2, type: 3}
+  destroySFX: {fileID: 0}
 --- !u!95 &-7616322999746165782
 Animator:
   serializedVersion: 7
@@ -259,6 +259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyEffectPrefab: {fileID: 4928816262815802892, guid: d84a1d394d9130c4da680f366df71347, type: 3}
+  destroySFX: {fileID: 0}
 --- !u!114 &7656689348913461773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,17 +273,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clips: []
---- !u!114 &1763295108632284995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7793177922924259640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84ab47a582e00934ebea128f1994a731, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destroySfx: {fileID: 0}
-  destroyObject: 1

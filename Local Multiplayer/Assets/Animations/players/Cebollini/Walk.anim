@@ -87,4 +87,25 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.083333336
+    functionName: PlayFootstep
+    data: 
+    objectReferenceParameter: {fileID: 1417983981981091832, guid: 290c22ba28244f948b8e1135a78a958d, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.25
+    functionName: PlayFootstep
+    data: 
+    objectReferenceParameter: {fileID: 1417983981981091832, guid: 290c22ba28244f948b8e1135a78a958d, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.41666666
+    functionName: PlayFootstep
+    data: 
+    objectReferenceParameter: {fileID: 1417983981981091832, guid: 290c22ba28244f948b8e1135a78a958d, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
