@@ -10,6 +10,10 @@ public class BreadSliceProjectile : MonoBehaviour
     [Header("Colisão")]
     [Tooltip("Layers que destroem o pão ao colidir (ex.: terreno, obstáculos).")]
     public LayerMask destroyOnCollision;
+
+    [Tooltip("Layers que destroem o projétil ao entrar no Trigger.")]
+    public LayerMask destroyOnTrigger;
+
     [Tooltip("Offset de rotação do sprite.")]
     public float rotationOffset = 0f;
 
@@ -101,7 +105,15 @@ public class BreadSliceProjectile : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (((1 << other.gameObject.layer) & destroyOnTrigger) != 0)
+        {
+            SpawnHitEffect();
+            PlayDestroySFX();
+            Destroy(gameObject);
+        }
+    }
     private void SpawnHitEffect()
     {
         if (hitEffectPrefab != null)

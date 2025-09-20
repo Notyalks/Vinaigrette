@@ -108,6 +108,9 @@ MonoBehaviour:
   destroyOnCollision:
     serializedVersion: 2
     m_Bits: 3200
+  destroyOnTrigger:
+    serializedVersion: 2
+    m_Bits: 4096
   rotationOffset: 90
   hitEffectPrefab: {fileID: 4928816262815802892, guid: 55478cbfc40ca6e45bbda81bc16c24ab, type: 3}
   destroySFX: {fileID: 8300000, guid: 427a1914fac34b64a9b5e09c19c04e25, type: 3}

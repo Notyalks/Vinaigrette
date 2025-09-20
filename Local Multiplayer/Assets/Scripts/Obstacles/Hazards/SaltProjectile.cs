@@ -10,19 +10,24 @@ public class SaltProjectile : MonoBehaviour
     public int damage = 1;
 
     [Header("Colisão")]
-    [Tooltip("Layers que destroem o projétil ao colidir.")]
+    [Tooltip("Layers que destroem o projétil ao colidir (Collision).")]
     public LayerMask destroyOnCollision;
+
+    [Tooltip("Layers que destroem o projétil ao entrar no Trigger.")]
+    public LayerMask destroyOnTrigger;
+
     [Tooltip("Offset de rotação para alinhar sprite com a direção (ex.: 90 se sprite está deitado).")]
     public float rotationOffset = 0f;
 
     [Header("Efeitos (opcional)")]
     public GameObject hitEffectPrefab;
+    public float hitEffectLifetime = 2f;
 
     [Header("Som de destruição (opcional)")]
     public AudioClip destroySFX;
 
     private Rigidbody2D rb;
-    private Vector2 moveDir = Vector2.right; // fallback
+    private Vector2 moveDir = Vector2.right;
     private bool launched = false;
 
     private void Awake()
@@ -69,32 +74,37 @@ public class SaltProjectile : MonoBehaviour
 #endif
         }
 
-        // Aplica rotação visual
         float ang = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(ang + rotationOffset, Vector3.forward);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // --- jogador ---
         var player = collision.collider.GetComponent<PlayerController>();
         if (player != null)
         {
-            // Só causa dano se estiver ativo e não invencível
             if (player.isActive && !player.invincible)
             {
                 for (int i = 0; i < damage; i++)
                     player.LoseLife();
             }
 
-            // Sempre destrói o projétil ao colidir com jogador, mesmo morto
             SpawnHitEffect();
             Destroy(gameObject);
             return;
         }
 
-        // --- layers configuráveis ---
         if (((1 << collision.collider.gameObject.layer) & destroyOnCollision) != 0)
+        {
+            SpawnHitEffect();
+            PlayDestroySFX();
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (((1 << other.gameObject.layer) & destroyOnTrigger) != 0)
         {
             SpawnHitEffect();
             PlayDestroySFX();
@@ -107,9 +117,10 @@ public class SaltProjectile : MonoBehaviour
         if (hitEffectPrefab != null)
         {
             GameObject effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
-            Destroy(effect, 2f); // destrói o efeito após 2 segundos (ou tempo que preferir)
+            Destroy(effect, hitEffectLifetime);
         }
     }
+
     private void PlayDestroySFX()
     {
         if (destroySFX != null && AudioManager.Instance != null)

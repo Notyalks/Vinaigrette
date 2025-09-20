@@ -19,9 +19,11 @@ public class InventoryManager : MonoBehaviour
         inventoryButtons = inventoryUI.GetComponentsInChildren<Button>();
 
         currentOptions.Clear();
-        roundCounter++;
 
-        // --- filtra obstáculos disponíveis para o jogador ---
+        // pega rodada global do GameManager
+        int currentRound = GameManager.Instance.roundNumber;
+
+        // --- filtra obstáculos disponíveis ---
         List<ObstacleOption> filtered = new();
         foreach (var opt in allObstacles)
         {
@@ -32,7 +34,6 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        // segurança: se filtro estiver vazio, usa todos
         if (filtered.Count == 0) filtered.AddRange(allObstacles);
 
         // --- gera opções ---
@@ -55,13 +56,42 @@ public class InventoryManager : MonoBehaviour
             });
         }
 
-        // --- a cada 2 rodadas força bomba ---
-        if (forceBombNext)
+        // --- só força bomba a partir da 2ª rodada global ---
+        if (currentRound > 1 && forceBombNext)
         {
             EnsureBombInOptions(placementArea, inventoryUI, playerId);
             forceBombNext = false;
         }
+        else if (currentRound == 1)
+        {
+            // remove bombas se caírem na 1ª rodada
+            for (int i = 0; i < currentOptions.Count; i++)
+            {
+                if (currentOptions[i].isBomb)
+                {
+                    ObstacleOption replacement = filtered.Find(o => !o.isBomb);
+                    if (replacement != null)
+                    {
+                        currentOptions[i] = replacement;
+
+                        Image btnImg = inventoryButtons[i].GetComponent<Image>();
+                        btnImg.sprite = replacement.icon;
+                        btnImg.preserveAspect = true;
+                        btnImg.color = Color.white;
+
+                        int index = i;
+                        inventoryButtons[i].onClick.RemoveAllListeners();
+                        inventoryButtons[i].onClick.AddListener(() =>
+                        {
+                            obstaclePlacer.BeginPlacement(currentOptions[index], placementArea);
+                            inventoryUI.SetActive(false);
+                        });
+                    }
+                }
+            }
+        }
     }
+
 
     private void EnsureBombInOptions(Collider2D placementArea, GameObject inventoryUI, int playerId)
     {

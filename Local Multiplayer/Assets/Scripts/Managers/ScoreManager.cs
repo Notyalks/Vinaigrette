@@ -30,6 +30,10 @@ public class ScoreManager : MonoBehaviour
     public TextMeshProUGUI textPercentPlayer2;
     public Button continueButton;
 
+    [Header("Sons de UI")]
+    public AudioClip scoreFillSFX;
+
+
     public static event System.Action<int, int> OnPlayerReachedGoalGlobal;
 
     private void Awake()
@@ -178,14 +182,28 @@ public class ScoreManager : MonoBehaviour
         textPercentPlayer2.text = "0%";
 
         // Inicia corrotina de animação
-        StartCoroutine(AnimateResults(sliderPlayer1, textPercentPlayer1, p1Target));
-        StartCoroutine(AnimateResults(sliderPlayer2, textPercentPlayer2, p2Target));
+        StartCoroutine(AnimateResults(sliderPlayer1, textPercentPlayer1, p1Target, scoreFillSFX));
+        StartCoroutine(AnimateResults(sliderPlayer2, textPercentPlayer2, p2Target, scoreFillSFX));
+
     }
 
-    private IEnumerator AnimateResults(Slider slider, TextMeshProUGUI text, float targetValue)
+    private IEnumerator AnimateResults(Slider slider, TextMeshProUGUI text, float targetValue, AudioClip sfx = null)
     {
-        float duration = 1.2f; // tempo da animação
+        float duration = 1.2f;
         float elapsed = 0f;
+
+        AudioSource localSFX = null;
+
+        // Cria um AudioSource local só para essa animação
+        if (sfx != null && AudioManager.Instance != null)
+        {
+            localSFX = AudioManager.Instance.gameObject.AddComponent<AudioSource>();
+            localSFX.clip = sfx;
+            localSFX.loop = true;
+            localSFX.volume = 1f;
+            localSFX.outputAudioMixerGroup = AudioManager.Instance.sfxGroup;
+            localSFX.Play();
+        }
 
         while (elapsed < duration)
         {
@@ -202,7 +220,27 @@ public class ScoreManager : MonoBehaviour
         // Garante valor final exato
         slider.value = targetValue;
         text.text = Mathf.RoundToInt(targetValue * 100f) + "%";
+
+        // Fade-out do som
+        if (localSFX != null)
+        {
+            float fadeTime = 0.3f; // tempo do fade-out
+            float startVolume = localSFX.volume;
+            float t = 0f;
+
+            while (t < fadeTime)
+            {
+                t += Time.deltaTime;
+                localSFX.volume = Mathf.Lerp(startVolume, 0f, t / fadeTime);
+                yield return null;
+            }
+
+            localSFX.Stop();
+            Destroy(localSFX);
+        }
     }
+
+    private AudioSource loopingSFX;
 
 
     private void OnContinuePressed()

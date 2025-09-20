@@ -17,9 +17,7 @@ public class ForkObstacle : TimedObstacleBase
         hitbox.enabled = false; // começa desativado (garfo abaixado)
     }
 
-    /// <summary>
-    /// Chamado pelo TimedObstacleBase em cada intervalo.
-    /// </summary>
+    // Chamado pelo TimedObstacleBase em cada intervalo.
     protected override void OnInterval()
     {
         // Dispara a animação que alterna entre subir/abaixar
@@ -27,18 +25,14 @@ public class ForkObstacle : TimedObstacleBase
             anim.SetTrigger("Toggle");
     }
 
-    /// <summary>
-    /// Chamado pela animação quando o garfo chega na posição de ataque.
-    /// </summary>
+    // Chamado pela animação quando o garfo chega na posição de ataque.
     public void EnableCollider()
     {
         if (hitbox != null)
             hitbox.enabled = true;
     }
 
-    /// <summary>
-    /// Chamado pela animação quando o garfo abaixa de novo.
-    /// </summary>
+    // Chamado pela animação quando o garfo abaixa de novo.
     public void DisableCollider()
     {
         if (hitbox != null)
