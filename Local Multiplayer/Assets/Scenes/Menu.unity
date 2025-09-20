@@ -265,6 +265,7 @@ GameObject:
   m_Component:
   - component: {fileID: 30097112}
   - component: {fileID: 30097111}
+  - component: {fileID: 30097113}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -305,6 +306,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &30097113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 30097110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db280f29b685e4140b34a03308e67695, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuMusic: {fileID: 8300000, guid: 53736c1c580c37d4ba467dc0e9c0d319, type: 3}
 --- !u!1 &88228089 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9198023262329103105, guid: 22903d2e9d6cbf244af70922725da306, type: 3}
@@ -433,6 +447,7 @@ GameObject:
   - component: {fileID: 297671624}
   - component: {fileID: 297671623}
   - component: {fileID: 297671622}
+  - component: {fileID: 297671625}
   m_Layer: 5
   m_Name: Voltar
   m_TagString: Untagged
@@ -554,6 +569,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 297671620}
   m_CullTransparentMesh: 1
+--- !u!114 &297671625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297671620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d733b023f87704f47b5e9b0ffc90a04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSfx: {fileID: 8300000, guid: 243839ebd14908945b413919f68c6aa2, type: 3}
 --- !u!1 &321255388
 GameObject:
   m_ObjectHideFlags: 0
@@ -780,6 +808,7 @@ GameObject:
   - component: {fileID: 389907611}
   - component: {fileID: 389907610}
   - component: {fileID: 389907613}
+  - component: {fileID: 389907614}
   m_Layer: 5
   m_Name: "Cr\xE9ditos"
   m_TagString: Untagged
@@ -923,6 +952,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &389907614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 389907608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d733b023f87704f47b5e9b0ffc90a04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSfx: {fileID: 8300000, guid: 243839ebd14908945b413919f68c6aa2, type: 3}
 --- !u!1 &511301581
 GameObject:
   m_ObjectHideFlags: 0
@@ -1482,6 +1524,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 633771529}
   m_CullTransparentMesh: 1
+--- !u!1 &758151818
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 758151820}
+  - component: {fileID: 758151819}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &758151819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 758151818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee4c37e84c655fc4ebb200e93c4e133a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: 564406e1b4a44ce49948d007588c51a4, type: 2}
+  musicGroup: {fileID: 3822369789613168013, guid: 564406e1b4a44ce49948d007588c51a4, type: 2}
+  sfxGroup: {fileID: -1262058605116927551, guid: 564406e1b4a44ce49948d007588c51a4, type: 2}
+  defaultMusicVolume: 1
+  sfxPoolSize: 12
+  sfxEntries: []
+--- !u!4 &758151820
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 758151818}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.6648636, y: 1.5299532, z: 2.0953572}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &790032521
 GameObject:
   m_ObjectHideFlags: 0
@@ -1494,6 +1586,7 @@ GameObject:
   - component: {fileID: 790032526}
   - component: {fileID: 790032525}
   - component: {fileID: 790032524}
+  - component: {fileID: 790032527}
   - component: {fileID: 790032523}
   m_Layer: 5
   m_Name: Voltar (1)
@@ -1638,6 +1731,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 790032521}
   m_CullTransparentMesh: 1
+--- !u!114 &790032527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 790032521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d733b023f87704f47b5e9b0ffc90a04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSfx: {fileID: 8300000, guid: 243839ebd14908945b413919f68c6aa2, type: 3}
 --- !u!1 &804060860
 GameObject:
   m_ObjectHideFlags: 0
@@ -1656,7 +1762,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &804060861
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1750,6 +1856,7 @@ GameObject:
   - component: {fileID: 937711835}
   - component: {fileID: 937711834}
   - component: {fileID: 937711833}
+  - component: {fileID: 937711836}
   m_Layer: 5
   m_Name: SetaNext
   m_TagString: Untagged
@@ -1858,6 +1965,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 937711831}
   m_CullTransparentMesh: 1
+--- !u!114 &937711836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937711831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d733b023f87704f47b5e9b0ffc90a04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSfx: {fileID: 8300000, guid: 243839ebd14908945b413919f68c6aa2, type: 3}
 --- !u!1 &1013164677
 GameObject:
   m_ObjectHideFlags: 0
@@ -2238,6 +2358,7 @@ GameObject:
   - component: {fileID: 1413788735}
   - component: {fileID: 1413788734}
   - component: {fileID: 1413788733}
+  - component: {fileID: 1413788736}
   m_Layer: 5
   m_Name: Continuar
   m_TagString: Untagged
@@ -2359,6 +2480,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1413788731}
   m_CullTransparentMesh: 1
+--- !u!114 &1413788736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413788731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d733b023f87704f47b5e9b0ffc90a04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSfx: {fileID: 8300000, guid: 243839ebd14908945b413919f68c6aa2, type: 3}
 --- !u!1 &1432466807
 GameObject:
   m_ObjectHideFlags: 0
@@ -3076,6 +3210,7 @@ GameObject:
   - component: {fileID: 1709588885}
   - component: {fileID: 1709588884}
   - component: {fileID: 1709588883}
+  - component: {fileID: 1709588886}
   m_Layer: 5
   m_Name: SetaPrevious
   m_TagString: Untagged
@@ -3184,6 +3319,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1709588881}
   m_CullTransparentMesh: 1
+--- !u!114 &1709588886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709588881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d733b023f87704f47b5e9b0ffc90a04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSfx: {fileID: 8300000, guid: 243839ebd14908945b413919f68c6aa2, type: 3}
 --- !u!1 &1749526628
 GameObject:
   m_ObjectHideFlags: 0
@@ -3197,6 +3345,7 @@ GameObject:
   - component: {fileID: 1749526631}
   - component: {fileID: 1749526630}
   - component: {fileID: 1749526633}
+  - component: {fileID: 1749526634}
   m_Layer: 5
   m_Name: Jogar
   m_TagString: Untagged
@@ -3340,6 +3489,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1749526634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749526628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d733b023f87704f47b5e9b0ffc90a04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSfx: {fileID: 8300000, guid: 243839ebd14908945b413919f68c6aa2, type: 3}
 --- !u!1 &1767441189
 GameObject:
   m_ObjectHideFlags: 0
@@ -3489,6 +3651,7 @@ GameObject:
   - component: {fileID: 1778365441}
   - component: {fileID: 1778365440}
   - component: {fileID: 1778365443}
+  - component: {fileID: 1778365444}
   m_Layer: 5
   m_Name: "Op\xE7\xF5es"
   m_TagString: Untagged
@@ -3632,6 +3795,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1778365444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778365438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d733b023f87704f47b5e9b0ffc90a04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSfx: {fileID: 8300000, guid: 243839ebd14908945b413919f68c6aa2, type: 3}
 --- !u!1 &1791845179
 GameObject:
   m_ObjectHideFlags: 0
@@ -3801,6 +3977,7 @@ GameObject:
   - component: {fileID: 1832171537}
   - component: {fileID: 1832171536}
   - component: {fileID: 1832171539}
+  - component: {fileID: 1832171540}
   m_Layer: 5
   m_Name: Sair
   m_TagString: Untagged
@@ -3944,6 +4121,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1832171540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1832171534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d733b023f87704f47b5e9b0ffc90a04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSfx: {fileID: 8300000, guid: 243839ebd14908945b413919f68c6aa2, type: 3}
 --- !u!1 &1834201757
 GameObject:
   m_ObjectHideFlags: 0
@@ -4131,3 +4321,4 @@ SceneRoots:
   - {fileID: 105433786}
   - {fileID: 1621931576}
   - {fileID: 30097112}
+  - {fileID: 758151820}

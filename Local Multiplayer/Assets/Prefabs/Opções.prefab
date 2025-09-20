@@ -468,6 +468,7 @@ GameObject:
   - component: {fileID: 1040392794039835626}
   - component: {fileID: 8494295306172465191}
   - component: {fileID: 752016228938901994}
+  - component: {fileID: 909387868545591053}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -611,6 +612,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &909387868545591053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2329806062835725565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d733b023f87704f47b5e9b0ffc90a04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSfx: {fileID: 8300000, guid: 243839ebd14908945b413919f68c6aa2, type: 3}
 --- !u!1 &2455343174876896490
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,6 +713,7 @@ GameObject:
   - component: {fileID: 3913726848601411664}
   - component: {fileID: 2407535807805239796}
   - component: {fileID: 8388454412309287253}
+  - component: {fileID: 9036952902101444227}
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
@@ -842,6 +857,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &9036952902101444227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3243257026568756356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d733b023f87704f47b5e9b0ffc90a04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSfx: {fileID: 8300000, guid: 243839ebd14908945b413919f68c6aa2, type: 3}
 --- !u!1 &3728029492860197469
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,6 +958,7 @@ GameObject:
   - component: {fileID: 3730018448418454295}
   - component: {fileID: 9125729820193888129}
   - component: {fileID: 8517818785258088668}
+  - component: {fileID: 2850394956058453295}
   m_Layer: 5
   m_Name: Voltar
   m_TagString: Untagged
@@ -1073,6 +1102,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2850394956058453295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4800267205722515477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d733b023f87704f47b5e9b0ffc90a04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSfx: {fileID: 8300000, guid: 243839ebd14908945b413919f68c6aa2, type: 3}
 --- !u!1 &5252800695928975650
 GameObject:
   m_ObjectHideFlags: 0
@@ -1308,9 +1350,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2851065860419928222}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 100
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1968,9 +2010,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 625624436912972681}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 100
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

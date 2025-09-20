@@ -46,6 +46,8 @@ GameObject:
   - component: {fileID: -1548291629219147700}
   - component: {fileID: 630959822585967821}
   - component: {fileID: 373925755441702017}
+  - component: {fileID: 5108597759531348760}
+  - component: {fileID: 322244115711542357}
   m_Layer: 7
   m_Name: Torradeira
   m_TagString: Untagged
@@ -243,3 +245,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyEffectPrefab: {fileID: 4928816262815802892, guid: e5a94584050c1ff4cb3290907f5e54cf, type: 3}
+--- !u!114 &5108597759531348760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7412453467919257893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84ab47a582e00934ebea128f1994a731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroySfx: {fileID: 0}
+  destroyObject: 1
+--- !u!114 &322244115711542357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7412453467919257893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5cefdf765374f94b913536983f9f7f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips: []

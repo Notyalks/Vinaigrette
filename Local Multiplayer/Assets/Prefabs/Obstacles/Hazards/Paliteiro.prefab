@@ -47,6 +47,8 @@ GameObject:
   - component: {fileID: 3080057846109866336}
   - component: {fileID: 3363274623630978504}
   - component: {fileID: 6582551501720979525}
+  - component: {fileID: 7656689348913461773}
+  - component: {fileID: 1763295108632284995}
   m_Layer: 7
   m_Name: Paliteiro
   m_TagString: Untagged
@@ -257,3 +259,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyEffectPrefab: {fileID: 4928816262815802892, guid: d84a1d394d9130c4da680f366df71347, type: 3}
+--- !u!114 &7656689348913461773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7793177922924259640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5cefdf765374f94b913536983f9f7f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips: []
+--- !u!114 &1763295108632284995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7793177922924259640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84ab47a582e00934ebea128f1994a731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroySfx: {fileID: 0}
+  destroyObject: 1

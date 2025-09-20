@@ -30,6 +30,8 @@ public class ScoreManager : MonoBehaviour
     public TextMeshProUGUI textPercentPlayer2;
     public Button continueButton;
 
+    public static event System.Action<int, int> OnPlayerReachedGoalGlobal;
+
     private void Awake()
     {
         Instance = this;
@@ -53,6 +55,8 @@ public class ScoreManager : MonoBehaviour
     {
         if (playerId == 1 && player1Finished) return;
         if (playerId == 2 && player2Finished) return;
+
+        OnPlayerReachedGoalGlobal?.Invoke(playerId, livesRemaining);
 
         finishOrderCounter++;
         if (playerId == 1)

@@ -1429,10 +1429,17 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.65
+  - time: 0.6333333
     functionName: ShowWinner
     data: 
     objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 2
+    messageOptions: 0
+  - time: 0.65
+    functionName: PlaySfx
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: e15ccc3662ec8b74badf9fae2ad3a19b, type: 3}
     floatParameter: 0
     intParameter: 2
     messageOptions: 0

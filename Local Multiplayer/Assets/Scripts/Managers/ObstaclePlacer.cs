@@ -25,6 +25,9 @@ public class ObstaclePlacer : MonoBehaviour
     private bool isPlacing = false;
     private bool isValidPlacement = false;
 
+    public event System.Action OnObstaclePlaced;
+    public event System.Action OnObstacleRotated;
+
     void Update()
     {
         if (PauseMenu.GameIsPaused) return; // bloqueia colocação de obstáculos
@@ -90,7 +93,7 @@ public class ObstaclePlacer : MonoBehaviour
         {
             bomb.OnBombResolved += () =>
             {
-                turnManager.EndTurn(bomb.destroyDelay); // espera antes de encerrar
+                turnManager.EndTurn(bomb.destroyDelay);
             };
             bomb.Place();
         }
@@ -99,12 +102,16 @@ public class ObstaclePlacer : MonoBehaviour
             turnManager.EndTurn();
         }
 
+        OnObstaclePlaced?.Invoke();
+
         ClearPlacement();
     }
 
     private void RotateGhost(float angle)
     {
         ghostObstacle.transform.Rotate(0f, 0f, angle);
+
+        OnObstacleRotated?.Invoke();
     }
 
     private bool IsPlacementValid(Vector3 pivotPosition)

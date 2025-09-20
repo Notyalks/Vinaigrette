@@ -24,6 +24,8 @@ public class TurnManager : MonoBehaviour
     private BuildMode lastShownBuildMode;
     private bool hasShownModeBefore = false;
 
+    public event System.Action OnTransitionConfirmed;
+
     void Update()
     {
         // se saiu da fase de construção, garante reset
@@ -43,6 +45,9 @@ public class TurnManager : MonoBehaviour
             {
                 waitingForInput = false;
                 UIManager.Instance.HideTurnTransition(pendingNextPlayer);
+
+                // dispara evento de áudio
+                OnTransitionConfirmed?.Invoke();
 
                 StartTurn(pendingNextPlayer);
             }
@@ -152,12 +157,15 @@ public class TurnManager : MonoBehaviour
             {
                 // callback: depois do dismiss, inicia a transição normal
                 BeginTransition(nextPlayer);
+                OnTransitionConfirmed?.Invoke();
             });
         }
         else
         {
             BeginTransition(nextPlayer);
+            OnTransitionConfirmed?.Invoke();
         }
+
     }
 
     private void BeginTransition(int nextPlayer)
