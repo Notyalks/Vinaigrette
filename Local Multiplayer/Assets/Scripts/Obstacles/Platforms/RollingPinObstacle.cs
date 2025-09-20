@@ -3,37 +3,29 @@ using UnityEngine;
 public class RollingPinObstacle : ActiveObstacleBase
 {
     [Header("Movimento")]
-    public bool moveHorizontally = true; // true = no eixo local X | false = no eixo local Y
-    public float moveDistance = 2f;      // Distância máxima do movimento
-    public float moveSpeed = 2f;         // Velocidade do movimento
+    public bool moveHorizontally = true;
+    public float moveDistance = 2f;
+    public float moveSpeed = 2f;
 
-    private Vector3 startPos;   // Posição inicial
-    private int direction = 1;  // 1 = frente, -1 = trás
+    private Vector3 startPos;
+    private int direction = 1;
 
     protected override void Start()
     {
         base.Start();
-        startPos = transform.position; // salva posição inicial
+        startPos = transform.position;
     }
 
     protected override void ActiveUpdate()
     {
-        // Define direção no espaço local
         Vector3 axis = moveHorizontally ? transform.right : transform.up;
-
-        // Move no eixo local
         transform.position += axis * direction * moveSpeed * Time.deltaTime;
 
-        // Calcula distância percorrida em relação à posição inicial
         float distanceFromStart = Vector3.Project(transform.position - startPos, axis).magnitude;
 
-        // Se passou do limite, inverte direção
         if (distanceFromStart >= moveDistance)
         {
-            // Corrige posição para não passar do limite
             transform.position = startPos + axis * (moveDistance * direction);
-
-            // Inverte direção
             direction *= -1;
         }
     }
@@ -41,7 +33,37 @@ public class RollingPinObstacle : ActiveObstacleBase
     protected override void ResetObstacle()
     {
         base.ResetObstacle();
-        transform.position = startPos; // volta pra posição original
-        direction = 1; // reseta direção
+        transform.position = startPos;
+        direction = 1;
     }
+
+    // -----------------------------
+    // Player "anda junto"
+    // -----------------------------
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            collision.transform.SetParent(transform, true); // entra sem problema
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            Transform player = collision.transform;
+
+            // salva a posição mundial antes de soltar
+            Vector3 worldPos = player.position;
+            Quaternion worldRot = player.rotation;
+
+            player.SetParent(null, false);
+
+            // restaura posição e rotação exata
+            player.position = worldPos;
+            player.rotation = worldRot;
+        }
+    }
+
 }

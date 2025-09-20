@@ -9,26 +9,22 @@ public class KnifeObstacle : ActiveObstacleBase
     [Header("Som de impacto")]
     public AudioClip hitSFX;
 
-    private Vector3 pivotOffset;   // Offset para centralizar o pivot
-    private Vector3 pivotWorld;    // Ponto do mundo usado como pivot de rotação
+    private SpriteRenderer sr;
 
     protected override void Awake()
     {
         base.Awake();
-
-        // recalculamos o centro do objeto
-        Bounds bounds = GetComponent<SpriteRenderer>().bounds;
-        pivotOffset = new Vector3(bounds.size.x / 2f, bounds.size.y / 2f, 0);
-
-        // Converte para coordenada mundial
-        pivotWorld = transform.position + pivotOffset;
+        sr = GetComponent<SpriteRenderer>();
     }
 
     protected override void ActiveUpdate()
     {
         float direction = clockwise ? -1f : 1f;
 
-        // Rotaciona em torno do centro do sprite
+        // centro do sprite em coordenadas de mundo
+        Vector3 pivotWorld = sr.bounds.center;
+
+        // gira em torno do centro real do sprite
         transform.RotateAround(pivotWorld, Vector3.forward, rotationSpeed * direction * Time.deltaTime);
     }
 

@@ -54,6 +54,10 @@ public class PauseMenu : MonoBehaviour
     public void OnMainMenuPressed()
     {
         Time.timeScale = 1f; // reset para não voltar pausado
-        SceneManager.LoadScene("Menu"); // nome da cena do menu principal
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.ReturnToMainMenu();
+        else
+         SceneManager.LoadScene("Menu");
     }
 }

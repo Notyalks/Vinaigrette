@@ -126,13 +126,25 @@ public class ScoreManager : MonoBehaviour
 
     public void CheckRoundEnd()
     {
-        if (!GameManager.Instance.player1.isActive && !GameManager.Instance.player2.isActive)
+        bool p1Ativo = GameManager.Instance.player1.isActive;
+        bool p2Ativo = GameManager.Instance.player2.isActive;
+
+        // Caso 1: Ambos morreram
+        if (!p1Ativo && !p2Ativo)
         {
             ShowRoundResults();
             return;
         }
 
-        if (player1Finished && !GameManager.Instance.player2.isActive && !player1ScoreFinalized)
+        // Caso 2: Ambos chegaram (já tratado em PlayerReachedGoal, mas reforçamos aqui)
+        if (player1Finished && player2Finished)
+        {
+            ShowRoundResults();
+            return;
+        }
+
+        // Caso 3: Um chegou e o outro morreu
+        if (player1Finished && !p2Ativo && !player1ScoreFinalized)
         {
             scorePlayer1 += 100;
             player1ScoreFinalized = true;
@@ -140,13 +152,16 @@ public class ScoreManager : MonoBehaviour
             return;
         }
 
-        if (player2Finished && !GameManager.Instance.player1.isActive && !player2ScoreFinalized)
+        if (player2Finished && !p1Ativo && !player2ScoreFinalized)
         {
             scorePlayer2 += 100;
             player2ScoreFinalized = true;
             ShowRoundResults();
             return;
         }
+
+        // Caso 4: Apenas um morreu rodada continua normalmente
+        // (não chamamos ShowRoundResults)
     }
 
     private void ShowRoundResults()

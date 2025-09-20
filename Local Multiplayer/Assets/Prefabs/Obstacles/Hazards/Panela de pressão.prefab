@@ -267,4 +267,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyEffectPrefab: {fileID: 4928816262815802892, guid: acc3803cbb6dd6649862f2601ab76fe8, type: 3}
-  destroySFX: {fileID: 0}
+  destroySFX: {fileID: 8300000, guid: 64b42d35c4eaff045920382fdc830ada, type: 3}

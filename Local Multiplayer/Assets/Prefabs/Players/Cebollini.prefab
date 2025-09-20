@@ -291,7 +291,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpClip: {fileID: 8300000, guid: fd74f660a75b72d45ac63435b21e0d5a, type: 3}
-  dashClip: {fileID: 8300000, guid: 502ae6d89ea0f8c4288561bfb62afda8, type: 3}
+  dashClip: {fileID: 8300000, guid: b090da6d0c0ca61499851b8a9aece5e1, type: 3}
   footstepClips:
   - {fileID: 8300000, guid: 3f3b36aecf26ffe458704d5e5f53b189, type: 3}
   - {fileID: 8300000, guid: 5c1805beb3a9ff84481d2761a994966a, type: 3}

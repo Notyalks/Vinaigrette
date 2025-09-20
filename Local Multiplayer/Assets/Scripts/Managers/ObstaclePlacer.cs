@@ -118,6 +118,28 @@ public class ObstaclePlacer : MonoBehaviour
     {
         if (activePlacementArea == null) return false;
 
+        //  Caso especial: GarlicBomb não usa collider para validação
+        if (selectedObstacle != null && selectedObstacle.prefab != null &&
+            selectedObstacle.prefab.GetComponent<GarlicBomb>() != null)
+        {
+            // Só precisa estar dentro da área ativa e fora de start/goal
+            if (!activePlacementArea.OverlapPoint(pivotPosition))
+                return false;
+
+            if (activePlacementArea == placementAreaPlayer1)
+            {
+                if (startAreaPlayer1.OverlapPoint(pivotPosition) || goalAreaPlayer1.OverlapPoint(pivotPosition))
+                    return false;
+            }
+            else if (activePlacementArea == placementAreaPlayer2)
+            {
+                if (startAreaPlayer2.OverlapPoint(pivotPosition) || goalAreaPlayer2.OverlapPoint(pivotPosition))
+                    return false;
+            }
+
+            return true; //  pode colocar em qualquer lugar válido
+        }
+
         // Vamos checar TODOS os colliders do ghost
         Collider2D[] colliders = ghostObstacle.GetComponents<Collider2D>();
         if (colliders.Length == 0) return false;

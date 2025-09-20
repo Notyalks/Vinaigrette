@@ -6,36 +6,30 @@ public class SpoonObstacle : ActiveObstacleBase
     public float rotationSpeed = 30f; // Velocidade da rotação em graus por segundo
     public bool clockwise = true;     // Se a rotação será no sentido horário ou anti-horário
 
-    private Vector3 pivotOffset;   // Offset para centralizar o pivot
-    private Vector3 pivotWorld;    // Ponto do mundo usado como pivot de rotação
+    private SpriteRenderer sr;
 
     protected override void Awake()
     {
         base.Awake();
-
-        // recalculamos o centro do objeto
-        Bounds bounds = GetComponent<SpriteRenderer>().bounds;
-        pivotOffset = new Vector3(bounds.size.x / 2f, bounds.size.y / 2f, 0);
-
-        // Converte para coordenada mundial
-        pivotWorld = transform.position + pivotOffset;
+        sr = GetComponent<SpriteRenderer>();
     }
 
     protected override void ActiveUpdate()
     {
         float direction = clockwise ? -1f : 1f;
 
-        // Rotaciona em torno do centro do sprite
+        // centro do sprite em coordenadas locais
+        Vector3 localCenter = sr.bounds.center - transform.position;
+
+        // converte para mundo
+        Vector3 pivotWorld = transform.position + localCenter;
+
+        // gira em torno do centro real do sprite
         transform.RotateAround(pivotWorld, Vector3.forward, rotationSpeed * direction * Time.deltaTime);
     }
 
     protected override void ResetObstacle()
     {
         base.ResetObstacle();
-
-        // Recalcula o pivot ao resetar
-        Bounds bounds = GetComponent<SpriteRenderer>().bounds;
-        pivotOffset = new Vector3(bounds.size.x / 2f, bounds.size.y / 2f, 0);
-        pivotWorld = transform.position + pivotOffset;
     }
 }

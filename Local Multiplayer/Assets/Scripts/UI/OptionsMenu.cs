@@ -57,6 +57,15 @@ public class OptionsMenu : MonoBehaviour
         vfxSlider.onValueChanged.AddListener(SetVFXVolume);
     }
 
+    private void Update()
+    {
+        // Se o OptionsMenu está ativo, intercepta ESC
+        if (gameObject.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+        {
+            OnBackPressed();
+        }
+    }
+
     // ================================
     // RESOLUÇÃO
     // ================================

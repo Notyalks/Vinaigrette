@@ -17013,7 +17013,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   placer: {fileID: 1839022569}
   inventoryManager: {fileID: 1957408459}
-  turnDuration: 15
+  turnDuration: 20
   inputDelay: 0.25
 --- !u!1 &941009520
 GameObject:
@@ -22021,21 +22021,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allObstacles:
-  - prefab: {fileID: 2771088618442085018, guid: 0f8b153eb97efa9418016d5218f47d78, type: 3}
-    icon: {fileID: 21300000, guid: 93af11e65e84c05419b7992f94ba6608, type: 3}
-    isBomb: 0
-    availableForPlayer1: 1
-    availableForPlayer2: 0
-  - prefab: {fileID: 380774823418479577, guid: d603df2dc8783f543a0eada09b21ab19, type: 3}
-    icon: {fileID: 21300000, guid: d210ca42286509e4d8de82e7fc6e354b, type: 3}
-    isBomb: 0
-    availableForPlayer1: 1
-    availableForPlayer2: 0
-  - prefab: {fileID: 3441412370135906138, guid: 127cd03af5d272b41ab174ccfcb05080, type: 3}
-    icon: {fileID: 21300000, guid: 5cb00aad83b262d4496e51c37fc17efa, type: 3}
-    isBomb: 0
-    availableForPlayer1: 1
-    availableForPlayer2: 0
   - prefab: {fileID: 380774823418479577, guid: a2d55a8dbf2827541b5f0a2ba4c9d008, type: 3}
     icon: {fileID: 21300000, guid: fcea2de1042fc5847bc37c9ebca83c5c, type: 3}
     isBomb: 0
@@ -22051,18 +22036,13 @@ MonoBehaviour:
     isBomb: 0
     availableForPlayer1: 1
     availableForPlayer2: 1
-  - prefab: {fileID: 7412453467919257893, guid: b58b0fd1ff2a8c14eba27a136c60b758, type: 3}
-    icon: {fileID: 21300000, guid: 44e28c7990dd9be4b897fc62f5bed077, type: 3}
-    isBomb: 0
-    availableForPlayer1: 1
-    availableForPlayer2: 1
   - prefab: {fileID: 7793177922924259640, guid: 900ac5add58b76b42bfd208df8070d9f, type: 3}
     icon: {fileID: 21300000, guid: 44a2670991258ba4384d90780df86121, type: 3}
     isBomb: 0
     availableForPlayer1: 1
     availableForPlayer2: 1
-  - prefab: {fileID: 7793177922924259640, guid: 83de0f0e37202e348948c1bfa5d8abbf, type: 3}
-    icon: {fileID: 21300000, guid: e60f6bda1c5abdd438792a12116beae0, type: 3}
+  - prefab: {fileID: 380774823418479577, guid: 9bbd871770aa024489f7c722c96a1d30, type: 3}
+    icon: {fileID: 21300000, guid: 385cc721475647749a0205987d9f3f6d, type: 3}
     isBomb: 0
     availableForPlayer1: 1
     availableForPlayer2: 1
@@ -22649,6 +22629,56 @@ RectTransform:
   m_AnchoredPosition: {x: 200, y: 0}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2078000420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2078000422}
+  - component: {fileID: 2078000421}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2078000421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078000420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee4c37e84c655fc4ebb200e93c4e133a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: 564406e1b4a44ce49948d007588c51a4, type: 2}
+  musicGroup: {fileID: 3822369789613168013, guid: 564406e1b4a44ce49948d007588c51a4, type: 2}
+  sfxGroup: {fileID: -1262058605116927551, guid: 564406e1b4a44ce49948d007588c51a4, type: 2}
+  defaultMusicVolume: 1
+  sfxPoolSize: 12
+  sfxEntries: []
+--- !u!4 &2078000422
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078000420}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.6648636, y: 1.5299532, z: 2.0953572}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2088869498
 GameObject:
   m_ObjectHideFlags: 0
@@ -23314,3 +23344,4 @@ SceneRoots:
   - {fileID: 724559203}
   - {fileID: 1507962528}
   - {fileID: 35557416}
+  - {fileID: 2078000422}

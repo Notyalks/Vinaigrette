@@ -233,4 +233,12 @@ public class GameManager : MonoBehaviour
 
     public void PlayerDied(int playerId) =>
         ScoreManager.Instance.PlayerDied(playerId);
+
+    public void ReturnToMainMenu()
+    {
+        if (turnManager != null)
+            turnManager.ResetTurnState();
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+    }
 }
